@@ -1,0 +1,2407 @@
+-- "Set define off" turns off substitution variables. 
+Set define off; 
+
+CREATE OR REPLACE PACKAGE PDFDOC
+/*   
+  Dynamically generates pdf documents using pl/sql.   
+      
+  For examples of use see
+  Procedure test
+  procedure pdfwebtest
+  procedure pdfGraphicsTest
+  
+  For a sample report see
+  procedure PrintPackages
+  
+  begin
+    pdfdoc.printpackages('OPS$MENCHEN_GE',pdfdoc.K_Email_Attachmentgary_menchen@harvard.edu');
+  end;     
+
+*/
+  IS
+  
+--@ Available output types. These constants will need to be reference to identify
+--@ how the pdf document is to be delivered.  Delivery type is specified when the
+--@ document is initiated, and can not be changed.  
+K_dbms_output constant number(2) := 1;
+K_email_attachment constant number(2) := 2;
+K_Web_Delivery constant number(2) := 3;
+K_Web_Download constant number(2) := 4;
+K_Utl_file constant integer := 5;
+K_Blob constant integer := 6;
+
+--@
+--@ These types are declared here primarily so they can be used as parameters,
+--@ or within subsequent type declarations.
+--@
+type RegisteredFontKeys is table of varchar2(20) index by binary_integer;
+type OffsetTable is table of number(10) index by binary_integer;
+type xRefLableTable is table of varchar2(25) index by binary_integer;
+type ObjectNumberTable is table of number(5) index by binary_integer;  
+type stream_t is table of varchar2(2000) index by binary_integer;
+type xref_rec is record
+  (offset number,
+   generation number,
+   label varchar2(25));
+type xref_tbl is varray(10) of xref_rec;    
+
+--@ The pdfPage data structure may eventually have its own public routines
+--@ As of now it should not be referenced   
+type PdfPage is record (
+  PageObj# number(5) := 0,
+  StreamObj# number(5) := 0,
+  SizeObj# number(5) := 0,
+  ParentObj# number(5),
+  Page# number(5) := 0,
+  Fontlist varchar2(100) := '',
+  XObjectList varchar2(100) :='',
+  GraphicsStream stream_t,
+  name varchar2(10),
+  TextStream stream_t);
+  
+--@ document is the main data structure.  It is normally the first parameter
+--@ in all procedures and functions (except the initiating function that
+--@ returns a new document.  Note that for performance reasons the document,
+--@ when used as a parameter, should always be in out nocopy.  Leaving out
+--@ the nocopy makes performance MUCH slower.  
+--@ See property list below. No elements of this structure should be accessed
+--@ directly.
+type document is record (
+  CurrentFontKey varchar2(20) := 'F1',
+  CurrentFontSize number(3) := 12,
+  defaultUnit varchar2(1) := 'p',   -- default unit of measurement
+                                    -- p point, r row c col,i inches
+  Output integer := K_dbms_output,
+  Offset number(10) := 0,           -- tracks position in overall stream
+  CurrentPage# number(5) := 0,      -- physical page number
+  NextObj# number(5)  :=  1,        -- next available object number 
+  CurrentParent# number(10) := 3,   -- parent object# of current page
+  Page pdfPage,                     -- Current page 
+  Name varchar2(100),               -- File Name, etc
+  LineHeight number(6,2) := 11,     -- average line height,current font, in points  
+  CharWidth number(6,2) := 7.1,     -- average character width,current font, in points
+  PageHeight number(6,2) := 11 * 72, -- page height is in points
+  PageWidth number(6,2) := 8.5 * 72, -- page width is in points
+  TopMargin  integer := 0.4 * 72 ,  --  starting point. Rows are relative to top margin.
+  LeftMargin integer := 0.4 * 72  ,  -- Columns are relative to this point.
+  RightMargin integer := 0.4 * 72,   -- typical non-printable area
+  BottomMargin integer := 0.4 * 72,
+  the_blob blob,
+  Target varchar2(100),              -- email address, etc
+  pageobjlist ObjectNumberTable,
+  pageparentlist ObjectNumberTable,
+  fontKeyList RegisteredFontKeys,
+  fontObj#list ObjectNumberTable,
+  -- components for cross reference table
+  xRefOffset OffsetTable,
+  xRefLabel XRefLableTable ,
+  fileName varchar2(100),
+  currentRow number(10),      -- INTERNAL USE: Current Y position, in points
+  currentCol number(10),      -- INTERNAL USE: Current X positon, in points
+  currentState number(1)      -- INTERNAL USE, tracking status of document
+  );
+--@  
+--@ Property List
+--@
+--@ The various properties listed below generally correspond to elements of
+--@ the document data structure, which should not be accessed or set directly.
+--@ Not all properties may have both get and set methods. The table below lists
+--@ which are available. Most are described in more detail below. All in this 
+--@ table have for form. pUnit is an optional parameter when the property refers
+--@ to a position on a page, and is available whenever the property refers to a
+--@ position within a page.
+--@ value := getProperty( pDoc, pUnit );
+--@ setProperty( pDoc, Value, pUnit );
+--@ More complex set procedures are not listed in this table.
+
+--@ Blob        get       Returns the blob the document was written to, if any
+--@ BottomMargin get set
+--@ BottomRow   get       row coordinate of last addressable row
+--@ DefaultUnit get set     Does not take a pUnit parameter
+--@ FileName    get set
+--@ LineHeight  get set                   
+--@ LineWidth   get set   Line width minus margins. Represents rightmost column
+--@ LeftMargin  get set
+--@ Nextrow     get
+--@ PageNumber  get set
+--@ RightMargin get set
+--@ Target      get set   
+--@ TopMargin   get set
+
+ 
+  
+  
+
+
+
+
+  
+  
+--
+-- Get/Set functions/procedures
+--@ differentiating between portrait and landscape is as simple as specifying
+--@ the width and height, in inches, as either 8 1/3 by 11 or 11 by 8 1/2.
+--@ There is no intrinsic requirement that a page in a pdf document actually
+--@ correspond to any physical paper size.  
+Procedure SetPageSize(pDoc in out nocopy pdfDoc.Document,
+                      pHeight in number ,
+                      pWidth in number ,
+                      pUnits in varchar2 default null);
+                      
+--@ getLineWidth returns the page width minus the left and right margins. In r/c units
+--@ it should represent the last addressable position, and so can be used to 
+--@ write text at the right side of the page, using an alignment if 'r' for 
+--@ right justified.                      
+function getLineWidth(pDoc in out nocopy pdfDoc.Document, pUnit in varchar2 default null)
+  return number;
+--@ setOutputType is used to identify how the document is to be delivered.
+--@ Opens are defined as constants above:
+--@ K_dbms_output K_email_attachment K_Web_Delivery
+--@ K_Web_Download K_Utl_file constant K_Blob constant
+--@ <pTarget> is an optional parameter.  with email it represents the email address,
+--@ which is only needed when it is not being sent to the current user.
+--@ These have been replaced by requiring the parameter in the newPdfDoc function,
+--@ and should not be used.
+procedure SetOutputType(pDoc in out nocopy pdfdoc.document,pType in number, pTarget in varchar2 default null);
+function GetOutputType( pDoc in out nocopy pdfdoc.document) return number;
+--@ Getblob returns the blob that the pdf was written to if output type was
+--@ K_Blob. 
+Function GetBlob(pDoc in out nocopy pdfdoc.document) return blob;
+--@ The next procedures are used to set margins: top, left, right.
+procedure setLeftMargin( pDoc in out nocopy pdfdoc.document,pMargin in number, pUnit in varchar2 default null);
+function getLeftMargin( pDoc in out nocopy pdfdoc.document, pUnit in varchar2 default null)
+  return number;
+procedure setRightMargin( pDoc in out nocopy pdfdoc.document,pMargin in number, pUnit in varchar2 default null);
+function getRightMargin( pDoc in out nocopy pdfdoc.document, pUnit in varchar2 default null) return number;
+
+function getRightColumn(pDoc in out nocopy pdfdoc.document,pUnit in varchar2 default null) return number;
+procedure setTopMargin( pDoc in out nocopy pdfdoc.document, pMargin in number, pUnit in varchar2 default null);
+function getTopMargin( pDoc in out nocopy pdfdoc.document,pUnit in varchar2) return number;
+
+procedure setBottomMargin( pDoc in out nocopy pdfdoc.document, pMargin in number, pUnit in varchar2 default null);
+function getBottomMargin( pDoc in out nocopy pdfdoc.document,pUnit in varchar2) return number;
+
+procedure setTarget(pDoc in out nocopy pdfdoc.document, pTarget in varchar2);
+function getTarget(pDoc in out nocopy pdfdoc.document) return varchar2;
+
+
+--@ the point of allowing line height to be set with something other than points is
+--@ that it can be set as a multiple of the current line height. i.e. if current
+--@ line height is 11 points, and it is set to .5, 'c' then it would become 5 or 6.
+--@ In general this is a crude way of dealing with font sizes because the package
+--@ is not yet aware of font metrics (which would not be too difficult to do)
+--@ Note that getLineHeight, with a unit of r or c, should return 1.  
+procedure setLineHeight(pDoc in out nocopy pdfdoc.document, pHeight in number, pUnit in varchar2 default null);
+function getLineHeight(pDoc in out nocopy pdfdoc.document, pUnit in varchar2) return number;  
+
+procedure setPageNumber(pDoc in out nocopy pdfdoc.document, pNumber in number);
+function getPageNumber(pDoc in out nocopy pdfdoc.document) return number;
+
+--@ beginDoc initiates a document                          
+Procedure beginDoc( pDoc in out nocopy pdfdoc.document,
+                    pDocName in varchar2 := null);
+--@ endDoc ends the document                      
+Procedure endDoc( pDoc in out nocopy pdfdoc.document);
+--@ getFileName returns the name of the odocument  
+Function GetFileName( pDoc in out nocopy pdfdoc.document) return varchar2;
+Procedure setFileName( pDoc in out nocopy pdfdoc.document, pValue varchar2);
+
+--@ Various test procedures  
+procedure test;
+procedure pdfWebTest;
+procedure pdfGraphicsTest;
+procedure PrintPackages( pOwner in varchar2,
+                         pOutput in number,
+                         pTarget in varchar2);
+procedure setDebugging ( value in boolean);
+procedure testBase85;
+
+--@ newPdfDoc returns a new document that can be worked with
+function newPdfDoc( pOutputType in number)  return pdfdoc.document;
+
+--@ newPage is used to initiate a page  
+procedure newPage(pDoc in out nocopy pdfdoc.document);
+--@ endpage terminates a page
+procedure endPage(pDoc in out nocopy pdfdoc.document);
+procedure endPageEncode(pDoc in out nocopy pdfdoc.document);
+
+/*
+  The pre-defined fonts, with their keys are
+  Courier,'F1'
+  Courier-Bold,'F1B'
+  Courier-Oblique,'F1I'
+  Courier-BoldOblique,'F1IB'
+  Helvetica,'F2'
+  Helvetica-Bold,'F2B'
+  Helvetica-Oblique,'F2I'
+  Helvetica-BoldOblique,'F2IB'
+  Times-Roman,'F3'
+  Times-Bold,'F3B'
+  Times-Italic,'F3I'
+  Times-BoldItalic,'F3IB'
+  Symbol,'F4'
+  ZapDingbats,'F5'
+*/
+--@ Set font based on font key
+procedure setFont(pDoc in out nocopy pdfdoc.document,
+                  pFontKey in varchar2,
+                  pFontSize in number);
+Function FindFontByKey(pFontKey in varchar2) return number;
+function getFontkey( pFontName in varchar2) return varchar2;
+
+-- setCharWidth is a clumsy procedure to set teh width, in points, of the current
+-- font. Necessary because not yet reading font information.
+procedure setCharWidth(pDoc in out nocopy pdfdoc.document, pPoints in number);
+function strLength(pFontKey in varchar2, pFontSize in number, pString in varchar2)
+  return number; -- returns width of string for specified font, in points
+--@ Units of measurement are points (1/72 inch), inches
+--@ and row/col. The latter would vary depending upon
+--@ the font,so use may be problematic... The default unit of measure is
+--@ the point. Options include 
+--@ r, c (row or column; interchangeable, based on current font
+--@ i inches
+--@ p points
+--@ When output is generated all units are converted to points, since that is
+--@ the only positioning unit recognized by pdf                            
+Procedure SetDefaultUnit(pDoc in out nocopy pdfdoc.document, pUnit in varchar2);
+Function GetDefaultUnit( pDoc in out nocopy pdfdoc.document) return varchar2;
+--@ convertunits is a handdy function that converts units from one format to
+--@ another. Its use is primarily internal
+function convertunits(pDoc in out nocopy pdfdoc.document,
+                      pUnits in number, 
+                      pFrom varchar2, 
+                      pTo varchar2) return number;
+  
+--@ Standard text printing procedure
+procedure Write(pDoc in out nocopy pdfdoc.document,
+                pX in number, -- horizontal / column position
+                pY in number, -- vertical / row position
+                pString in varchar2, -- text to display
+                pAlign in varchar2 default 'l', -- left, center, right
+                pUnit in varchar2 default null); -- point,inch, row/col
+--@ Write on the next line. A pass through the write
+procedure WriteNext(pDoc in out nocopy pdfdoc.document,
+                pX in number, -- horizontal / column position
+                pString in varchar2, -- text to display
+                pAlign in varchar2 default 'l', -- left, center, right
+                pUnit in varchar2 default null); -- point,inch, row/col
+--@ Write on the current line. A pass through to write
+procedure WriteCol(pDoc in out nocopy pdfdoc.document,
+                pX in number, -- horizontal / column position
+                pString in varchar2, -- text to display
+                pAlign in varchar2 default 'l', -- left, center, right
+                pUnit in varchar2 default null); -- point,inch, row/col
+--@ center a string on line <pY>. A passthrough to write    
+procedure writeCenteredInLine(pDoc in out nocopy pdfdoc.document,
+          pY in number, -- the row
+          pString in varchar2,
+          pUnit in varchar2 default null);
+--@ writeOut writes at the current row and column position. DOES NOT WRAP.          
+procedure writeout(pDoc in out nocopy pdfDoc.document, pString in varchar2);          
+--@ nextRow returns the position of the row below the last row addressed. Useful
+--@ when checking when to end a page          
+function nextRow(pDoc in out nocopy pdfdoc.document,pUnit in varchar2 default null) return number;
+function getBottomRow(pDoc in out nocopy pdfdoc.document,punit in varchar2 default null) return number;
+function getCurrentRow(pDoc in out nocopy pdfdoc.document, pUnit in varchar2 default null) return number;
+function getCurrentCol(pDoc in out nocopy pdfdoc.document, pUnit in varchar2 default null) return number;
+procedure setCurrentRow(pDoc in out nocopy pdfdoc.document, pValue in number, pUnit in varchar2 default null);
+procedure setCurrentCol(pDoc in out nocopy pdfdoc.document, pValue in number, pUnit in varchar2 default null);
+-- free rows returns the number of available lines after the current row, i.e.
+-- (bottomrow - currentrow / lineheight) 
+function getFreeRows( pDoc in out nocopy pdfdoc.document) return number;          
+          
+--@
+--@ Graphics Routines
+--@
+--@ drawLine draws a line between any two points. A horizontal line would
+--@ simly have pY1 = pY2, and a vertical line would have pX1 = pX2.
+--@ pWidth should be specified in "user space units". This width setting should
+--@ remain in effect for the document (including for the Rectangle
+--@ procedure) until changed. 0 is the thinnist possible line, and may not be
+--@ visible. 1.0 is the default.
+procedure DrawLine(pDoc in out nocopy pdfDoc.document,
+                   pX1 in number,
+                   pY1 in number,
+                   pX2 in number,
+                   pY2 in number,
+                   pUnit in varchar2 default null,
+                   pWidth in number default null);
+Procedure Rectangle(pDoc in out nocopy pdfDoc.document,
+                    pX in number,
+					pY in number,
+					pWidth in number,
+					pHeight in number,
+					pUnit in varchar2 default null,
+                    pLineWidth in number default null);
+procedure Shade(pDoc in out nocopy pdfDoc.document,
+                pX1 in number,
+                pY1 in number,
+                pX2 in number,
+                pY2 in number,
+                pScale in number default null,
+                pUnit in varchar2 default null);
+procedure Shade1(pDoc in out nocopy pdfDoc.document,
+                pX1 in number,
+                pY1 in number,
+                pX2 in number,
+                pY2 in number,
+                pScale in number default null,
+                pUnit in varchar2 default null);
+
+procedure GreyBar( pDoc in out nocopy pdfDoc.document,
+                   pY in number, pUnit in varchar2 default null);
+procedure PageBorder(pDoc in out nocopy document);
+procedure ellipse(pDoc in out nocopy pdfDoc.document,
+                  pX in number, pY in number,
+                  pRadiusX in number, pRadiusY in number,
+                  pUnit in varchar2 default null,
+                  pLinewidth in number default null);
+                   
+procedure lineAcrossPage(pDoc in out nocopy document,pY in number,pUnit in varchar2 default null);  
+procedure setTextState(pDoc in out nocopy document,
+                       pCharSpace in number default 0,
+                       pwordSpace in number default 0,
+                       pScale in number default 100,
+                       pLeading in number default 0,
+                       pRender in number default 0,
+                       pRise in number default 0);
+procedure setGrayScale(pDoc in out nocopy document,pScale in number default 0);
+procedure waterMark(pDoc in out nocopy document, pText in varchar2);
+/*
+procedure defineJpgXOjbect(pDoc in out nocopy document,
+                               pImage in blob,
+                               pName in varchar2,
+                               pWidth in number,
+                               pHeight in number,
+                               pBitsPer in number,
+                               pDevice in varchar2 default 'DeviceGray',
+                               pImageLib in varchar2 default 'ImageB'
+                               );
+*/                               
+procedure defineImageXObject( pDoc in out nocopy document,
+                              pImage in blob,                   
+                              pName in varchar2,              -- Im1
+                              pWidth in number,
+                              pHeight in number,
+                              pBitsPerComponent in number,    -- 8 | 1
+                              pColorSpace in varchar2 default null,  -- null | DeviceRGB
+                              pImageMask in varchar2 default null, -- null | true
+                              pImageLib in varchar2 default null, -- null, ImageB, ImageC
+                              pFilter in varchar2 default null    -- DCTDecode if jpeg
+                              );                       
+procedure showImage(pDoc in out nocopy document,
+                    pName in varchar2,
+                    pX in number, pY in number,
+                    pUnit in varchar2 default null,
+                    pScaleX in number default null, 
+                    pScaleY in number default null,
+                    pSkewX in number default 0, 
+                    pSkewY in number default 0,
+                    pGrayScale in number default 0);                               
+procedure testJPeg(pPages in number default 1);
+-- and for form XObjects
+procedure newFormXObject(pDoc in out nocopy pdfdoc.document, pName in varchar2);
+procedure endFormXOBject( pDoc in out nocopy pdfdoc.document);
+procedure showForm(pDoc in out nocopy document, pName in varchar2);
+                                                                    
+END; -- Package spec
+/
+
+
+CREATE OR REPLACE PACKAGE BODY PDFDOC
+IS
+type font_table_rec is record
+  ( fontname varchar2(30),
+    fontkey varchar2(20) );
+type xobject_table_rec is record
+  ( name varchar2(20),
+    object# number,
+    width number,
+    height number,
+    device varchar2(20),
+    imageLib varchar2(20),
+    imageMask varchar2(4) );
+    
+type xobject_table_typ is table of xobject_table_rec index by binary_integer;
+        
+type font_table_typ is table of font_table_rec index by binary_integer;
+
+-- Package data structures, equivilent to class data structures
+pvXObjectTable xobject_table_typ;
+
+pvFontTable font_table_typ;
+pvDebugging boolean := false;
+--
+function resolveUnit(pDoc in out nocopy pdfDoc.document,pUnit in varchar2, pContext in varchar2)
+return varchar2
+is
+  vUnit varchar2(1);
+begin
+  vUnit := nvl(pUnit,pDoc.DefaultUnit);
+  if vUnit in ('r','c') then
+    if pContext in ('r','c') then
+      vUnit := pContext;
+    end if;
+  end if;
+  return vUnit;
+end resolveUnit;        
+
+function getLineWidth(pDoc in out nocopy pdfDoc.Document, pUnit in varchar2 default null)
+  return number
+is
+  vReturn number(10);
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  vReturn := PDoc.PageWidth - pDoc.Leftmargin - pDoc.RightMargin;
+  vReturn := convertUnits( pDoc,vReturn,'p',vUnit);
+  return vReturn;
+end;  
+                              
+
+function nextObj#( pDoc in out nocopy pdfdoc.document) return number
+is
+  vReturn number(5);
+begin
+  vReturn := pDoc.nextObj#;
+  pDoc.nextObj# := pDoc.nextObj# + 1;
+  return vReturn;
+end;
+
+Procedure Put(pDoc in out nocopy pdfdoc.document, pMessage in varchar2)
+is
+  vMessage varchar2(32000) := trim(pMessage);
+  vLength number(10);
+begin
+  vLength := Length(vmessage) + 2;
+  if pDoc.Output = K_dbms_output then
+    dbms_output.put_line(vMessage );
+  elsif pDoc.Output = K_email_attachment then
+     -- plsql_mail_attach.attachmentline(vMessage );
+     dbms_lob.writeappend(pDoc.the_Blob, vlength,utl_raw.cast_to_raw( vMessage||CHR(13)||CHR(10)));
+  elsif pDoc.Output = K_Web_Delivery then
+     htp.prn(vmessage|| chr(13) || chr(10));
+  elsif pDoc.Output = K_Web_Download then
+     htp.prn(vmessage|| chr(13) || chr(10));
+  elsif pDoc.Output = K_Blob then
+    dbms_lob.writeappend(pDoc.the_Blob, vlength,utl_raw.cast_to_raw( vMessage||CHR(13)||CHR(10)));
+  else
+    raise_application_error(-20010,'Unknown pdf output type<'|| to_char(pDoc.output)||'>');
+  end if;
+  pDoc.Offset := pDoc.Offset + vLength;
+End Put;
+procedure AddxRef(pDoc in out nocopy pdfdoc.document, 
+                  pnum in number, 
+                  poffset in number, 
+                  pLabel in varchar2)
+is
+begin
+--  if pNum > 4 and
+--    not pvXRef.Exists(pNum - 1) then
+--    raise_application_error(-20007,'Gap in xref table at ' || to_char(pNum)|| ' ' || pLabel);
+--  end if;
+  pDoc.xRefOffset(pNum) := pOffset;
+  pDoc.xRefLabel(pNum) := pLabel;
+  -- generations are all 0 
+end AddxRef;
+function registerFont( pDoc in out nocopy pdfdoc.document,pFontKey in varchar2) return number
+is
+  vPtr integer := 0;
+  vFontPtr integer := 0;
+  vObject# integer := 0;
+begin
+  -- this function checks of pFontKey has been registered in teh current document.
+  -- if it has not then it does so. It returns the object number of the font
+  -- in the document
+  if pDoc.fontKeyList.exists(1) then
+    for i in pDoc.fontKeyList.first..pDoc.fontKeyList.last loop
+      if pDoc.fontKeyList(i) = pFontKey then
+        vPtr := i;
+      end if;
+    end loop;
+  end if;
+  if vPtr = 0 then
+    vFontPtr := FindFontbyKey(pFontKey);
+    if vFontPtr = 0 then
+      raise_application_error(-20001,'Invalid font key ' || pFontKey);
+    end if;    
+    -- this font has not been registered in the document
+    if pDoc.fontKeyList.exists(1) then
+      vPtr := pDoc.fontKeyList.last + 1;
+    else
+      vPtr := 1;
+    end if;
+    pDoc.fontKeyList(vPtr) := pFontKey;
+    pDoc.fontObj#List(vPtr) := nextObj#( pdoc );
+    addxRef(pDoc, pDoc.fontObj#List(vPtr),
+              pDoc.Offset,'font');
+    put(pDoc,to_char(pDoc.fontObj#List(vPtr))||' 0 obj');
+    put(pDoc,'<< /Type /Font');
+    put(pDoc,'   /Subtype /Type1');
+    put(pDoc,'   /Name /' || pDoc.fontKeyList(vPtr)); -- F1');
+    put(pDoc,'   /BaseFont /' || pvFontTable(vFontptr).fontname) ; -- Courier');
+    put(pDoc,'   /Encoding /WinAnsiEncoding');
+    put(pDoc,'>>');
+    put(pDoc,'endobj');
+  end if;
+  vObject# := pDoc.fontObj#List(vPtr);
+  return vObject#;    
+end registerFont; 
+
+
+procedure WriteHeader( pDoc in out nocopy pdfdoc.document) is
+  vBucket number;
+begin
+  pDoc.offset := 0;
+  put(pDoc,'%PDF-1.2');
+  -- Try some high order bytes on the second line. This is a convention
+  -- to prevent some programs from treating this as an ascii text file,
+  -- and possibly converting eol characters
+  put(pDoc,'%%' || chr(25) || chr( (15 * 16) + 2) || chr( (15 * 16) + 3)
+    || chr( (13 * 16) + 15) || chr( (14 * 16) + 3));
+  -- Write the catalog. Pages in object 3
+  AddxRef(pDoc,1,pDoc.offset,'Catalog');
+  put(pDoc,'1 0 obj');
+  put(pDoc,'<<');
+  put(pDoc,'/Type /Catalog');
+  put(pDoc,'/Pages 3 0 R');
+  put(pDoc,'/Outlines 2 0 R');
+  put(pDoc,'>>');
+  put(pDoc,'endobj');
+  addxRef(pDoc,2,pDoc.Offset,'Outlines');
+  put(pDoc,'2 0 obj');
+  put(pDoc,'<<');
+  put(pDoc,'/Type /Outlines');
+  put(pDoc,'/Count 0');
+  put(pDoc,'>>');
+  put(pDoc,'endobj');
+  -- add a procset
+  addxRef(pDoc,4,pDoc.Offset,'ProcSet');
+  put(pDoc,'4 0 obj');
+  put(pDoc,'  [/PDF /Text /ImageB /ImageC]');
+  put(pDoc,'endobj');
+  -- Add some information
+  addxRef(pDoc,5,pDoc.Offset,'General Info');
+  put(pDoc,'5 0 obj');
+  put(pDoc,'<<');
+  put(pDoc,'/CreationDate (D:'||to_char(sysdate,'yyyymmddhhmiss')||')');
+  put(pDoc,'/Author ('||user||')');
+  put(pDoc,'/Producer (Gary Menchen''s PDF Package)');
+  put(pDoc,'>>');
+  put(pDoc,'endobj');
+  pDoc.nextObj# := 6;
+
+end WriteHeader;
+
+Function UserEmail(pDoc in out nocopy pdfdoc.document) return varchar2 is
+  vUser varchar2(24);
+  vDartId varchar2(20);
+  vEmail person_username_email.electronic_mail_address%type;
+  vpersonId person_username_email.person_id%type;
+begin
+  if pDoc.Target is not null then
+    vEmail := pDoc.Target;
+  else
+    vUser := User;
+    if vUser = 'DARTWEB' then
+      authenticate.dart_id(vDartId);
+      if upper(substr(vDartid,1,3)) = 'ERR' then
+        raise_application_error(-20001,'can not identify unauthenticated user');
+      end if;
+      vPersonId := authenticate.person_id(vDartId);
+      vUser := authenticate.oracle_username(vPersonId);
+    end if;
+    If vUser in ('LOAN','RANGER') then
+      vUser := 'OPS$MENCHEN_GE';
+    end if;
+    -- Now get that user's email
+    select electronic_mail_address
+      into vEmail
+      from person_username_email
+      where username= vuser;
+
+  end if;
+  return vEmail;
+  exception
+    when no_data_found then
+        raise_application_error(-20001,vUser||' lookup error');
+
+
+
+end UserEmail;
+Procedure WritePages( pDoc in out nocopy pdfdoc.document,
+                      pObject in number, pParent in number default null)
+  is
+  -- Goal is to have about 6 page object as kids to a page object.
+  -- The parent number is assigned to each /page object by the GetNewPage
+  -- function. For each page.parentobj# value we write a single /pages object,
+  -- write the /Page object numbers to the kids list,and, if we are not at
+  -- the end of the list of page objects, add the parentobj# of the subsequent
+  -- page. As a result each /Pages object will have a kids list that contains
+  -- up to 6 /Page objects.  The kids list will end with a reference to another
+  -- /Pages object if we are not at the end of the list of /Page objects.
+  
+  -- Not that the parameters after pDoc are not used.
+  vParent number(6) := null;
+  vObject number(6) := null;
+  i integer;
+  vLine varchar2(200);
+  vTotalPages number(5);
+  vPageCtr number(2); -- number of /page objects listed in a /pages object
+begin
+  vTotalpages := pDoc.pageObjList.last - pDoc.PageObjList.first + 1;
+  i := pDoc.PageObjList.first;
+--  for kk in pvPageList.first..pvPageList.last loop
+--    dbms_output.put_line('% ' || to_char(kk) || ' Obj ' || to_char(pvPageList(kk).PageObj#)
+--      || ' parent ' || to_char(pvPageList(kk).ParentObj#));
+--  end loop;
+
+  while i <= pDoc.PageObjList.last loop
+    -- begin the pages object
+    vObject := pDoc.pageParentList(i);
+    AddxRef(pDoc,vObject,pDoc.offset,'Pages');
+    put(pDoc,to_char(vObject) || ' 0  obj');
+    put(pDoc,'<< /Type /Pages');
+	if i > pDoc.PageObjList.first then
+	  put(pDoc,'/Parent ' || to_char(vParent)|| ' 0 R');
+	end if;
+	vLine := '/Kids [';
+    vPageCtr := 0;
+	while i <= pDoc.PageObjList.Last and vObject = pDoc.pageParentList(i) loop
+	  vLine := vLine || to_char(pDoc.PageObjList(i)) || ' 0 R ';
+	  vPageCtr := vPageCtr + 1;
+	  i := i + 1;
+	end loop;
+	-- Check if we need to add a /Pages object to the end of the kids list
+	if i <=  pDoc.PageObjList.Last then
+	  vLine := vLine || to_Char(pDoc.pageParentList(i)) || ' 0 R ';
+      vParent := vObject;
+      -- dbms_output.put_line('%Parent changed to ' || to_Char(vParent));
+	end if;
+	vLine := vLine || ']';
+	Put(pDoc, vLine);
+	put(pDoc, '/Count ' || to_char(vTotalPages));
+	put(pDoc,'>>');
+	put(pDoc,'endobj');
+	vTotalPages := vTotalPages - vPageCtr;
+
+  end loop;
+end WritePages;
+
+Procedure WritexRef( pDoc in out nocopy pdfdoc.document) is
+  vOffset number(10);
+  vOffsetMask varchar2(10) := '0000000000';
+  vGenMax varchar2(5) := '00000';
+  vLine varchar2(500);
+  vCtr number(5) := 0;
+  i integer;
+  vNext integer;
+begin
+  WritePages( pDoc, 3, null); 
+  vOffset := pDoc.Offset;
+  put(pDoc,'xref');
+  vNext := nextObj#(pDoc);
+  put(pDoc,'0 ' || to_char(vNext));
+  put( pDoc,trim(to_char(0,vOffsetMask)) || ' ' || trim(to_char(65535,vGenMax))||' f');
+  i := pDoc.xRefOffset.first;
+  while i <= pDoc.xRefOffset.last loop
+    put( pDoc,  trim(to_char(pDoc.xRefOffset(i),vOffsetMask))||' '
+           || trim(to_char(0,vGenMax))||' n');
+    i := pDoc.xRefoffset.next(i);       
+  end loop;
+  put(pDoc,'trailer');
+  put(pDoc,'<< /Size ' || to_char(vNext));
+  put(pDoc,'   /Root 1 0 R');
+  put(pDoc,'   /Info 5 0 R');
+  put(pDoc,'>>');
+  put(pDoc,'startxref');
+  put( pDoc,to_char(vOffset));
+  put(pDoc, '%%EOF');
+end WritexRef;
+
+procedure CheckMeasurementUnit(pUnit in varchar2) is
+begin
+  if pUnit in ('r','c','i','p') then
+    null;
+  else
+    raise_application_error(-20010,'invalid measurement unit: <'||pUnit||'>');
+  end if;
+end CheckMeasurementUnit;
+
+
+Procedure AddFont(pFontName in varchar2, pFontKey in varchar2)
+-- Adds a font to the internal font table. Note that the font
+-- is not written to a pdf file until it is requested...
+is
+  vNamePtr number(5);
+  vKeyPtr number(5);
+  vPtr integer;
+begin
+  if pvFontTable.exists(1) then
+    vPtr := pvFontTable.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pvFontTable(vptr).fontname := pFontName;
+  pvFontTable(vPtr).FontKey := pFontKey;
+end AddFont;
+--
+-- Public Interface
+--
+-- newPdfdoc returns a new document
+function newPdfDoc( pOutputType in number ) return pdfdoc.document
+is
+  vDoc pdfdoc.document;
+begin
+  vDoc.output := pOutputType;
+  return vDoc;
+end newPdfDoc;
+Procedure beginDoc( pDoc in out nocopy pdfdoc.document,
+                    pDocName in varchar2 := null)
+is
+
+  vName varchar2(60);
+begin
+  if pDocName is not null then
+    pDoc.FileName := pDocName;
+  end if;
+  if pDoc.Output = K_Web_Download then
+    Owa_Util.mime_header('application/download', FALSE);
+    Htp.print('Content-Disposition: filename="' || getFileName(pDoc)||'"');
+    Owa_Util.HTTP_HEADER_CLOSE;
+  elsif pDoc.Output = K_Web_Delivery then
+    -- Does not work with IE 5.5
+    owa_util.mime_header('application/pdf');
+  elsif pDoc.Output = K_Email_Attachment then
+    PLSQL_MAIL_ATTACH.setsender('pdftest@dartmouth.edu');
+    PLSQL_MAIL_ATTACH.SetRecipient( UserEmail(pDoc) );
+    PLSQL_MAIL_ATTACH.SetSubject(getFileName( pDoc ) || ' conversion');
+    PLSQL_MAIL_ATTACH.addline('Is attached');
+    -- PLSQL_MAIL_ATTACH.attachmentopen(pvFileName || '.PDF'); 
+    dbms_lob.createtemporary(pDoc.the_Blob,true);
+  elsif pDoc.Output = K_blob then
+    dbms_lob.createtemporary(pDoc.the_Blob,true);
+  end if;
+  pvXObjectTable.delete;
+  WriteHeader( pDoc );
+  setFont(pDoc,'F1',10);
+end beginDoc;                      
+Procedure endDoc(pDoc in out nocopy pdfdoc.document) is
+begin
+
+  WritexRef( pDoc );
+  If pDoc.Output = K_Email_Attachment then
+    -- PLSQL_MAIL_ATTACH.Attachmentclose;
+    PLSQL_MAIL_ATTACH.AttachBinary(pDoc.the_blob, getFileName( pDoc ));
+    PLSQL_MAIL_ATTACH.sendmail;
+  end if;
+
+end endDoc;
+function getFileName( pDoc in out nocopy pdfdoc.document) return varchar2 is
+  vReturn varchar2(200);
+begin
+  vReturn := nvl(pDoc.FileName,'pdftest.pdf');
+  if instr(vReturn,'.') = 0 then
+    vReturn := rtrim(vReturn) || '.pdf';
+  end if;  
+  return vReturn;
+end getFileName;
+Procedure setFileName( pDoc in out nocopy pdfdoc.document, pValue varchar2)
+is
+begin
+  pdoc.FileName := pValue;
+end setFileName;    
+procedure newFormXObject(pDoc in out nocopy pdfdoc.document, pName in varchar2)
+is
+  vPage pdfPage;
+  vPtr integer;
+begin
+  -- almost like a page. We need to track graphic and text streams, fonts
+  -- and other resources  
+  vPage.pageObj# := nextObj#( pDoc );
+  vPage.name := pName;
+  
+  if pvXObjectTable.exists(1) then
+    vPtr := pvXObjectTable.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pvXObjectTable(vPtr).name := pName;
+  pvXObjectTable(vPtr).object# := vPage.pageObj#;
+  -- but doesn't use a separate object for a stream...
+  -- set as the current page so that the streams will be built
+  pDoc.page := vPage;
+  setFont(pDoc, pDoc.CurrentFontKey,pDoc.CurrentFontSize);
+  pDoc.currentRow := 0;
+  pDoc.currentCol := 0; 
+end newFormXObject;  
+procedure newPage(pDoc in out nocopy pdfdoc.document)
+is
+  vPage pdfPage;
+  vPtr binary_integer;
+begin
+  vPage.pageObj# := nextObj#( pDoc );
+  vPage.streamObj# := nextObj#( pDoc );
+  vPage.sizeObj# := nextObj#( pDoc ); 
+  pDoc.currentPage# := pDoc.currentPage# + 1;
+  vPage.page# := pDoc.currentPage#; 
+  -- add this page to the list of pages, i.e.
+  if pDoc.pageObjList.exists(1) then
+    vPtr := pDoc.pageObjList.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pDoc.pageObjList(vPtr) := vPage.pageObj#;
+  if mod(vPtr,6) = 0 then
+    -- switch to a new parent
+    pDoc.currentParent# := nextObj#( pDoc );
+  end if;
+  pDoc.pageParentList(vPtr) := pDoc.currentParent#;
+  vPage.parentObj# := pDoc.currentParent#;
+  pDoc.page := vPage;    
+  setFont(pDoc, pDoc.CurrentFontKey,pDoc.CurrentFontSize);
+  pDoc.currentRow := 0;
+  pDoc.currentCol := 0;  
+end newPage;
+procedure endPageEncode(pDoc in out nocopy pdfdoc.document)
+is
+  vLen number(6) := 0;
+  vString varchar2(32000);
+  v integer;
+begin
+  -- output the three objects, and register in xref table
+  AddxRef(pDoc,pDoc.Page.PageObj#,pDoc.offset, 'Page ' || to_char(pDoc.Page.Page#));
+  put(pDoc,to_char(pDoc.Page.pageObj#)||' 0 obj');
+  put(pDoc,'<< /Type /Page');
+  put(pDoc,'   /Parent ' || to_char(pDoc.Page.ParentObj#) || ' 0 R');
+  put(pDoc,'  /MediaBox [0 0 ' || to_char(pDoc.PageWidth)|| ' '
+    || to_Char(pDoc.PageHeight) || ']');
+  /*  
+  if pDoc.Orientation = 'Landscape' then
+    put(pDoc,'   /MediaBox [0 0 792 612]');
+    pDoc.PageHeight := 612; -- page height is in points
+    pDoc.PageWidth  := 792; -- page width is in points
+    pDoc.TopMargin  := 8.0 * 72; --  starting point. Rows are relative to top margin.
+  else -- default    
+    put(pDoc,'   /MediaBox [0 0 612 792]');
+  end if;
+  */    
+  put(pDoc,'   /Contents ' || to_char(pDoc.Page.StreamObj#)||' 0 R');
+  put(pDoc,'   /Resources << /ProcSet 4 0 R ');
+  put(pDoc,'                 /Font << ' || pDoc.Page.FontList ||' >>');
+  if length(ltrim(pDoc.page.xObjectList)) > 0 then
+    put(pDoc,'   /XObject << ' || pDoc.page.XobjectList||' >>');
+  end if;  
+  put(pDoc,'              >>');
+  put(pDoc,'>>');
+  put(pDoc,'endobj');
+  -- now the stream
+  AddxRef(pDoc,pDoc.page.StreamObj#,pDoc.Offset,'Stream ' || to_char(pDoc.Page.Page#));
+  put(pDoc,To_char(pDoc.Page.StreamObj#) || ' 0 obj');
+  put(pDoc,'<< /Length ' || to_char(pDoc.Page.SizeObj#)||' 0 R');
+  put(pDoc,'   /Filter [/ASCII85Decode] >>');
+  put(pDoc,'stream');
+  vString := '';
+  if pDoc.Page.GraphicsStream.exists(1) then
+    for i in pDoc.Page.GraphicsStream.first..pDoc.page.GraphicsStream.last loop
+      -- put(pDoc, pDoc.Page.GraphicsStream(i));
+      vString := vString || pDoc.page.graphicsStream(i)||chr(13)||chr(10);
+      vLen := vLen + length(trim(pDoc.page.GraphicsStream(i))) + 2;
+    end loop;
+  end if;
+  vString := vString || 'BT'||chr(13)||chr(10);
+  for i in pDoc.Page.TextStream.first..pDoc.Page.TextStream.Last loop
+    vString := vString ||pDoc.page.textStream(i)||chr(13)||chr(10);
+    -- put(pDoc, pDoc.Page.TextStream(i));
+    vLen := vLen + length(trim(pDoc.page.TextStream(i))) + 2;
+  end loop;
+  vString := vString || 'ET'||chr(13) || chr(10);
+  vString := base85.base85encode(vString);
+  --vLen := length(vString) + 8; -- For Begintext and endtext
+  vLen := length(vString);
+  v := 1;
+  --put(pDoc,vString);
+  
+  while v <= length(vString) loop
+    put(pDoc,subStr(vString,v,50));
+    v := v + 50;
+    vLen := vLen + 2;
+  end loop;
+    
+  put(pDoc,'endstream');
+  put(pDoc,'endobj');
+  -- Now write the length object
+  AddxRef(pDoc,pDoc.Page.SizeObj#,pDoc.Offset,'Size ' || to_char(pDoc.Page.Page#));
+  put(pDoc, to_char(pDoc.Page.SizeObj#)||' 0 obj');
+  put(pDoc,'  ' ||to_char(vlen - 2) );
+  put(pDoc,'endobj');
+end endpageEncode;
+procedure endFormXOBject( pDoc in out nocopy pdfdoc.document)
+is
+  vLen number(6) := 0;
+  vLenObj# number;
+  vPtr integer;
+begin
+  -- the main difference between pages and xobjects, when ending, aside from the
+  AddxRef(pDoc,pDoc.page.pageObj#, pDoc.offset,'Form Xobject '||pDoc.page.name);
+  put(pDoc,to_char(pDoc.Page.pageObj#)||' 0 obj');    
+  put(pDoc,'<</Type /XObject');
+  put(pDoc,'  /Subtype /Form');
+  put(pDoc,'  /FormType 1');
+  put(pDoc,'  /BBox [0 0 1000 1000]');
+  put(pDoc,'  /Matrix [1 0 0 1 0 0]');
+  put(pDoc,'  /Resources << /Procset [ /PDF ] ');
+  put(pDoc,'  /Font << ' || pDoc.Page.FontList ||' >>');
+  put(pDoc,'>>');
+  
+  -- calculate the length first
+  if pDoc.Page.GraphicsStream.exists(1) then
+    for i in pDoc.Page.GraphicsStream.first..pDoc.page.GraphicsStream.last loop
+      vLen := vLen + length(trim(pDoc.page.GraphicsStream(i))) + 2;
+    end loop;
+  end if;
+  for i in pDoc.Page.TextStream.first..pDoc.Page.TextStream.Last loop
+    vLen := vLen + length(trim(pDoc.page.TextStream(i))) + 2;
+  end loop;
+  vLen := vLen + 8; -- For Begintext and endtext
+  put(pDoc,'  /Length ' || to_char(vLen));
+  put(pDoc,'>>');
+  put(pDoc,'stream');
+  if pDoc.Page.GraphicsStream.exists(1) then
+    for i in pDoc.Page.GraphicsStream.first..pDoc.page.GraphicsStream.last loop
+      put(pDoc, pDoc.Page.GraphicsStream(i));
+      --vLen := vLen + length(trim(pDoc.page.GraphicsStream(i))) + 2;
+    end loop;
+  end if;
+  put(pDoc,'BT');
+  for i in pDoc.Page.TextStream.first..pDoc.Page.TextStream.Last loop
+    put(pDoc, pDoc.Page.TextStream(i));
+    --vLen := vLen + length(trim(pDoc.page.TextStream(i))) + 2;
+  end loop;
+  put(pDoc,'ET');
+  --vLen := vLen + 8; -- For Begintext and endtext
+  put(pDoc,'endstream');
+  put(pDoc,'endobj');
+end endFOrmXObject;
+procedure endPage(pDoc in out nocopy pdfdoc.document)
+is
+  vLen number(6) := 0;
+  vString varchar2(1000);
+begin
+  -- output the three objects, and register in xref table
+  AddxRef(pDoc,pDoc.Page.PageObj#,pDoc.offset, 'Page ' || to_char(pDoc.Page.Page#));
+  put(pDoc,to_char(pDoc.Page.pageObj#)||' 0 obj');
+
+  put(pDoc,'<< /Type /Page');
+  put(pDoc,'   /Parent ' || to_char(pDoc.Page.ParentObj#) || ' 0 R');
+  put(pDoc,'  /MediaBox [0 0 ' || to_char(pDoc.PageWidth)|| ' '
+    || to_Char(pDoc.PageHeight) || ']');
+  /*  
+  if pDoc.Orientation = 'Landscape' then
+    put(pDoc,'   /MediaBox [0 0 792 612]');
+    pDoc.PageHeight := 612; -- page height is in points
+    pDoc.PageWidth  := 792; -- page width is in points
+    pDoc.TopMargin  := 8.0 * 72; --  starting point. Rows are relative to top margin.
+  else -- default    
+    put(pDoc,'   /MediaBox [0 0 612 792]');
+  end if;
+  */    
+  put(pDoc,'   /Contents ' || to_char(pDoc.Page.StreamObj#)||' 0 R');
+  put(pDoc,'   /Resources << /ProcSet 4 0 R ');
+  -- put(pDoc,'% XObject List: ' || pDoc.page.xObjectList );
+  if length(ltrim(pDoc.page.xObjectList)) > 0 then
+    put(pDoc,'   /XObject << ' || pDoc.page.XobjectList||' >>');
+  end if;  
+  
+--  if pvXObjectTable.exists(1) then
+--    vString := '';
+--    for i in pvXObjectTable.first .. pvXObjectTable.last loop
+--      vString := vString || 
+--        '/'||pvXObjectTable(i).name||' ' || to_char(pvXObjectTable(i).object#)|| ' 0 R ';
+--    end loop;    
+--    put(pDoc,'  /XObject << '||vString||' >>');
+--  end if;       
+  put(pDoc,'                 /Font << ' || pDoc.Page.FontList ||' >>');
+  put(pDoc,'              >>');
+  put(pDoc,'>>');
+  put(pDoc,'endobj');
+  -- now the stream
+  AddxRef(pDoc,pDoc.page.StreamObj#,pDoc.Offset,'Stream ' || to_char(pDoc.Page.Page#));
+  put(pDoc,To_char(pDoc.Page.StreamObj#) || ' 0 obj');
+  put(pDoc,'<< /Length ' || to_char(pDoc.Page.SizeObj#)||' 0 R >>');
+  put(pDoc,'stream');
+  if pDoc.Page.GraphicsStream.exists(1) then
+    for i in pDoc.Page.GraphicsStream.first..pDoc.page.GraphicsStream.last loop
+      put(pDoc, pDoc.Page.GraphicsStream(i));
+      vLen := vLen + length(trim(pDoc.page.GraphicsStream(i))) + 2;
+    end loop;
+  end if;
+  put(pDoc,'BT');
+  for i in pDoc.Page.TextStream.first..pDoc.Page.TextStream.Last loop
+    put(pDoc, pDoc.Page.TextStream(i));
+    vLen := vLen + length(trim(pDoc.page.TextStream(i))) + 2;
+  end loop;
+  put(pDoc,'ET');
+  vLen := vLen + 8; -- For Begintext and endtext
+  put(pDoc,'endstream');
+  put(pDoc,'endobj');
+  -- Now write the length object
+  AddxRef(pDoc,pDoc.Page.SizeObj#,pDoc.Offset,'Size ' || to_char(pDoc.Page.Page#));
+  put(pDoc, to_char(pDoc.Page.SizeObj#)||' 0 obj');
+  put(pDoc,'  ' ||to_char(vlen) );
+  put(pDoc,'endobj');
+end endpage;
+--
+procedure SetOutputType(pDoc in out nocopy pdfdoc.document,pType in number, pTarget in varchar2 default null)
+is
+begin
+  pDoc.output := pType;
+  pDoc.Target := pTarget;
+end setOutputType;
+-- Units of measurement are points (1/72 inch), inches
+-- and row/col. The latter would vary depending upon
+-- the font,so use may be problematic... The default unit of measure is
+-- the point. Options include 
+-- r, c (row or column; interchangeable, based on current font
+-- i inches
+-- p points
+-- When output is generated all units are converted to points, since that is
+-- the only positioning unit recognized by pdf                            
+
+-- convertunits is a handdy function that converts units from one format to
+-- another.
+Procedure SetDefaultUnit(pDoc in out nocopy pdfdoc.document, pUnit in varchar2)
+is
+begin
+ 
+  pDoc.defaultUnit := pUnit;
+end setDefaultUnit;  
+
+Function getDefaultUnit( pDoc in out nocopy pdfdoc.document) return varchar2
+is
+begin
+  return pDoc.defaultUnit;
+end getDefaultUnit;  
+function convertunits(pDoc in out nocopy pdfdoc.document,
+                      pUnits in number, pFrom varchar2, pTo varchar2) return number
+is
+  vPoints number(10);
+  vReturn number(10,2);
+begin
+  if pvDebugging then
+    put(pDoc,'%convertunits: pUnits '||to_char(punits)|| ' pFrom ' || pFrom || ' pTo ' || pTo);
+  end if;
+  CheckMeasurementUnit(pFrom);
+  CheckMeasurementUnit(pTo);
+  if pFrom = 'i' then
+    vPoints := 72 * pUnits;
+  elsif pFrom  = 'r' then
+    vPoints := pUnits * pDoc.LineHeight;
+  elsif pFrom = 'c' then
+    vPoints := pUnits * pDoc.charwidth;
+  else
+    vPoints := pUnits;
+  end if;
+  if pTo = 'i' then
+    vReturn := vPoints / 72;
+  elsif pTo = 'r' then
+    vReturn := vPoints / pDoc.LineHeight;
+  elsif pTo = 'c' then
+    vReturn := vPoints / pDoc.CharWidth;
+  else
+    vReturn := vPoints;
+  end if;
+  return vReturn;
+end convertunits;
+
+
+
+function getOutputType( pDoc in out nocopy pdfdoc.document) return number
+is
+begin
+  return pDoc.output;
+end getOutputType;
+Function getBlob(pDoc in out nocopy pdfdoc.document) return blob
+is
+begin
+  return pDoc.the_blob;
+end getBlob;  
+
+
+--
+-- Font procedures and function
+-- 
+Function FindFontByKey(pFontKey in varchar2) return number
+is
+  vReturn number(5) := 0;
+begin
+  if pvFontTable.exists(1) then
+    for i in pvFontTable.first..pvFontTable.last loop
+      if pvFontTable(i).fontkey = pFontkey then
+        vReturn := i;
+        exit;
+      end if;
+    end loop;
+  end if;
+  return vReturn;
+end FindFontByKey;
+function getFontkey( pFontName in varchar2) return varchar2
+is
+  vReturn varchar2(10);
+begin
+  for i in pvFontTable.first..pvFontTable.last loop
+    if pvFontTable(i).fontname = pFontName then
+       vReturn := pvFontTable(i).fontKey;
+       exit;
+     end if;
+  end loop;
+  return vReturn;  
+end getFontKey;
+procedure setFont(pDoc in out nocopy pdfdoc.document,pFontKey in varchar2,pFontSize in number)
+is
+  vPtr integer;
+  vStreamPtr integer;
+  vFontObj# integer;
+  vString varchar2(1000);
+begin
+  -- First check if this font has been registered in the document
+  vPtr := FindFontbyKey(pFontKey);  
+  If vPtr < 1 then
+    raise_application_error(-20001,'Unknown font key <'||pFontKey||'>');
+  end if;
+  vFontObj# := registerFont(pDoc, pFontKey );
+  if pDoc.page.TextStream.exists(1) then
+    vStreamPtr := pDoc.page.TextStream.last + 1;
+  else
+    vStreamPtr := 1;
+  end if;
+  pDoc.page.TextStream(vStreamPtr) := '/'
+    || pvFontTable(vPtr).FontKey
+    || ' ' || to_char(pFontSize)
+    || ' Tf';
+  -- And add to font list for resources
+  vString := '/' || pFontKey
+    || ' ' || to_char(vFontObj#)
+    || ' 0 R';
+  if pDoc.page.fontList is null then
+    pDoc.page.fontList := vString;
+  elsif instr(pDoc.page.fontList,vString) = 0 then
+    pDoc.Page.fontList := pDoc.page.fontList || ' ' || vString;
+  end if;
+  pDoc.CurrentFontSize := pFontsize;
+  pDoc.CurrentFontKey := pFontKey;  
+end setFont;
+procedure setCharWidth(pDoc in out nocopy pdfdoc.document, pPoints in number)
+is
+begin
+  pDoc.charWidth := pPoints;
+end setCharWidth;  
+  
+--
+-- Write routines
+--
+--@ Write
+--@ because the positioning begins at the bottom right, the current row
+--@ is the point value of the row subtracted from the page height( along with
+--@ the top margin).
+procedure write(pDoc in out nocopy pdfdoc.document,
+                pX in number, -- horizontal / column position
+                pY in number, -- vertical / row position
+                pString in varchar2, -- text to display
+                pAlign in varchar2 default 'l', -- left, center, right
+                pUnit in varchar2 default null) -- point,inch, row/col
+is
+  vUnit varchar2(1);
+  vString varchar2(2000) := pString;
+  vLength integer;
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vLength := strLength(pDoc.CurrentFontKey, pDoc.CurrentFontSize, pString);
+  pDoc.currentRow := ConvertUnits(pDoc,pY,vUnit,'p');
+  -- dbms_output.put_line('pY of ' || to_char(py)||' unit ' || vUnit || ' saved as ' || to_char(pdoc.CurrentRow));  
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  pDoc.currentCol := ConvertUnits(pDoc,pX,vUnit,'p');
+  --  put('% col converted to ' || to_char(pvCol));
+  -- now how to adjust for right or centered alignment?
+  --  12345
+  --   ab
+  if pAlign = 'c' then
+    pDoc.currentCol := pDoc.currentCol - (vLength / 2);
+  elsif pALign = 'r' then
+    -- pDoc.currentCol := pDoc.currentCol - ( pDoc.charwidth * (length(pString) - 1)) ;
+    pDoc.currentCol := pDoc.currentCol - vLength;
+  end if;
+  if instr(vString,'(') > 0 then
+    vString := replace(vString,'(','\(');
+  end if;
+  if instr(vString,')') > 0 then
+    vString := replace(vString,')','\)');
+  end if;
+
+  pDoc.Page.TextStream( pDoc.page.TextStream.Last + 1) :=
+   to_char(pDoc.LeftMargin + pDoc.currentCol)||' '||to_char((pDoc.PageHeight - pDoc.TopMargin) - pDoc.currentRow)||' '
+       || ' Td';
+  pDoc.Page.TextStream( pDoc.page.TextStream.last + 1) :=
+        '('||vString||') '
+       || 'Tj';
+  pDoc.Page.TextStream( pDoc.Page.TextStream.last + 1) := '1 0 0 1 0 0 Tm';
+  pDoc.currentCol := pDoc.currentCol + vLength;
+
+end write;
+procedure writeout(pDoc in out nocopy pdfDoc.document, pString in varchar2) is
+begin
+  Write(pDoc,pDoc.currentCol,pDoc.currentRow,pString,null,'p');
+end WriteOut;                    
+procedure WriteNext(pDoc in out nocopy pdfdoc.document,
+                pX in number, -- horizontal / column position
+                pString in varchar2, -- text to display
+                pAlign in varchar2 default 'l', -- left, center, right
+                pUnit in varchar2 default null) -- point,inch, row/col
+is
+  vUnit varchar2(1);
+begin
+  -- currentRow is stored in points, so we need to convert these units
+  -- to points
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  Write(pDoc, ConvertUnits(pDoc,px,vUnit,'p'), pDoc.CurrentRow + pDoc.LineHeight, pString, pAlign,'p');
+end writeNext;  
+procedure WriteCol(pDoc in out nocopy pdfdoc.document,
+                pX in number, -- horizontal / column position
+                pString in varchar2, -- text to display
+                pAlign in varchar2 default 'l', -- left, center, right
+                pUnit in varchar2 default null) -- point,inch, row/col
+
+is
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  Write(pDoc, ConvertUnits(pDoc,px,vUnit,'p'),pDoc.CurrentRow,pString, pAlign, 'p');
+End WriteCol;
+procedure writeCenteredInLine(pDoc in out nocopy pdfdoc.document,
+          pY in number, -- the row
+          pString in varchar2,
+          pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+  vCol number(5);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  -- what is the column position of the center of the line?
+  vCol := pdfDoc.getLineWidth(pDoc,'p' ) / 2;
+  pdfdoc.write(pDoc,vCol,convertUnits(pDoc,pY,vUnit,'p'),pString,'c','p');
+  -- pdfdoc.write(pDoc,convertUnits(pDoc,pY,vUnit,'p'),vCol,pString,'c','p');  
+end writeCenteredInLine;    
+function getCurrentRow(pDoc in out nocopy pdfdoc.document, pUnit in varchar2 default null) return number
+is
+  vUnit varchar2(1);
+  vReturn number(10,2);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vReturn := ConvertUnits(pDoc,pDoc.CurrentRow,'p',vUnit);
+  return vReturn;
+end getCurrentRow;
+function getCurrentCol(pDoc in out nocopy pdfdoc.document, pUnit in varchar2 default null) return number
+is
+  vUnit varchar2(1);
+  vReturn number(10,2);  
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  vReturn := ConvertUnits(pDoc,pDoc.CurrentCol,'p',vUnit);
+  return vReturn;
+end getCurrentCol;          
+procedure setCurrentRow(pDoc in out nocopy pdfdoc.document, pValue in number, pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  pDoc.CurrentRow := convertUnits(pDoc,pValue,pUnit,'p');
+end setCurrentRow;
+procedure setCurrentCol(pDoc in out nocopy pdfdoc.document, pValue in number, pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  pDoc.CurrentCol := convertUnits(pDoc,pValue,vUnit,'p');
+end setCurrentCol;              
+                
+function nextRow(pDoc in out nocopy pdfdoc.document,pUnit in varchar2 default null) return number
+is
+  vUnit varchar2(1);
+  vReturn number;
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vReturn := ConvertUnits(pDoc,pDoc.CurrentRow + pDoc.LineHeight,'p',vUnit);
+  return vReturn;
+end;      
+function getBottomRow(pDoc in out nocopy pdfdoc.document,punit in varchar2 default null) return number
+is
+  vUnit varchar2(1);
+  vReturn number;
+begin
+  -- Positioning begins at the bottom.  So get the count of rows available
+  -- This will be the bottomw row in 'r' units. Convert as necessary
+  vReturn := (pDoc.pageHeight - (pDoc.TopMargin + pDoc.BottomMargin)) / pDoc.LineHeight;
+  vUnit := resolveUnit(pDoc,pUnit,'r');    
+  vReturn := ConvertUnits(pDoc,vReturn,'r',vUnit);
+  return vReturn;    
+end GetbottomRow;      
+function getFreeRows( pDoc in out nocopy pdfdoc.document) return number
+is
+  vReturn number(10,2);
+begin
+  vReturn := (getBottomRow(pDoc, 'p') - getCurrentRow(pDoc,'p')) / getLineHeight(pDoc,'p');
+end getFreeRows;        
+procedure setTarget(pDoc in out nocopy pdfdoc.document, pTarget in varchar2)
+is
+begin
+  pDoc.target := pTarget;
+end setTarget;  
+function getTarget(pDoc in out nocopy pdfdoc.document) return varchar2
+is
+begin
+  return pDoc.Target;
+end getTarget;  
+procedure setPageNumber(pDoc in out nocopy pdfdoc.document, pNumber in number)
+is
+begin
+  pDoc.CurrentPage# := pNumber;
+end setPageNumber;  
+function getPageNumber(pDoc in out nocopy pdfdoc.document) return number
+is
+begin
+  return pDoc.Currentpage#;
+end getpageNumber;  
+
+  
+
+
+procedure PrintPackages( pOwner in varchar2,
+                         pOutput in number,
+                         pTarget in varchar2) is
+    vDoc pdfdoc.document;
+    cursor cur is select *
+      from all_source
+      where owner = pOwner and type in ( 'PACKAGE','PACKAGE BODY')
+      order by name,type,line;
+    rec cur%rowtype;  
+    vName varchar2(100) := null;
+    vType varchar2(20) := null;  
+    vLine varchar2(100);
+    vWord varchar2(50);
+  begin
+    vDoc := pdfdoc.newPdfDoc( pOutput );
+    pdfDoc.SetOutputType(vDoc,pOutput,pTarget);
+    setFileName(vDoc, pOwner || '_source');
+    pdfDoc.SetDefaultUnit(vDoc,'r');
+    pdfdoc.beginDoc(vDoc);
+    open cur;
+    fetch cur into rec;
+    while cur%found loop
+      pdfDoc.newPage(vDoc);
+      pdfDoc.SetFont(vDoc,'F3B',12);
+      pdfDoc.WriteCenteredInLine(vDoc,1,'Package Source Code Listing For ' || User);
+      pdfDoc.SetFont(vDoc,'F1',8);
+--      pdfDoc.WriteNext(vDoc,1,'Next Row: ' || to_char(pdfDoc.NextRow(vDoc)));
+--      pdfDoc.WriteNext(vDoc,1,'Last Row: ' || to_char(pdfDoc.BottomRow(vDoc)));
+      if vName is not null then
+        pdfDoc.WRiteCenteredinLine(vDoc,3,vType || ' ' || vName || ' (Continued)');
+      end if;  
+      
+      while  pdfDoc.NextRow(vDoc) < (pdfDoc.getBottomRow(vDoc) - 2) and cur%found loop
+        if rec.name <> vName or rec.type <> vType or vName is null then
+          vName := rec.Name;
+          vType := rec.type;
+          pdfDoc.SetFont(vDoc,'F1I',8);
+          
+          
+          pdfDoc.WriteCenteredInLine(vDoc,  pdfDoc.NextRow(vDoc),
+            vType|| ' ' || vName);
+          pdfDoc.SetFont(vDoc,'F1',8);
+        else
+          vLine := ltrim(rtrim(rec.line));
+          if substr(vLine,1,2) = '--' then
+            pdfDoc.SetFont(vDoc,'F1I',8);
+          elsif instr(vLine,' ') < 50 then
+            vWord := upper(substr(vLine,1,instr(vLine,' ') - 1));
+            if vWord in ('PROCEDURE','FUNCTION','PACKAGE') then
+              pdfDoc.SetFont(vDoc,'F1B',8);
+            end if;
+          end if;
+          pdfDoc.WriteNext(vDoc,1, to_char(rec.line,'00000')||' ' || rec.text);
+          pdfDoc.SetFont(vDoc,'F1',8);
+          fetch cur into rec;
+        end if;
+      end loop;
+      pdfDoc.SetFont(vDoc,'F1I',8);
+      pdfDoc.Write(vDoc, 1, pdfDOc.getBottomRow(vDoc),to_char(sysdate,'Month dd yyyy'));
+      pdfDoc.Write(vDoc, pdfDoc.getLineWidth(vDoc),pdfDoc.getBottomRow(vDoc), 'Page ' || to_char(vDoc.Currentpage#),'r');
+      pdfDoc.SetFont(vDoc,'F1',8);
+      pdfDoc.EndPage(vDoc);
+      --if vDoc.CurrentPage# > 5 then exit; end if;
+    end loop;
+    pdfDoc.EndDoc(vDoc);
+  end;
+                
+            
+    
+
+procedure test is
+  doc pdfdoc.document;
+begin
+  doc := newPdfDoc( K_email_attachment);
+  pdfdoc.setTarget(doc,'gary.e.menchen@dartmouth.edu');
+  SetDefaultUnit(doc,'r');
+  beginDoc(doc);
+  newPage(doc);
+  watermark(doc,'WATERMARK');
+  SetFont(doc,'F1',10);  
+  write(doc,10,10,'hello');
+  setTextState(doc);
+  writeCol(doc,20,'This is writecol at 20');
+  writenext(doc,20,'This is writenext at 20');
+  writeCenteredInLine(doc,15,'This is centered in row 15');
+  for i in 20..50 loop
+    write(doc,10,i,'this is a row of text at row ' || to_char(i)|| ' and is here to see of it is overwritten by the watermark');
+  end loop;  
+  --setTextState(doc,pScale=>300,pCharSpace=>2,pRender=>2);
+  --write(doc,20,20,'This is the test');
+  --setTextState(doc);
+  --write(doc,40,40,'Text State Reset');
+  write(doc,40,50,'Text State Reset');
+  
+  endPage(doc); 
+  --endPageEncode(doc);
+  enddoc(doc);  
+end;  
+
+procedure setDebugging ( value in boolean)
+is
+begin
+  pvDebugging := value;
+end setDebugging;  
+procedure pdfGraphicsTest is
+  vDoc pdfdoc.document;
+begin
+  vDoc := pdfdoc.newPdfDoc(K_Email_Attachment);
+  pdfdoc.setTarget(vDoc,'gary.e.menchen@dartmouth.edu');
+  pdfdoc.beginDoc(vDoc);
+  pdfDoc.newPage(vDoc);
+  pdfDoc.setDefaultUnit(vDoc,'r');
+  pdfDoc.write(vDoc,10,10,'This is text at 10,10');
+  pdfDoc.DrawLine(vDoc,10,10.1,30,10.1);
+  
+  pdfDoc.write(vDoc,1,20,'This is a line of text beginning at the first position of row 20');
+  pdfDoc.shade(vDoc,1,20.1,pdfDoc.getLineWidth(vDoc),20.9);
+  pdfDoc.write(vDoc,1,40,'Line width is ' || to_char(pdfDoc.getLineWidth(vDoc)));
+  pdfDoc.write(vDoc,pdfDoc.GetLinewidth(vDoc),40,'x');
+  pdfDoc.GreyBar(vDoc,40);
+  pdfDoc.endPage(vDoc);
+  pdfDoc.endDoc(vDoc);
+end;    
+    
+    
+procedure  pdfWebTest is
+    cursor vCur is
+      select username,electronic_mail_address email, vms_account 
+      from person_username_email
+      order by username;
+    rec vCur%rowtype;  
+    vDoc pdfdoc.document;
+    vFlag boolean := true;
+    vLine number(5);
+  begin
+    vDoc := pdfdoc.newPdfDoc( K_Web_Delivery);
+    pdfDoc.BeginDoc(vDoc);    
+    pdfdoc.setdefaultunit(vDoc,'r'); -- measurements by row and column
+    pdfdoc.setfont(vDoc,'F3',8);     -- see listing of fonts below
+    open vCur;    
+    while vFlag loop
+      -- start a new page
+      pdfdoc.newPage(vDoc);
+      pdfdoc.setFont(vDoc,'F3B',10);  -- Times Roman Bold size 10
+      pdfDoc.writeCenteredInLine(vDoc,1,'PERSON_USERNAME_EMAIL LISTING');
+      pdfDoc.setFont(vDoc,'F3I',10);
+      pdfDoc.writeCenteredInLine(vDoc,2,to_char(sysdate,'Month dd, yyyy') );
+      pdfdoc.write(vDoc,1,4,'User Name');
+      pdfDoc.writeCol(vDoc,15,'Email Address');
+      pdfDoc.writeCol(vDoc,45,'VMS Account');
+      pdfDoc.setFont(vDoc,'F3',8);
+      vLine := 5;
+      while vLine < 60 and vFlag Loop
+        fetch vCur into rec;
+        if vCur%notfound then
+          vFlag := false;
+        else
+          -- print out the line
+          pdfDoc.Write(vDoc,1,vLine,rec.username);
+          pdfDoc.WriteCol(vDoc,15,rec.email);
+          pdfDoc.writeCol(vDoc,45,rec.vms_account);
+          vLine := vLine + 1;
+        end if;
+      end loop; -- while room on page
+      pdfdoc.setfont(vDoc,'F3I',6);
+      pdfDoc.write(vDoc,1,62,'Page '|| to_char(vDoc.Currentpage#));
+      pdfDoc.endpage(vDoc);
+      -- only a few pages
+      if vDoc.currentPage# > 5 then
+        vFlag := false;
+      end if;  
+    end loop; -- while not eof
+    -- end the document
+    pdfDoc.enddoc(vDoc);
+    close vCur; 
+  end; -- procedure    
+Procedure SetPageSize(pDoc in out nocopy pdfDoc.Document,
+                      pHeight in number ,
+                      pWidth in number ,
+                      pUnits in varchar2 default null)
+is
+  vUnits varchar2(1);
+begin
+  vUnits := resolveUnit(pDoc,pUnits,'r');
+  pDoc.PageHeight := ConvertUnits(pDoc,pHeight,vUnits,'p');
+  vUnits := resolveUnit(pDoc,pUnits,'c');
+  pDoc.PageWidth := ConvertUnits(pDoc,pWidth,vUnits,'p');
+
+    
+end;
+function getLeftMargin( pDoc in out nocopy pdfdoc.document, pUnit in varchar2 default null)
+  return number
+is
+  vUnit varchar2(1);
+  vMargin number;
+begin
+  vUnit := ResolveUnit(pDoc,pUnit,'c');
+  vMargin := ConvertUnits(pDoc, pDoc.LeftMargin,'p',vUnit);
+  return vMargin;
+end getLeftMargin;  
+procedure setLeftMargin( pDoc in out nocopy pdfdoc.document,pMargin in number,
+                         pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+begin
+  vUnit := ResolveUnit( pDoc, pUnit,'c');
+  pDoc.leftMargin := convertUnits(pDoc,pMargin,vUnit,'p');
+end setLeftMargin;      
+procedure setRightMargin( pDoc in out nocopy pdfdoc.document,
+                          pMargin in number,
+                          pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  pDoc.RightMargin := convertUnits(pDoc,pMargin,vUnit,'p');
+end setRightMargin;
+function getRightMargin( pDoc in out nocopy pdfdoc.document,
+                        pUnit in varchar2 default null)
+                        return number
+is
+  vUnit varchar2(1);
+  vMargin number;
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  vMargin := ConvertUnits(pDoc,pDoc.rightMargin,'p',vUnit);
+  return vMargin;
+end getRightMargin;  
+function getRightColumn(pDoc in out nocopy pdfdoc.document,pUnit in varchar2 default null) return number
+is
+  vReturn number;
+  vPoints number;
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  vPoints := pDoc.pageWidth - (pDoc.leftMargin + pDoc.rightMargin);
+  vReturn := convertUnits(pDoc,vPoints,'p',vUnit);
+  return vReturn;
+end getRightColumn;  
+      
+                            
+procedure setTopMargin( pDoc in out nocopy pdfdoc.document,
+                        pMargin in number,
+                        pUnit in varchar2 default null) 
+is
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  pDoc.topMargin := convertUnits(pDoc,pMargin,vUnit,'p');
+end setTopMargin;
+function getTopMargin( pDoc in out nocopy pdfdoc.document,
+                       pUnit in varchar2)
+                       return number
+is
+  vUnit varchar2(1);
+  vMargin number;
+begin
+  vUnit := resolveUnit(pDoc, pUnit,'r');
+  vMargin := convertUnits(pDoc,pDoc.Topmargin,'p',vUnit);
+  return vMargin;
+end getTopMargin;  
+                           
+procedure setLineHeight(pDoc in out nocopy pdfdoc.document, 
+  pHeight in number, 
+  pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  pDoc.LineHeight := convertUnits(pdoc,pHeight,vUnit,'p');
+end setLineHeight;      
+function getLineHeight(pDoc in out nocopy pdfdoc.document, pUnit in varchar2) return number
+is
+  vUnit varchar2(1);
+  vHeight number;
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  dbms_output.put_line('resolved unit: ' || vUnit);
+  dbms_output.put_line('LineHeight in p' || to_char(pdoc.lineHeight));
+  vHeight := convertUnits(pDoc,pDoc.LineHeight,'p',vUnit);
+  dbms_output.put_line('Height ' || to_char(vHeight));
+  return vHeight;
+end getLineHeight;    
+procedure setBottomMargin( pDoc in out nocopy pdfdoc.document, pMargin in number, pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc, pUnit,'r');
+  pDoc.BottomMargin := convertUnits(pDoc, pMargin,vUnit,'p');
+end setBottomMargin;     
+function getBottomMargin( pDoc in out nocopy pdfdoc.document,pUnit in varchar2) return number
+is
+  vUnit varchar2(1);
+  vMargin number;
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vMargin := convertUnits(pDoc, pDoc.Bottommargin,'p',vUnit);
+  return vMargin;
+end getBottomMargin;  
+    
+                                
+
+procedure Shade1(pDoc in out nocopy pdfDoc.document,
+                pX1 in number,
+                pY1 in number,
+                pX2 in number,
+                pY2 in number,
+                pScale in number default null,
+                pUnit in varchar2 default null)
+is
+  vptr integer;
+  vX1  number(5);
+  vX2  number(5);
+  vY1  number(5);
+  vY2  number(5);
+  vUnit  varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vY1 := pdoc.pageHeight - (pDoc.Topmargin + ConvertUnits(pDoc,pY1,vUnit,'p'));
+  vY2 := pDoc.pageHeight - (pDoc.TopMargin + ConvertUnits(pDoc,PY2,vUnit,'p'));
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  vX1 := pDoc.leftMargin + ConvertUnits(pDoc,pX1,vUnit,'p');
+  vX2 := pDoc.leftMargin + ConvertUnits(pDoc,pX2,vUnit,'p');
+    
+  if pDoc.Page.GraphicsStream.exists(1) then
+    vptr := pDoc.page.GraphicsStream.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pDOc.Page.GraphicsStream(vPtr) := to_char( nvl(pScale,0.9),'990.00')
+    || ' g';
+    
+  pDoc.Page.GraphicsStream(vPtr + 1) :=
+    to_char(vX1)|| ' ' || to_char(vY1) || ' ' ||
+      to_char(vX2 - vX1 ) || ' ' || to_char(vY2 -  vY1) || ' re';
+  pDoc.Page.GraphicsStream(vPtr + 2) := 'f 0 g';
+end shade1;
+
+
+                        
+procedure Shade(pDoc in out nocopy pdfDoc.document,
+                pX1 in number,
+                pY1 in number,
+                pX2 in number,
+                pY2 in number,
+                pScale in number default null,
+                pUnit in varchar2 default null)
+is
+  vptr integer;
+  vX1  number(5);
+  vX2  number(5);
+  vY1  number(5);
+  vY2  number(5);
+  vUnit  varchar2(1);
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vY1 := ConvertUnits(pDoc,pY1,vUnit,'p');
+  vY2 := ConvertUnits(pDoc,PY2,vUnit,'p');
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  vX1 := ConvertUnits(pDoc,pX1,vUnit,'p');
+  vX2 := ConvertUnits(pDoc,pX2,vUnit,'p');
+    
+  if pDoc.Page.GraphicsStream.exists(1) then
+    vptr := pDoc.page.GraphicsStream.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pDOc.Page.GraphicsStream(vPtr) := to_char( nvl(pScale,0.9),'990.00')
+    || ' g';
+    
+  pDoc.Page.GraphicsStream(vPtr + 1) :=
+    to_char(pDoc.LeftMargin + vX1)|| ' ' || to_char(( pDoc.PageHeight - pDoc.TopMargin) - vY1) || ' ' ||
+      to_char(vX2 - vX1 ) || ' ' || to_char(vY2 -  vY1) || ' re';
+  pDoc.Page.GraphicsStream(vPtr + 2) := 'f 0 g';
+end shade;
+procedure GreyBar( pDoc in out nocopy pdfDoc.document,
+                   pY in number, pUnit in varchar2 default null)
+is
+  -- pUnit must resolve to a "row" which is then shaded to a height, more
+  -- or less, of pDoc.LineHeight
+  vUnit varchar2(1);
+  vRow number;
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vRow := convertUnits(pDoc,pY,vUnit,'r');
+  pdfDoc.shade(pDoc,1,vRow + 0.1,pdfDoc.getLineWidth(pDoc),vRow + 0.9);
+end GreyBar;
+procedure pageBorder(pDoc in out nocopy document)
+is
+begin
+  drawLine(pDoc,0,0,getLineWidth(pDoc,'p') + 5,0,'p'); -- across top of page
+  drawLine(pDoc,0,getBottomRow(pDoc,'p')+5,getLineWidth(pDoc,'p')+5,
+    getBottomRow(pDoc,'p')+5,'p');     -- across bottom
+  drawLine(pDoc,0,0,0,getBottomRow(pDoc,'p')+5,'p');   -- left side
+  drawLine(pDoc,getLineWidth(pDoc,'p')+5,0,getLineWidth(pDoc,'p')+5,getBottomRow(pDoc,'p')+5,'p');
+end pageBorder;
+procedure lineAcrossPage(pDoc in out nocopy document,pY in number,pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+  vRow number;
+begin
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vRow := convertUnits(pDoc,pY,vUnit,'p');
+  drawLine(pDoc,0,vRow,getLineWidth(pDOc,'p')+5,vRow,'p');
+end lineAcrossPage;                              
+Procedure Rectangle(pDoc in out nocopy pdfDoc.document,
+                    pX in number,
+					pY in number,
+					pWidth in number,
+					pHeight in number,
+					pUnit in varchar2 default null,
+                    pLineWidth in number default null)
+is
+  vHeight  number(6);
+  vWidth  number(6);
+  vUnit varchar2(1);
+  vX number(6);
+  vY number(6);
+  vPtr integer;
+begin
+  drawLine(pDoc,pX,pY,pX + pWidth, pY,pUnit,pLineWidth); -- top line
+  drawLine(pDoc,pX,pY + pHeight,pX + pWidth, pY + pHeight,pUnit,pLineWidth); -- bottom line
+  drawLine(pDoc,pX,pY,pX, pY + pHeight,pUnit,pLineWidth); -- left side
+  drawLine(pDoc,pX + pWidth,pY,pX + pWidth, pY + pHeight,pUnit,pLineWidth);  -- right side
+
+  
+/*
+  if pUnit = 'c' then
+    vUnit := 'r';
+  else
+    vUnit := pUnit;
+  end if;
+  vHeight := ConvertUnits(pDoc,pHeight,vUnit,'p');
+  vY := ConvertUnits(pDoc,pY,vUnit,'p');
+  if pUnit = 'r' then
+    vUnit := 'c';
+  else
+    vUnit := pUnit;
+  end if;
+  vWidth := ConvertUnits(pDoc,pWidth, vUnit,'p');
+  vX := ConvertUnits(pDoc,pX,vUnit,'p');
+  if pDoc.Page.GraphicsStream.exists(1) then
+    vPtr := pDoc.Page.GraphicsStream.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pDOc.Page.GraphicsStream(vPtr) :=
+    to_char(pDoc.LeftMargin + vX) || ' ' ||
+	to_char(( pDoc.PageHeight - pDoc.TopMargin) - Vy)  || ' ' ||
+	to_Char(vWidth) || ' ' ||
+	to_char(vHeight) || ' re';
+*/    
+End Rectangle;
+procedure addGraphic(pDoc in out nocopy pdfdoc.Document,pText in varchar2)
+is
+  vPtr integer;
+begin
+  if pDoc.Page.GraphicsStream.exists(1) then
+    vptr := pDoc.page.GraphicsStream.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pDoc.page.graphicsStream(vPtr) := pText;
+end addGraphic; 
+-- and ellipse is drawn with 4 bezier curves.
+-- see http://www.codeguru.com/gdi/ellipse.shtml
+procedure ellipse(pDoc in out nocopy pdfDoc.document,
+                  pX in number, pY in number,
+                  pRadiusX in number, pRadiusY in number,
+                  pUnit in varchar2 default null,
+                  pLinewidth in number default null)
+is
+  type coord_r is record (x integer, y integer);
+  type coord_t is table of coord_r index by binary_integer;
+  vXy coord_t;
+  vRadius coord_r;
+  vCenter coord_r;
+  vOffset coord_r;
+  vMagic Number(20,15) := 0.2761423749154;   
+  vRowUnit varchar2(1);
+  vColUnit varchar2(1);
+  vUnit varchar2(1);
+  
+  
+begin
+  addGraphic(pDoc,'q');
+  if pLineWidth is not null then
+    addGraphic(pDoc, to_char(pLineWidth) || ' w');
+  end if;
+  addGraphic(pDoc,'1 i');
+  vUnit := nvl(pUnit,pDoc.defaultUnit);
+  if vUnit in ( 'r','c') then
+    vRowUnit := 'r';
+	vColUnit := 'c';
+  else
+    vRowUnit := vUnit;
+	vColUnit := vUnit;
+  end if;
+  vCenter.x := convertUnits(pDoc,pX,vColUnit,'p') + pDoc.LeftMargin;
+  vCenter.y := (pDoc.PageHeight - pDoc.TopMargin) -  convertUnits(pDoc,pY,vRowUnit,'p');
+  self.write(vCenter.x,vCenter.y,'X','l','p')
+  vRadius.x := convertUnits(pDoc,pRadiusX,vColUnit,'p');
+  vRadius.y := convertUnits(pDoc,pRadiusY,vRowUnit,'p');   
+  -- we now have the center point, vX, vY
+  -- the horizontal radius vX, and the vertical radius vY
+  /*  
+                   //                        /
+                   //        2___3___4       /
+                   //     1             5    /
+                   //     |             |    /
+                   //     |             |    /
+                   //     0,12          6    /
+                   //     |             |    /
+                   //     |             |    /
+                   //    11             7    /
+                   //       10___9___8       /
+                   //                        /
+                   //------------------------*
+  */  
+  vOffset.x := 2 * vRadius.x * vMagic;
+  vOffset.y := 2 * vRadius.y * vMagic;
+  
+  vXy(0).x := vCenter.x - vRadius.x;
+  vXy(1).x := vXy(0).x;
+  vXy(11).x := vXy(0).x;
+  vXy(12).x := vXy(0).x;
+  vXy(5).x := vCenter.x + vRadius.x;
+  vXy(6).x := vXy(5).x;
+  vXy(7).x := vXy(5).x;
+  vXy(2).x := vCenter.x - vOffset.x;
+  vXy(10).x := vXy(2).x;
+  vXy(3).x := vCenter.x;
+  vXy(9).x := vCenter.x;
+  vXy(4).x := vCenter.x + vOffset.x;
+  vXy(8).x := vXy(4).x;
+  
+  vXy(2).y := vCenter.y + vRadius.y;
+  vXy(3).y := vXy(2).y;
+  vXy(4).y := vXy(2).y;
+  
+  vXy(8).y := vCenter.y - vRadius.y;
+  vXy(9).y := vXy(8).y;
+  vXy(10).y := vXy(8).y;
+  
+  vXy(0).y := vCenter.y;
+  vXy(1).y := vCenter.y + vOffset.y;
+  vXy(11).y := vCenter.y - vOffset.y;
+  vXy(12).y := vCenter.y;
+  
+  vXy(5).y := vCenter.y + vOffset.y;
+  vXy(6).y := vCenter.y;
+  vXy(7).y := vCenter.y - vOffset.y;
+  
+  
+  -- move to the left point.
+  addGraphic(pDoc, to_char( vXy(0).x) || ' '||to_char(vXy(0).y)||' m');
+  -- draw the first arc with points 1, 2, 3
+  addGraphic(pDoc, to_char(vXy(1).x)||' '|| to_char(vXy(1).y)||' ' ||
+                   to_char(vXy(2).x)||' '|| to_char(vXy(2).y)||' ' ||
+                   to_char(vXy(3).x)||' '|| to_char(vXy(3).y)||' c');
+  -- and the second with points 4, 5, 6                   
+  addGraphic(pDoc, to_char(vXy(4).x)|| ' '||to_char(vXy(4).y)||' ' ||
+                   to_char(vXy(5).x)|| ' '||to_char(vXy(5).y)||' ' ||
+                   to_char(vXy(6).x)|| ' '||to_char(vXy(6).y)||' c');
+  -- and the third with points 7, 8, 9
+  addGraphic(pDoc, to_char(vXy(7).x)|| ' '||to_char(vXy(7).y)||' ' ||
+                   to_char(vXy(8).x)|| ' '||to_char(vXy(8).y)||' ' ||
+                   to_char(vXy(9).x)|| ' '||to_char(vXy(9).y)||' c');
+  -- and the fourth with points 10, 11, 12
+  addGraphic(pDoc, to_char(vXy(10).x)|| ' '||to_char(vXy(10).y)||' ' ||
+                   to_char(vXy(11).x)|| ' '||to_char(vXy(11).y)||' ' ||
+                   to_char(vXy(12).x)|| ' '||to_char(vXy(12).y)||' c');
+  addGraphic(pDoc,'S Q');
+end ellipse;
+                  
+procedure drawline(pdoc in out nocopy pdfDoc.document,
+                   pX1 in number,pY1 in number, pX2 in number, pY2 in number,
+                   pUnit in varchar2 default null,
+                   pWidth in number default null)
+is
+  vptr integer;
+  vRowUnit varchar2(1);
+  vColUnit varchar2(1);
+  vUnit varchar2(1);
+begin
+  if pDoc.Page.GraphicsStream.exists(1) then
+    vptr := pDoc.page.GraphicsStream.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  if pWidth is not null then
+    pDoc.Page.GraphicsStream(vPtr) := to_char(pWidth) || ' w';
+    vPtr := vPtr + 1;
+  end if;
+  vUnit := nvl(pUnit,pDoc.defaultUnit);
+  if vUnit in ( 'r','c') then
+    vRowUnit := 'r';
+	vColUnit := 'c';
+  else
+    vRowUnit := vUnit;
+	vColUnit := vUnit;
+  end if;
+
+  pDoc.Page.GraphicsStream(vPtr) :=
+    to_char(pDoc.leftmargin + ConvertUnits(pDOc,pX1,vColUnit,'p')) || ' ' ||
+    to_char(( pDoc.PageHeight - pDoc.topmargin) - ConvertUnits(pDoc,pY1,vRowUnit,'p')) || ' ' ||
+    ' m ' ||
+    to_char(pDoc.leftmargin + convertUnits(pDoc,pX2,vColUnit,'p')) || ' ' ||
+    to_char((pDoc.PageHeight - pDoc.topmargin) - convertUnits(pDoc,pY2,vRowUnit,'p')) || ' ' ||
+    ' l s';
+
+
+end drawline;
+
+function strLength(pFontKey in varchar2, pFontSize in number, pString in varchar2)
+  return number -- returns width of string for specified font, in points
+is
+  vReturn integer;
+  cursor fontCur(cpFontKey varchar2, cpCharacter char) is
+    select   width from pdf_font_metrics
+    where pdf_key = upper(pFontKey)
+    and char# = ascii(cpCharacter);
+  fontRec fontCur%rowtype;    
+begin
+  vReturn := 0;
+  dbms_output.put_line('Checking ['||pString||']');
+  if pString is not null then
+    for i in 1..length(pString) loop
+      --dbms_output.put_line(to_char(i)||':'||substr(pstring,i,1));
+      open fontCur(pFontKey, substr(pString,i,1));
+      fetch fontCur into fontRec;
+      if fontCur%notfound then
+        dbms_output.put_line('Did not find character');
+      end if;  
+      --dbms_output.put_line('Raw Width ' || fontRec.width);
+      vReturn := vReturn + (fontRec.width * pFontSize);
+      --dbms_output.put_line('Raw Total is now ' || vReturn);
+      close fontCur;
+    end loop;
+  end if;  
+  return vReturn/1000;    
+end strLength;  
+procedure testBase85
+is
+  vDoc document;
+  vLine varchar2(200) := 'Now is the time for all good men to come to the aid of their country.';
+begin
+  vdoc := newPdfDoc( K_blob);
+  SetDefaultUnit(vdoc,'r');
+  beginDoc(vdoc);
+  newPage(vdoc);
+  SetFont(vdoc,'F1',10);
+  write(vDoc,10,1,vLine);
+  for i in 1..length(vLine) loop
+    writeNext(vDoc,10,substr(vLine,1,i));
+  end loop;  
+  endPageEncode(vdoc);
+  enddoc(vdoc);
+  plsql_mail_attach.setSender('gary.e.menchen@dartmouth.edu');
+  plsql_mail_attach.setRecipient('gary.e.menchen@dartmouth.edu');
+  plsql_mail_attach.attachbinary( getBlob(vDoc),'base85test.pdf');
+  plsql_mail_attach.sendmail;  
+
+end testBase85;          
+procedure setTextState(pdoc in out nocopy document,
+                       pCharSpace in number default 0,
+                       pwordSpace in number default 0,
+                       pScale in number default 100,
+                       pLeading in number default 0,
+                       pRender in number default 0,
+                       pRise in number default 0)
+is
+begin
+  pDoc.Page.TextStream( pDoc.page.TextStream.Last + 1) :=
+    to_char(pCharSpace)||' Tc '
+    || to_char(pwordSpace)|| ' Tw '
+    || to_char(pScale)|| ' Tz '
+    || to_char(pLeading)|| ' TL '
+    || to_char(pRender)|| ' Tr '
+    || to_char(pRise) || ' Ts';
+  
+end setTextState;                                    
+procedure setGrayScale(pDoc in out nocopy document,pScale in number default 0)
+is
+begin
+  --pDoc.Page.TextStream( pDoc.page.TextStream.Last + 1) := to_char(pScale)|| ' G';
+  pDoc.Page.TextStream( pDoc.page.TextStream.Last + 1) := to_char(pScale,'990.99')|| ' g';
+
+end setGrayScale;
+procedure waterMark(pDoc in out nocopy document, pText in varchar2)
+is
+  vSaveFontSize number;
+  vSaveFontKey varchar2(10);
+begin
+  setgrayScale(pDoc,0.80);
+  vSaveFontsize := pDoc.currentfontsize;
+  vSaveFontKey := pDoc.currentFontKey;
+  setFont(pDoc,'F3I',40);
+  writeCenteredInLine(pDoc,10,pText,'r');
+  setFont(pDoc,vSaveFontKey,vSaveFontSize);
+  setGrayScale(pDoc,0);
+end waterMark;
+/*
+procedure defineJpgXOjbect(pDoc in out nocopy document,
+                               pImage in blob,
+                               pName in varchar2,
+                               pWidth in number,
+                               pHeight in number,
+                               pBitsPer in number,
+                               pDevice in varchar2 default 'DeviceGray',
+                               pImageLib in varchar2 default 'ImageB'
+                               )
+is
+  vObject number;
+  vObjLen number; 
+  vRaw raw(40);
+  vRead integer;
+  vString varchar2(80);
+  vLength integer := 0;
+  vOffset integer := 0;
+  vTotalLength integer;
+  vPtr integer;
+begin
+  vObject := nextObj#(pDoc);
+  vObjLen := nextObj#(pDoc);
+  AddxRef(pDoc,vObject,pDoc.offset, 'Image ' || pName);
+  put(pDoc,to_char(vObject)||' 0 obj');
+  put(pDoc,'<< /Type /XObject /Subtype /Image');
+  put(pDoc,'   /Width ' || to_char(pWidth)||' /Height ' || to_char(pHeight));
+  put(pdoc,'   /ColorSpace /'||pDevice);
+  put(pDoc,'   /Name /'||pName);
+  put(pDoc,'   /BitsPerComponent ' || to_char(pBitsPer));
+  put(pDoc,'   /Length '|| to_char(vObjLen)|| ' 0 R ');
+  put(pDoc,'   /Filter [/ASCIIHexDecode /DCTDecode] >>');
+  -- now convert the input to  ascii characters
+  vRead := 40;
+  vTotalLength := dbms_lob.getLength(pImage);
+  vOffset := 1;
+  put(pDoc,'stream');
+  while vOffset <= vTotalLength loop
+    dbms_lob.read(pImage,vRead,vOffset,vRaw);
+    -- convert this raw to hex characters
+    vString := numbers.binToHex( utl_raw.cast_to_varchar2(vRaw) );    
+    vOffset := vOffset + vRead;
+    if vOffset > vTotalLength then
+      vString := vString||'>';
+    end if;  
+    vLength := vLength + length(vString) + 2;
+    
+    put(pDoc,vString);
+  end loop;
+  put(pDoc,'endstream');
+  put(pDoc,'endobj');
+  -- Now write the length object
+
+  AddxRef(pDoc,vObjLen, pDoc.offset,'image size');
+  put(pDoc, to_char(vObjLen)||' 0 obj');
+  put(pDoc,'  ' ||to_char(vLength) );
+  put(pDoc,'endobj');
+  
+  if pvXObjectTable.exists(1) then
+    vPtr := pvXObjectTable.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pvXObjectTable(vPtr).name := pName;
+  pvXObjectTable(vPtr).object# := vObject;
+  pvXObjectTable(vPtr).width := pWidth;
+  pvXObjectTable(vPtr).height := pHeight;
+  pvXObjectTable(vPtr).device := pDevice;
+  pvXObjectTable(vPtr).imageLib := pImageLib;        
+end;
+*/
+procedure defineImageXObject( pDoc in out nocopy document,
+                              pImage in blob,                   
+                              pName in varchar2,              -- Im1
+                              pWidth in number,
+                              pHeight in number,
+                              pBitsPerComponent in number,    -- 8 | 1
+                              pColorSpace in varchar2 default null,  -- null | DeviceRGB
+                              pImageMask in varchar2 default null,   -- null | true
+                              pImageLib in varchar2 default null, -- null, ImageB, ImageC
+                              pFilter in varchar2 default null    -- DCTDecode if jpeg                              
+                              )
+is
+  vObject number;
+  vObjLen number; 
+  vRaw raw(40);
+  vRead integer;
+  vString varchar2(80);
+  vLength integer := 0;
+  vOffset integer := 0;
+  vTotalLength integer;
+  vPtr integer;
+  
+begin
+  vObject := nextObj#(pDoc);
+  vObjLen := nextObj#(pDoc);
+  AddxRef(pDoc,vObject,pDoc.offset, 'Image ' || pName);
+  put(pDoc,to_char(vObject)||' 0 obj');
+  put(pDoc,'<< /Type /XObject /Subtype /Image');
+  put(pDoc,'   /Width ' || to_char(pWidth)||' /Height ' || to_char(pHeight));
+  if pColorSpace is not null then
+    put(pdoc,'   /ColorSpace /'||pColorSpace);
+  end if;
+  if pImageMask is not null then
+    put(pDoc,'   /ImageMask ' || pImageMask);
+  end if;    
+  put(pDoc,'   /Name /'||pName);
+  put(pDoc,'   /BitsPerComponent ' || to_char(pBitsPerComponent));
+  put(pDoc,'   /Length '|| to_char(vObjLen)|| ' 0 R ');
+  if pFilter is not null then
+    put(pDoc,'   /Filter [/ASCIIHexDecode /'||pFilter||'] >>');
+  else
+    put(pDoc,'  /Filter /ASCIIHexDecode >>');
+  end if;    
+  -- now convert the input to  ascii characters
+  vRead := 40;
+  vTotalLength := dbms_lob.getLength(pImage);
+  vOffset := 1;
+  put(pDoc,'stream');
+  while vOffset <= vTotalLength loop
+    dbms_lob.read(pImage,vRead,vOffset,vRaw);
+    -- convert this raw to hex characters
+    vString := numbers.binToHex( utl_raw.cast_to_varchar2(vRaw) );    
+    vOffset := vOffset + vRead;
+    if vOffset > vTotalLength then
+      vString := vString||'>';
+    end if;  
+    vLength := vLength + length(vString) + 2;
+    
+    put(pDoc,vString);
+  end loop;
+  put(pDoc,'endstream');
+  put(pDoc,'endobj');
+  -- Now write the length object
+
+  AddxRef(pDoc,vObjLen, pDoc.offset,'image size');
+  put(pDoc, to_char(vObjLen)||' 0 obj');
+  put(pDoc,'  ' ||to_char(vLength) );
+  put(pDoc,'endobj');
+  
+  if pvXObjectTable.exists(1) then
+    vPtr := pvXObjectTable.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pvXObjectTable(vPtr).name := pName;
+  pvXObjectTable(vPtr).object# := vObject;
+  pvXObjectTable(vPtr).width := pWidth;
+  pvXObjectTable(vPtr).height := pHeight;
+  pvXObjectTable(vPtr).device := pColorSpace;
+  pvXObjectTable(vPtr).imageLib := pImageLib;        
+  pvXObjectTable(vPtr).imageMask := pImageMask;
+end defineImageXObject;                                                     
+
+
+
+
+
+
+function findImage(pDoc in out nocopy document, pName in varchar2) return number
+is
+  vPtr integer;
+begin
+  if pvXObjectTable.exists(1) then
+    for i in pvXObjectTable.first .. pvXObjectTable.last loop
+      if pvXObjectTable(i).name = pName then
+        vPtr := i;
+        exit;
+      end if;  
+    end loop;
+  end if;
+  if vPtr is null then
+    raise_application_error(-20001,'Image ' || pName || ' not found');
+  end if;  
+  return vPtr;
+end findImage;
+procedure showForm(pDoc in out nocopy document,
+                   pName in varchar2)
+is
+  vPtr integer;
+  vI integer;
+begin
+  vI := findImage(pDoc,pName);
+  if pDoc.Page.GraphicsStream.exists(1) then
+    vptr := pDoc.page.GraphicsStream.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  pDOc.Page.GraphicsStream(vPtr) := '0   0   0   0   500 500  /'||pName||' Do  ';
+  
+  if (instr(pdoc.page.xobjectList,pName) = 0) or (pDoc.page.xObjectList is null) then
+    pdoc.page.xobjectList := pdoc.page.xobjectList 
+      || ' /'||pName||' ' || to_char( pvXObjectTable(vI).object# )|| ' 0 R ';
+  end if;       
+  
+end showForm;                       
+procedure showImage(pDoc in out nocopy document,
+                    pName in varchar2,
+                    pX in number, pY in number, pUnit in varchar2 default null,
+                    pScaleX in number default null, pScaleY in number default null,
+                    pSkewX in number default 0, pSkewY in number default 0,
+                    pGrayScale in number default 0)                               
+is
+  vPtr integer;
+  vLine varchar2(100);
+  vX number;
+  vY number;
+  vImage number;
+  vUnit varchar2(1);
+  vScaleX number;
+  vScaleY number;
+begin
+  vImage := findImage(pDoc,pName);
+  vUnit := resolveUnit(pDoc,pUnit,'r');
+  vX := pdfDoc.convertUnits(pDoc,pX,vUnit,'p') + pDoc.LeftMargin;
+  vUnit := resolveUnit(pDoc,pUnit,'c');
+  vY := pdfDoc.convertUnits(pDoc,pY,vUnit,'p');
+  vY := pDoc.PageHeight - (pDoc.TopMargin + Vy);
+  vScaleX := nvl(pScaleX, pvXObjectTable(vImage).Width);
+  vScaleY := nvl(pScaleY, pvXObjectTable(vImage).Height);
+  
+  if pDoc.Page.GraphicsStream.exists(1) then
+    vptr := pDoc.page.GraphicsStream.last + 1;
+  else
+    vPtr := 1;
+  end if;
+  vLine := 'q ' || to_char(pGrayScale,'990.99')|| ' g ' ||
+    to_char(vScaleX) || '   ' ||
+    to_char(nvl(pSkewX,0))||'   ' ||
+    to_char(nvl(pSkewY,0))||'   ' ||
+    to_char(vScaleY)||'   ' ||
+    to_char(vX)||'   ' || to_char(vY)||' cm /' ||
+    pName||' Do Q';
+  pDOc.Page.GraphicsStream(vPtr) := vLine;
+  -- add to th elist of referenced xobjects for this page if not already on the list
+  if (instr(pdoc.page.xobjectList,pName) = 0) or (pDoc.page.xObjectList is null) then
+    pdoc.page.xobjectList := pdoc.page.xobjectList 
+      || ' /'||pName||' ' || to_char( pvXObjectTable(vImage).object# )|| ' 0 R ';
+  end if;       
+end showImage;                                            
+        
+procedure testJPeg(pPages in number default 1) is
+  vDoc document;
+  vJpg blob;
+  vImm blob;
+begin
+  ranger.ls_api.couple(true,'OPS$MENCHEN_GE');
+  vJpg := ranger.ls_api.getBlob('/ranger/images/Dartmouth_Shieldbw.jpg');
+  vImm := ranger.ls_api.getBlob('/ranger/images/dshield.imm');
+  vDoc := newPdfDoc(K_Blob);
+  beginDoc(vdoc);
+  pdfdoc.setdefaultUnit(vDoc,'r');
+  -- ok define the image
+  -- pdfdoc.definejpgxojbect(vdoc,vJpg,'Sh1',74,83,8,'DeviceGray','ImageB');
+  pdfDoc.defineimagexobject(vDoc,vJpg,'Sh1',74,83,8,'DeviceGray',null,'ImageB','DCTDecode');
+  
+  -- now define the image mask
+  pdfDOc.defineImageXObject(vDoc,vImm,'Sh2',284,315,1,null,'true','ImageB',null);
+  newFormXObject(vDoc,'W1');  
+  watermark(vdoc,'WATERMARK');
+  for i in 1..10 loop
+    write(vDoc,10,i,'This is XObject Row ' || to_char(i));
+  end loop;  
+  endFormXobject(vDoc);  
+  
+  for p in 1..pPages loop
+    newPage(vdoc);
+    --if mod(p,2) = 0 then
+    --  showImage(vDoc,'Sh1',10,60,'r',null,null,null,null,0.80);
+    --else   
+    --  pdfDoc.showimage(vdoc,'Sh2',20,20,'c',2 * 57,2 * 63,null,null,0.90);
+    --end if;  
+
+    --57 0 0 63 62 672 cm
+    --showImage(vDoc,'Sh2',10,20,'r');
+    showForm(vDoc,'W1');
+   
+
+
+
+
+    SetFont(vdoc,'F1',10);  
+    write(vdoc,50,3,'This is page '||to_char(p));
+    setTextState(vdoc);
+    writeCol(vdoc,20,'This is writecol at 20');
+    writenext(vdoc,20,'This is writenext at 20');
+    writeCenteredInLine(vdoc,15,'This is centered in row 15');
+    for i in 20..50 loop
+      write(vdoc,10,i,'this is a row of text at row ' || to_char(i)|| ' and is here to see of it is overwritten by the watermark');
+    end loop;  
+    pdfdoc.endPage(vDoc);
+  end loop;  
+  pdfDOc.endDoc(vDoc);
+  plsql_mail_attach.setSender('gary.e.menchen@dartmouth.edu');
+  plsql_mail_attach.setRecipient('gary.e.menchen@dartmouth.edu');
+  plsql_mail_attach.attachbinary( getBlob(vDoc),'jpgtest.pdf');
+  plsql_mail_attach.sendmail;  
+  
+end testJPeg;                                                              
+
+--
+-- Package initialization routine
+--
+begin
+  -- now add all the standard fonts
+  AddFont('Courier','F1');
+  AddFont('Courier-Bold','F1B');
+  AddFont('Courier-Oblique','F1I');
+  AddFont('Courier-BoldOblique','F1IB');
+  AddFont('Helvetica','F2');
+  AddFont('Helvetica-Bold','F2B');
+  AddFont('Helvetica-Oblique','F2I');
+  AddFont('Helvetica-BoldOblique','F2IB');
+  AddFont('Times-Roman','F3');
+  AddFont('Times-Bold','F3B');
+  AddFont('Times-Italic','F3I');
+  AddFont('Times-BoldItalic','F3IB');
+  AddFont('Symbol','F4');
+  AddFont('ZapDingbats','F5');
+  
+  
+END;
+/
+
+
+
+
+

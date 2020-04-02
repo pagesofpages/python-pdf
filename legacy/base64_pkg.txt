@@ -1,0 +1,76 @@
+base64 encoding using utl_encode, even when you have to patch sections together, is about 10 times faster than the sun.misc class.
+
+create or replace
+function utl_base64encode( pBlob in blob) return clob
+as
+  vRaw raw(32000);
+  vRawCoded raw(32000);
+  vPos number := 1;
+  vLen integer := 9000;
+  vBlobLength integer;
+  vClob clob;
+  vString varchar2(32000);
+  vRead integer;
+begin
+  vBlobLength := dbms_lob.getlength(pBlob);
+  -- dbms_output.put('Image length is : ' || vBlobLength||' ');
+  dbms_lob.createTemporary(vClob,true, dbms_lob.SESSION);
+ 
+  vRead := vLen;
+  dbms_lob.read( pBlob, vRead, vPos,vRaw );
+  while vRead > 0	loop
+	-- dbms_output.put_line('vRaw length is ' || utl_raw.length(vRaw));
+	vRawCoded := utl_encode.base64_encode(utl_Raw.substr(vRaw,1,vRead));
+	vString := utl_Raw.cast_to_varchar2(vRawCoded);
+	-- dbms_output.put_line('R:'||substr(vString,1,40));
+	dbms_lob.writeappend(vClob, length(vString), vString);
+	vPos := vPos + vRead;
+	if vPos <= vBlobLength then
+  	dbms_lob.read( pBlob, vRead, vPos,vRaw );
+	else
+  	vRead := 0;
+	end if;  
+  end loop;
+ 
+  return vClob;
+end utl_base64encode;
+
+
+create or replace
+function utl_base64decode( pClob in clob)  return blob as
+  vBlob blob;
+  vInString varchar2(12000);
+  vInRaw raw(32000);
+  vRead number := 12000;
+  vPos number := 1;
+  vDecoded raw(32000);
+  vInputLength number;
+begin
+  vInputLength := dbms_lob.getLength(pClob);
+ 
+  dbms_lob.createTemporary(vBlob, true, dbms_lob.SESSION);
+  -- pBlob is a base64 character based encoding of a (presumably) binary object.
+  -- Read in sessionbs of pclob in a size divisible by 4. COnvert to raw, decode it,
+  -- and write the results to vBlob;
+  dbms_lob.read(pClob, vRead, vPos, vInString);
+  while vRead > 0 loop
+	vInRaw := utl_raw.cast_to_Raw(vInString);
+	vDecoded := utl_encode.base64_decode( vInRaw );
+	dbms_lob.writeAppend( vBlob, utl_Raw.length(vDecoded), vDecoded );
+	vPos := vPos + vRead;
+	if vPos <= vInputLength then
+  	dbms_lob.read(pClob, vRead, vPos, vInString);
+	else
+  	vRead := 0;
+	end if;  
+  end loop;
+ 
+  return vBlob;
+    
+ 
+ 
+ 
+ 
+ 
+ 
+end utl_base64decode;

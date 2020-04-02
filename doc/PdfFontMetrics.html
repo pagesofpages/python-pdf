@@ -1,0 +1,107 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module PdfFontMetrics</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>PdfFontMetrics</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/garymenchen/python/pdf/PdfFontMetrics.py">/Users/garymenchen/python/pdf/PdfFontMetrics.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="io.html">io</a><br>
+</td><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="PdfFontMetrics.html#PdfFontMetrics">PdfFontMetrics</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PdfFontMetrics">class <strong>PdfFontMetrics</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#PdfFontMetrics">PdfFontMetrics</a>&nbsp;loads&nbsp;detailed&nbsp;character-specific&nbsp;size&nbsp;information&nbsp;for<br>
+the&nbsp;built-in&nbsp;variable&nbsp;fonts&nbsp;in&nbsp;a&nbsp;standard&nbsp;version&nbsp;1.2/1.3&nbsp;pdf&nbsp;file:<br>
+Helvetica&nbsp;regular,&nbsp;oblique,&nbsp;bold,&nbsp;and&nbsp;bold-oblique:&nbsp;F2&nbsp;F2I&nbsp;F2B&nbsp;F2IB<br>
+Times&nbsp;regular,&nbsp;oblique,&nbsp;bold&nbsp;and&nbsp;bold-oblique&nbsp;(or&nbsp;italic)&nbsp;F3&nbsp;F3B&nbsp;F3I&nbsp;F3IB<br>
+These&nbsp;sizes&nbsp;can&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;basis&nbsp;for&nbsp;calculating&nbsp;a&nbsp;string&nbsp;length<br>
+for&nbsp;the&nbsp;proportional&nbsp;fonts.<br>
+&nbsp;<br>
+It&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;replace&nbsp;the&nbsp;strLength&nbsp;method&nbsp;of&nbsp;the&nbsp;PdfDocument&nbsp;class,&nbsp;when&nbsp;more<br>
+precise&nbsp;string&nbsp;lengths&nbsp;are&nbsp;needed.<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;depends&nbsp;upon&nbsp;a&nbsp;json&nbsp;file:&nbsp;pdfFontMetrics.json,&nbsp;which&nbsp;has&nbsp;the&nbsp;structure:<br>
+[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"key":&nbsp;"F2",&nbsp;"chars"&nbsp;:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"char":&nbsp;"&nbsp;",&nbsp;"width":&nbsp;278&nbsp;},&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"char":&nbsp;"!",&nbsp;&nbsp;"width":&nbsp;278&nbsp;},&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+]<br>
+This&nbsp;"chars"&nbsp;contains&nbsp;133&nbsp;elements,&nbsp;but&nbsp;is&nbsp;populated&nbsp;only&nbsp;for&nbsp;the&nbsp;standard&nbsp;ascii<br>
+characters.&nbsp;&nbsp;The&nbsp;entry&nbsp;for&nbsp;the&nbsp;space&nbsp;character,&nbsp;ascii&nbsp;32,&nbsp;is&nbsp;at&nbsp;chars[32].<br>
+&nbsp;<br>
+If&nbsp;a&nbsp;character&nbsp;is&nbsp;out&nbsp;of&nbsp;range&nbsp;then&nbsp;the&nbsp;default&nbsp;character&nbsp;width&nbsp;of&nbsp;600&nbsp;is&nbsp;used.&nbsp;<br>
+&nbsp;<br>
+Standard&nbsp;use&nbsp;is&nbsp;simply:<br>
+&nbsp;<br>
+from&nbsp;<a href="#PdfFontMetrics">PdfFontMetrics</a>&nbsp;import&nbsp;<a href="#PdfFontMetrics">PdfFontMetrics</a><br>
+metrics&nbsp;=&nbsp;<a href="#PdfFontMetrics">PdfFontMetrics</a>()<br>
+sizeInPoints&nbsp;=&nbsp;metrics.<a href="#PdfFontMetrics-strLength">strLength</a>(&nbsp;'F2',14,'Four&nbsp;score&nbsp;and&nbsp;seven&nbsp;years&nbsp;ago...')<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PdfFontMetrics-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Calls&nbsp;readFontMetrics&nbsp;to&nbsp;load&nbsp;the&nbsp;font&nbsp;data.</tt></dd></dl>
+
+<dl><dt><a name="PdfFontMetrics-addChar"><strong>addChar</strong></a>(self, pFontKey, pAscii, pChar, pWidth)</dt><dd><tt>Internal&nbsp;function&nbsp;used&nbsp;when&nbsp;maintaining&nbsp;the&nbsp;json&nbsp;file</tt></dd></dl>
+
+<dl><dt><a name="PdfFontMetrics-findFont"><strong>findFont</strong></a>(self, pFontKey)</dt><dd><tt>Internal&nbsp;function&nbsp;used&nbsp;to&nbsp;extract&nbsp;data&nbsp;for&nbsp;a&nbsp;specific&nbsp;font</tt></dd></dl>
+
+<dl><dt><a name="PdfFontMetrics-readFontMetrics"><strong>readFontMetrics</strong></a>(self)</dt><dd><tt>Internal&nbsp;function&nbsp;called&nbsp;by&nbsp;the&nbsp;__init__&nbsp;method</tt></dd></dl>
+
+<dl><dt><a name="PdfFontMetrics-strLength"><strong>strLength</strong></a>(self, pFontKey, pFontSize, pString)</dt><dd><tt>strLength&nbsp;calculates&nbsp;the&nbsp;length&nbsp;of&nbsp;a&nbsp;string,&nbsp;in&nbsp;pdf&nbsp;document&nbsp;points.&nbsp;So&nbsp;it<br>
+(a)&nbsp;Sums&nbsp;the&nbsp;lengths&nbsp;of&nbsp;the&nbsp;individual&nbsp;characters&nbsp;in&nbsp;&lt;pString&gt;<br>
+(b)&nbsp;Multiplies&nbsp;by&nbsp;&lt;pFontSize&gt;<br>
+(c)&nbsp;Divides&nbsp;by&nbsp;1000.<br>
+And&nbsp;returns&nbsp;that&nbsp;result.<br>
+If&nbsp;a&nbsp;font&nbsp;is&nbsp;not&nbsp;identified,&nbsp;or&nbsp;if&nbsp;a&nbsp;character&nbsp;has&nbsp;no&nbsp;entry,&nbsp;then&nbsp;the&nbsp;default<br>
+character&nbsp;width&nbsp;is&nbsp;used.</tt></dd></dl>
+
+<dl><dt><a name="PdfFontMetrics-writeFontMetrics"><strong>writeFontMetrics</strong></a>(self)</dt><dd><tt>Internal&nbsp;function&nbsp;used&nbsp;when&nbsp;maintaining&nbsp;the&nbsp;json&nbsp;file</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

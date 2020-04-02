@@ -1,0 +1,7 @@
+# /bin/sh
+
+sudo cp -p PdfDoc.py /Library/Python/2.7/site-packages/.
+sudo cp -p PdfFontMetrics.py /Library/Python/2.7/site-packages/.
+sudo cp -p pdfFontMetrics.json /Library/Python/2.7/site-packages/.
+
+

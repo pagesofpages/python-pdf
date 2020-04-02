@@ -1,0 +1,1098 @@
+PDF Package
+
+-- PACKAGE PDF
+CREATE OR REPLACE
+PACKAGE pdf IS
+--
+-- output may be directed to a variety of
+-- destinations, which are mutually exclusive.
+K_dbms_output constant number(2) := 1;
+K_email_attachment constant number(2) := 2;
+K_Web_Delivery constant number(2) := 3;
+K_Web_Download constant number(2) := 4;
+K_Utl_file constant integer := 5;
+K_Blob constant integer := 6;
+
+pvDebugging boolean := false;
+
+-- for manipulation pages of output.
+type stream_t is table of varchar2(2000) index by binary_integer;
+type page_r is record (
+  PageObj# number(5) := 0,
+  StreamObj# number(5) := 0,
+  SizeObj# number(5) := 0,
+  ParentObj# number(5),
+  Page# number(5) := 0,
+  Fontlist varchar2(100) := '',
+  GraphicsStream stream_t,
+  TextStream stream_t);
+
+ 
+ 
+ 
+-- Output type is k_dbms_output, etc.
+-- optional <pTarget> may be file name or user email...
+-- email is only needed if recipient is not current user.
+procedure SetOutputType(pType in number, pTarget in varchar2 default null);
+function GetOutputType return number;
+
+Function GetBlob return blob;
+-- Units of measurement are points (1/72 inch), inches
+-- and row/col. The latter would vary depending upon
+-- the font,so use may be problematic...
+Procedure SetDefaultUnit(pUnit in varchar2);
+Function GetDefaultUnit return varchar2;
+function convertunits(pUnits in number, pFrom varchar2, pTo varchar2) return number;
+
+-- Document control
+Procedure BeginDoc( pDocName in varchar2 := null);
+Procedure EndDoc;
+Function GetFileName return varchar2;
+
+-- font control.  All the standard fonts are predefined.
+procedure addfont(pFontName in varchar2, pFontKey in varchar2);
+-- The default font (or line) height is 11 points. It may be fractional
+Procedure SetFontHeight(pPoints in number); -- font height in points
+Function GetFontHeight return number;
+
+
+
+-- the locate functions return 0 if the font is not located. Its primary use
+-- is internal
+Procedure SetCharWidth(pPoints in number);
+Function GetCharWidth return number;
+Function FindFontByKey(pFontKey in varchar2) return number;
+procedure SetFont(vpage in out page_r, pFontKey in varchar2,pFontSize in number);
+/*
+  The pre-defined fonts, with their keys are
+  Courier,'F1'
+  Courier-Bold,'F1B'
+  Courier-Oblique,'F1I'
+  Courier-BoldOblique,'F1IB'
+  Helvetica,'F2'
+  Helvetica-Bold,'F2B'
+  Helvetica-Oblique,'F2I'
+  Helvetica-BoldOblique,'F2IB'
+  Times-Roman,'F3'
+  Times-Bold,'F3B'
+  Times-Italic,'F3I'
+  Times-BoldItalic,'F3IB'
+  Symbol,'F4'
+  ZapDingbats,'F5'
+*/
+
+
+
+-- Lower-level document control
+Procedure WritexRef;
+
+
+-- Page control
+function GetNewPage return page_r;
+procedure EndPage(vPage in page_r); -- write the page
+
+-- Text output
+-- Standard text printing procedure
+procedure Write(pPage in out page_r,
+            	pX in number, -- horizontal / column position
+            	pY in number, -- vertical / row position
+            	pString in varchar2, -- text to display
+            	pAlign in varchar2 default 'l', -- left, center, right
+            	pUnit in varchar2 default null); -- point,inch, row/col
+-- Write on the next line
+procedure WriteNext(pPage in out page_r,
+            	pX in number, -- horizontal / column position
+            	pString in varchar2, -- text to display
+            	pAlign in varchar2 default 'l', -- left, center, right
+            	pUnit in varchar2 default null); -- point,inch, row/col
+-- Write on the current line
+procedure WriteCol(pPage in out page_r,
+            	pX in number, -- horizontal / column position
+            	pString in varchar2, -- text to display
+            	pAlign in varchar2 default 'l', -- left, center, right
+            	pUnit in varchar2 default null); -- point,inch, row/col
+           	 
+--
+-- Graphic procedures
+--
+procedure DrawLine(pPage in out page_r,
+               	pX1 in number,
+               	pY1 in number,
+               	pX2 in number,
+               	pY2 in number,
+               	pUnit in varchar2 default null,
+               	pWidth in number default null);
+Procedure Rectangle(pPage in out page_r,
+                	pX in number,
+   				 pY in number,
+   				 pWidth in number,
+   				 pHeight in number,
+   				 pUnit in varchar2 default null);
+procedure Shade(pPage in out page_r,
+            	pX1 in number,
+            	pY1 in number,
+            	pX2 in number,
+            	pY2 in number,
+            	pScale in number default null,
+            	pUnit in varchar2 default null);
+--
+-- Procedures that use "tabs" to position output
+--           	 
+procedure SetTab(pTabNo in number, pTabPos in number, pALign  in varchar2 default 'l');
+Procedure SetTabs(p1 in number default null,p2 in number default null,p3 in number default null,
+              	p4 in number default null,p5 in number default null,p6 in number default null,
+              	p7 in number default null,p8 in number default null,p9 in number default null,
+              	p10 in number default null,p11 in number default null,p12 in number default null);
+procedure SetTabsAlign(pAlign in varchar2, p1 in number default null, p2 in number default null,
+                   	p3 in number default null, p4 in number default null,
+                   	p5 in number default null);
+procedure SetTabAlign(pTab in number, pAlign in varchar2);
+procedure WriteTab(pPage in out page_r,
+               	pY in number, -- vertical
+               	pTab in number, -- tab number
+               	pText in varchar2);   
+procedure WriteTabList(pPage in out page_r,
+                   	pY in number,
+                   	pT1 in varchar2 default null,
+                   	pT2 in varchar2 default null,
+                   	pT3 in varchar2 default null,
+                   	pT4 in varchar2 default null,
+                   	pT5 in varchar2 default null,
+                   	pT6 in varchar2 default null,
+                   	pT7 in varchar2 default null,
+                   	pT8 in varchar2 default null);
+                                                                                                                                     	 
+                                                                                                              	 
+END; -- Package spec
+/
+-- PACKAGE BODY PDF
+CREATE OR REPLACE
+PACKAGE BODY pdf IS
+--
+-- Data structures for fonts. All the standard fonts are initialized by
+-- the InitDataStructures procedure.
+-- procedure addfont(pFontName,pFontKey) is used to add fonts.
+
+type font_table_rec is record
+  ( fontname varchar2(30),
+	Object# number(5),
+	fontkey varchar2(20) );
+type font_table_typ is table of font_table_rec index by binary_integer;
+
+type xref_rec is record
+  (offset number,
+   generation number,
+   label varchar2(25));
+
+type xref_tbl is table of xref_rec index by binary_integer;
+type pagelist_r is record
+  (pageobj# number(6),
+   ParentObj# number(6));
+type pagelist_t is table of pagelist_r index by binary_integer;
+
+type tab_rec is record (
+  pos number,
+  align char(1) );  
+type tab_type is table of tab_rec index by binary_integer;
+
+pvTabs tab_type;
+
+
+pvFontTable font_table_typ;
+pvCurrentFontKey varchar2(20) := 'F1';
+pvCurrentFontSize number(3) := 12;
+
+pvUnit varchar2(1) := 'p'; -- default unit of measurement
+pvOutputType number(2) := K_dbms_output;
+
+pvxRef xref_tbl;
+pvOffset number(10) := 0;
+pvObj# number(6) := 0;   -- Next Available object number
+pvPage# number(6) := 0;  -- Current page number
+pvParent number(6);  	-- Parent object# of current page
+
+pvLineHeight number(6,2) := 11;
+CharWidth number(6,2) := 7.1;
+PageHeight number(6,2) := 11 * 72;
+PageWidth number(6,2) := 8.5 * 72;
+TopMargin  integer := 10.5 * 72 ; --  starting point. Rows are relative to top margin.
+LeftMargin integer := 0.4 * 72  ; -- Columns are relative to this point.
+
+pvRow number(10) := 0;
+pvCol number(10) := 0;
+pvPageList pageList_t;
+pvFileName Varchar2(50);
+pvTarget varchar2(100);
+pvBlob blob;
+
+--
+-- Internals
+--
+Function UserEmail return varchar2 is
+  vUser varchar2(24);
+  vDartId varchar2(20);
+  vEmail person_username_email.electronic_mail_address%type;
+  vpersonId person_username_email.person_id%type;
+begin
+  if pvTarget is not null then
+	vEmail := pvTarget;
+  else
+	vUser := User;
+	if vUser = 'DARTWEB' then
+  	authenticate.dart_id(vDartId);
+  	if upper(substr(vDartid,1,3)) = 'ERR' then
+    	raise_application_error(-20001,'can not identify unauthentiacted user');
+  	end if;
+  	vPersonId := authenticate.person_id(vDartId);
+  	vUser := authenticate.oracle_username(vPersonId);
+	end if;
+	If vUser = 'LOAN' then
+  	vUser := 'OPS$MENCHEN_GE';
+	end if;
+	-- Now get that user's email
+	select electronic_mail_address
+  	into vEmail
+  	from person_username_email
+  	where username= vuser;
+
+  end if;
+  return vEmail;
+  exception
+	when no_data_found then
+    	raise_application_error(-20001,vUser||' lookup error');
+
+
+
+end UserEmail;
+
+procedure InitDataStructures is
+begin
+  pvPage# := 0;
+  pvObj# :=0;
+  pvOffset :=0;
+  pvParent := 3; -- root /pages object
+  pvxRef.delete;
+  pvFontTable.delete;
+  pvPageList.Delete;
+
+  -- now add all the standard fonts
+  AddFont('Courier','F1');
+  AddFont('Courier-Bold','F1B');
+  AddFont('Courier-Oblique','F1I');
+  AddFont('Courier-BoldOblique','F1IB');
+  AddFont('Helvetica','F2');
+  AddFont('Helvetica-Bold','F2B');
+  AddFont('Helvetica-Oblique','F2I');
+  AddFont('Helvetica-BoldOblique','F2IB');
+  AddFont('Times-Roman','F3');
+  AddFont('Times-Bold','F3B');
+  AddFont('Times-Italic','F3I');
+  AddFont('Times-BoldItalic','F3IB');
+  AddFont('Symbol','F4');
+  AddFont('ZapDingbats','F5');
+  pvCurrentFontKey := 'F1';
+  pvCurrentFontSize := 12;
+end InitDataStructures;
+
+
+function GetObj# return number
+is
+begin
+  pvObj# := pvObj# + 1;
+  return pvObj#;
+end;
+function GetPage# return number
+is
+begin
+  pvPage# := pvPage# + 1;
+  return pvPage#;
+End GetPage#;
+
+function GetNewPage return page_r
+is
+  vPage page_r;
+  vptr integer;
+begin
+  vPage.PageObj#  := GetObj#;
+  vPage.StreamObj# := GetObj#;
+  vPage.SizeObj# := GetObj#;
+  vPage.Page# := GetPage#;
+  -- Add this to the list of pages
+  if pvpagelist.exists(1) then
+	vPtr := pvPageList.Last + 1;
+  else
+	vPtr := 1;
+  end if;
+  pvpagelist( vptr).PageObj#  := vPage.PageObj#;
+  if mod(vPtr,6) = 0 then
+	pvParent := GetObj#;
+  end if;
+  pvPageList(vPtr).ParentObj# := pvParent;
+
+  vPage.ParentObj# := pvParent;
+
+  SetFont(vPage,pvCurrentFontKey, pvCurrentFontSize);
+  --dbms_output.put_line('% GetNewPage page ' || to_char(vpage.page#)
+  --  || ' parent object <'||to_char(pvPageList(vPtr).ParentObj#)||'>');
+
+
+  return vPage;
+
+end GetNewPage;
+procedure CheckMeasurementUnit(pUnit in varchar2) is
+begin
+  if pUnit in ('r','c','i','p') then
+	null;
+  else
+	raise_application_error(-20010,'invalid measurement unit: <'||pUnit||'>');
+  end if;
+end CheckMeasurementUnit;
+
+Procedure Put(pMessage in varchar2)
+is
+  vMessage varchar2(2000) := trim(pMessage);
+  vLength integer;
+begin
+  vLength := Length(vmessage) + 2;
+  if pvOutputType = K_dbms_output then
+	dbms_output.put_line(vMessage );
+  elsif pvOutputType = K_email_attachment then
+ 	-- plsql_mail_attach.attachmentline(vMessage );
+ 	dbms_lob.writeappend(pvBlob, vlength,utl_raw.cast_to_raw( vMessage||CHR(13)||CHR(10)));
+  elsif pvOutputType = K_Web_Delivery then
+ 	htp.p(pmessage|| chr(13) || chr(10));
+  elsif pvOutputType = K_Web_Download then
+ 	htp.p(pmessage|| chr(13) || chr(10));
+  elsif pvOutputType = K_Blob then
+	dbms_lob.writeappend(pvBlob, vlength,utl_raw.cast_to_raw( vMessage||CHR(13)||CHR(10)));
+  else
+	raise_application_error(-20010,'Unknown pdf output type<'|| to_char(pvoutputtype)||'>');
+  end if;
+  pvOffset := pvOffset + length(vMessage) + 2;
+End Put;
+Procedure SetDefaultUnit(pUnit in varchar2) is
+begin
+  CheckMeasurementUnit(pUnit);
+  pvUnit := pUnit;
+end SetDefaultUnit;
+Function GetDefaultUnit return varchar2
+is
+begin
+  return pvUnit;
+end GetDefaultUnit;
+
+function convertunits(pUnits in number, pFrom varchar2, pTo varchar2) return number
+is
+  vPoints number(10);
+  vReturn number(10);
+begin
+  if pvDebugging then
+	put('%convertunits: pUnits '||to_char(punits)|| ' pFrom ' || pFrom || ' pTo ' || pTo);
+  end if;
+  CheckMeasurementUnit(pFrom);
+  CheckMeasurementUnit(pTo);
+  if pFrom = 'i' then
+	vPoints := 72 * pUnits;
+  elsif pFrom  = 'r' then
+	vPoints := pUnits * pvLineHeight;
+  elsif pFrom = 'c' then
+	vPoints := pUnits * charwidth;
+  else
+	vPoints := pUnits;
+  end if;
+  if pTo = 'i' then
+	vReturn := vPoints / 72;
+  elsif pTo = 'r' then
+	vReturn := vPoints / pvLineHeight;
+  elsif pTo = 'c' then
+	vReturn := vPoints / CharWidth;
+  else
+	vReturn := vPoints;
+  end if;
+  return vReturn;
+end convertunits;
+procedure AddxRef(pnum in number, poffset in number, pLabel in varchar2)
+is
+begin
+--  if pNum > 4 and
+--	not pvXRef.Exists(pNum - 1) then
+--	raise_application_error(-20007,'Gap in xref table at ' || to_char(pNum)|| ' ' || pLabel);
+--  end if;
+  pvxRef(pnum).offset := pOffset;
+  pvxRef(pNum).generation := 0;
+  pvxRef(pNum).label := pLabel;
+end AddxRef;
+
+--
+-- Font Control
+--
+procedure WriteFont(pFontPtr in number)
+is
+begin
+  if pvFontTable(pFontPtr).Object# = 0 then
+	pvFontTable(pFontPtr).Object# := GetObj#;
+	addxRef(pvFontTable(pFontPtr).Object#,pvOffset,'font');
+	put(to_char(pvFontTable(pFontPtr).Object#)||' 0 obj');
+	-- put('4 0 obj');
+	put('<< /Type /Font');
+	put('   /Subtype /Type1');
+	put('   /Name /' || pvFontTable(pFontPtr).FontKey); -- F1');
+	put('   /BaseFont /' || pvFontTable(pFontptr).fontname) ; -- Courier');
+	put('   /Encoding /WinAnsiEncoding');
+	put('>>');
+	put('endobj');
+  end if;
+end WriteFont;
+
+procedure SetFont(vpage in out page_r, pFontKey in varchar2,pFontSize in number)
+is
+  vPtr integer;
+  vStreamPtr integer;
+  vString varchar2(30);
+begin
+  vPtr := FindFontbyKey(pFontKey);
+  If vPtr < 1 then
+	raise_application_error(-20001,'Unknown font key <'||pFontKey||'>');
+  end if;
+  if pvFontTable(vPtr).Object# = 0 then
+	WriteFont(vPtr);
+  end if;
+  if vPage.TextStream.exists(1) then
+	vStreamPtr := vPage.TextStream.last + 1;
+  else
+	vStreamPtr := 1;
+  end if;
+  vPage.TextStream(vStreamPtr) := '/'
+	|| pvFontTable(vPtr).FontKey
+	|| ' ' || to_char(pFontSize)
+	|| ' Tf';
+  -- And add to font list for resources
+  vString := '/' || pFontKey
+	|| ' ' || to_char(pvFontTable(vPtr).Object#)
+	|| ' 0 R';
+  if vPage.fontlist is null then
+	vPage.fontlist := vString;
+  elsif instr(vPage.fontlist,vString) = 0 then
+	vPage.fontlist := vPage.fontlist || ' ' || vString;
+  end if;
+  pvCurrentFontSize := pFontsize;
+  pvCurrentFontKey := pFontKey;  
+
+end SetFont;
+Function FindFontByKey(pFontKey in varchar2) return number
+is
+  vReturn number(5) := 0;
+begin
+  if pvFontTable.exists(1) then
+	for i in pvFontTable.first..pvFontTable.last loop
+  	if pvFontTable(i).fontkey = pFontkey then
+    	vReturn := i;
+    	exit;
+  	end if;
+	end loop;
+  end if;
+  return vReturn;
+end FindFontByKey;
+
+
+Procedure AddFont(pFontName in varchar2, pFontKey in varchar2)
+-- Adds a font to the internal font table. Note that the font
+-- is not written to a pdf file until it is requested...
+is
+  vNamePtr number(5);
+  vKeyPtr number(5);
+  vPtr integer;
+begin
+  if pvFontTable.exists(1) then
+	vPtr := pvFontTable.last + 1;
+  else
+	vPtr := 1;
+  end if;
+  pvFontTable(vptr).fontname := pFontName;
+  pvFontTable(vPtr).FontKey := pFontKey;
+  pvFontTable(vPtr).object# := 0;
+end AddFont;
+
+procedure WriteHeader is
+begin
+  InitDataStructures;
+  put('%PDF-1.2');
+  -- Try some high order bytes on the second line. This is a convention
+  -- to prevent some programs from treating this as an ascii text file,
+  -- and possibly converting eol characters
+  put('%%' || chr(25) || chr( (15 * 16) + 2) || chr( (15 * 16) + 3)
+	|| chr( (13 * 16) + 15) || chr( (14 * 16) + 3));
+  -- Write the catalog. Pages in object 3
+  AddxRef(1,pvoffset,'Catalog');
+  put('1 0 obj');
+  put('<<');
+  put('/Type /Catalog');
+  put('/Pages 3 0 R');
+  put('/Outlines 2 0 R');
+  put('>>');
+  put('endobj');
+  addxRef(2,pvOffset,'Outlines');
+  put('2 0 obj');
+  put('<<');
+  put('/Type /Outlines');
+  put('/Count 0');
+  put('>>');
+  put('endobj');
+  -- add a procset
+  addxRef(4,pvOffset,'ProcSet');
+  put('4 0 obj');
+  put('  [/PDF /Text]');
+  put('endobj');
+  -- Add some information
+  addxRef(5,pvOffset,'General Info');
+  put('5 0 obj');
+  put('<<');
+  put('/CreationDate (D:'||to_char(sysdate,'yyyymmddhhmiss')||')');
+  put('/Author ('||user||')');
+  put('/Producer (Gary Menchen''s PDF Package)');
+  put('>>');
+  put('endobj');
+  pvObj# := 5;
+  -- Add a font
+  WriteFont( FindFontByKey(pvCurrentFontKey) );
+
+end WriteHeader;
+procedure drawline(pPage in out page_r,
+               	pX1 in number,pY1 in number, pX2 in number, pY2 in number,
+               	pUnit in varchar2 default null,
+               	pWidth in number default null)
+is
+  vptr integer;
+  vRowUnit varchar2(1);
+  vColUnit varchar2(1);
+  vUnit varchar2(1);
+begin
+  if pPage.GraphicsStream.exists(1) then
+	vptr := ppage.GraphicsStream.last + 1;
+  else
+	vPtr := 1;
+  end if;
+  if pWidth is not null then
+	pPage.GraphicsStream(vPtr) := to_char(pWidth) || ' w';
+	vPtr := vPtr + 1;
+  end if;
+  vUnit := nvl(pUnit,pvUnit);
+  if vUnit in ( 'r','c') then
+	vRowUnit := 'r';
+    vColUnit := 'c';
+  else
+	vRowUnit := vUnit;
+    vColUnit := vUnit;
+  end if;
+
+  pPage.GraphicsStream(vPtr) :=
+	to_char(leftmargin + ConvertUnits(pX1,vColUnit,'p')) || ' ' ||
+	to_char(topmargin - ConvertUnits(pY1,vRowUnit,'p')) || ' ' ||
+	' m ' ||
+	to_char(leftmargin + convertUnits(pX2,vColUnit,'p')) || ' ' ||
+	to_char(topmargin - convertUnits(pY2,vRowUnit,'p')) || ' ' ||
+	' l s';
+
+
+end drawline;
+procedure WriteNext(pPage in out page_r,
+            	pX in number, -- horizontal / column position
+            	pString in varchar2, -- text to display
+            	pAlign in varchar2 default 'l', -- left, center, right
+            	pUnit in varchar2 default null) -- point,inch, row/col
+is
+  vUnit varchar2(1);
+begin
+  -- pvRow is stored in points, so we need to convert these units
+  -- to pints
+  vUnit := nvl(pUnit,pvUnit);
+  Write(pPage, ConvertUnits(px,vUnit,'p'), pvRow + pvLineHeight, pString, pAlign,'p');
+end WriteNext;
+procedure WriteCol(pPage in out page_r,
+            	pX in number, -- horizontal / column position
+            	pString in varchar2, -- text to display
+            	pAlign in varchar2 default 'l', -- left, center, right
+            	pUnit in varchar2 default null) -- point,inch, row/col
+is
+  vUnit varchar2(1);
+begin
+  vUnit := nvl(pUnit,pvUnit);
+  if vUnit = 'r' then
+	vUnit := 'c';
+  end if;  
+  Write(pPage, ConvertUnits(px,vUnit,'p'),pvRow,pString, pAlign, 'p');
+End WriteCol;
+
+
+procedure Write(pPage in out page_r,
+            	pX in number, -- horizontal - column position
+            	pY in number, -- vertical - row
+            	pString in varchar2,
+            	pAlign in varchar2 default 'l',
+            	pUnit in varchar2 default null)
+is
+  vUnit varchar2(1);
+  vString varchar2(2000) := pString;
+begin
+  vUnit := nvl(pUnit,pvUnit);
+  pvRow := ConvertUnits(pY,vUnit,'p');
+  if vUnit = 'r' then
+	vUnit := 'c';
+  end if;
+  pvCol := ConvertUnits(pX,vUnit,'p');
+  --  put('% col converted to ' || to_char(pvCol));
+  -- now how to adjust for right or centered alignment?
+  --  12345
+  --   ab
+  if pAlign = 'c' then
+	pvCol := pvCol - ( charwidth * (length(pString)-1) / 2);
+  elsif pALign = 'r' then
+	pvCol := pvCol - (charwidth * (length(pString) - 1)) ;
+  end if;
+  if instr(vString,'(') > 0 then
+	vString := replace(vString,'(','\(');
+  end if;
+  if instr(vString,')') > 0 then
+	vString := replace(vString,')','\)');
+  end if;
+
+  pPage.TextStream( pPage.TextStream.Last + 1) :=
+   to_char(LeftMargin + pvCol)||' '||to_char(TopMargin - pvRow)||' '
+   	|| ' Td';
+  pPage.TextStream( pPage.TextStream.last + 1) :=
+    	'('||vString||') '
+   	|| 'Tj';
+  pPage.TextStream( pPage.TextStream.last + 1) := '1 0 0 1 0 0 Tm';
+  pvCol := pvCol + (length(pString) * charWidth);
+end Write;
+procedure EndPage(vPage in page_r)
+is
+  vLen number(6) := 0;
+begin
+  -- output the three objects, and register in xref table
+  AddxRef(vPage.PageObj#,pvoffset, 'Page ' || to_char(vPage.Page#));
+  put(to_char(vPage.pageObj#)||' 0 obj');
+  put('<< /Type /Page');
+  put('   /Parent ' || to_char(vPage.ParentObj#) || ' 0 R');
+  put('   /MediaBox [0 0 612 792]');
+  put('   /Contents ' || to_char(vPage.StreamObj#)||' 0 R');
+  put('   /Resources << /ProcSet 4 0 R ');
+  put('             	/Font << ' || vPage.FontList ||' >>');
+  put('          	>>');
+  put('>>');
+  put('endobj');
+  -- now the stream
+  AddxRef(vpage.StreamObj#,pvOffset,'Stream ' || to_char(vPage.Page#));
+  put(To_char(vPage.StreamObj#) || ' 0 obj');
+  put('<< /Length ' || to_char(vPage.SizeObj#)||' 0 R >>');
+  put('stream');
+  if vPage.GraphicsStream.exists(1) then
+	for i in vPage.GraphicsStream.first..vpage.GraphicsStream.last loop
+  	put('  ' || vPage.GraphicsStream(i));
+  	vLen := vLen + length(vpage.GraphicsStream(i)) + 2;
+	end loop;
+  end if;
+  put('BT');
+  for i in vPage.TextStream.first..vPage.TextStream.Last loop
+	put('  '|| vPage.TextStream(i));
+	vLen := vLen + length(vpage.TextStream(i)) + 2;
+  end loop;
+  put('ET');
+  vLen := vLen + 8; -- For Begintext and endtext
+  put('endstream');
+  put('endobj');
+  -- Now write the length object
+  AddxRef(vpage.SizeObj#,pvOffset,'Size ' || to_char(vPage.Page#));
+  put(to_char(vPage.SizeObj#)||' 0 obj');
+  put('  ' ||to_char(vlen) );
+  put('endobj');
+end EndPage;
+Procedure WritePages( pObject in number, pParent in number default null,
+                  	pFrom in number, pThru in number) is
+  -- Goal is to have about 6 page object as kids to a page object.
+  -- The parent number is assigned to each /page object by the GetNewPage
+  -- function. For each page.parentobj# value we write a single /pages object,
+  -- write the /Page object numbers to the kids list,and, if we are not at
+  -- the end of the list of page objects, add the parentobj# of the subsequent
+  -- page. As a result each /Pages object will have a kids list that contains
+  -- up to 6 /Page objects.  The kids list will end with a reference to another
+  -- /Pages object if we are not at the end of the list of /Page objects.
+  vParent number(6) := null;
+  vObject number(6) := null;
+  i integer;
+  vLine varchar2(200);
+  vTotalPages number(5);
+  vPageCtr number(2); -- number of /page objects listed in a /pages object
+begin
+  vTotalpages := pvPageList.last - pvPageList.first + 1;
+  i := pvPageList.first;
+--  for kk in pvPageList.first..pvPageList.last loop
+--	dbms_output.put_line('% ' || to_char(kk) || ' Obj ' || to_char(pvPageList(kk).PageObj#)
+--  	|| ' parent ' || to_char(pvPageList(kk).ParentObj#));
+--  end loop;
+
+  while i <= pvPageList.last loop
+	-- begin the pages object
+	vObject := pvPageList(i).ParentObj#;  -- From pvParent
+	AddxRef(vObject,pvoffset,'Pages');
+	put(to_char(vObject) || ' 0  obj');
+	put('<< /Type /Pages');
+    if i > pvPageList.first then
+      put('/Parent ' || to_char(vParent)|| ' 0 R');
+    end if;
+    vLine := '/Kids [';
+	vPageCtr := 0;
+    while i <= pvPageList.Last and vObject = pvPageList(i).ParentObj# loop
+      vLine := vLine || to_char(pvPageList(i).PageObj#) || ' 0 R ';
+      vPageCtr := vPageCtr + 1;
+      i := i + 1;
+    end loop;
+    -- Check if we need to add a /Pages object to the end of the kids list
+    if i <=  pvPageList.Last then
+      vLine := vLine || to_Char(pvPageList(i).ParentObj#) || ' 0 R ';
+      vParent := vObject;
+  	-- dbms_output.put_line('%Parent changed to ' || to_Char(vParent));
+    end if;
+    vLine := vLine || ']';
+    Put(vLine);
+    put('/Count ' || to_char(vTotalPages));
+    put('>>');
+    put('endobj');
+    vTotalPages := vTotalPages - vPageCtr;
+
+  end loop;
+end WritePages;
+Procedure WritexRef is
+  vOffset number(6);
+  vOffsetMask varchar2(10) := '0000000000';
+  vGenMax varchar2(5) := '00000';
+  vLine varchar2(500);
+  vCtr number(5) := 0;
+begin
+  WritePages( 3, null, pvPageList.first, pvPageList.last);
+  vOffset := pvOffset;
+  put('xref');
+  put('0 ' || to_char(pvObj#+1));
+  put( trim(to_char(0,vOffsetMask)) || ' ' || trim(to_char(65535,vGenMax))||' f');
+  for i in pvXRef.first..pvxRef.last loop
+	put( trim(to_char(pvxRef(i).offset,vOffsetMask))||' '
+       	|| trim(to_char(pvxRef(i).generation,vGenMax))||' n');
+  end loop;
+  put('trailer');
+  put('<< /Size ' || to_char(pvObj# + 1));
+  put('   /Root 1 0 R');
+  put('   /Info 5 0 R');
+  put('>>');
+  put('startxref');
+  put( to_char(vOffset));
+  put('%%EOF');
+end WritexRef;
+procedure SetOutputType(pType in number, pTarget in varchar2 default null)
+is
+begin
+  pvOutputType := pType;
+  pvTarget := pTarget;
+end Setoutputtype;
+function GetOutputType return number
+is
+begin
+  return pvOutputType;
+end GetOutputType;
+Procedure BeginDoc( pDocName in varchar2 := null) is
+  vName varchar2(60);
+begin
+  if pDocName is not null then
+	pvFileName := pDocName;
+  end if;
+  if pvFileName is null then
+	vName := 'pdftest.pdf';
+  else
+	vName := rtrim(pvFileName)||'.PDF';
+  end if;
+  if pvOutputType = K_Web_Download then
+	Owa_Util.mime_header('application/download', FALSE);
+	Htp.print('Content-Disposition: filename="' || vName||'"');
+	Owa_Util.HTTP_HEADER_CLOSE;
+  elsif pvOutputType = K_Web_Delivery then
+	-- Does not work with IE 5.5
+	owa_util.mime_header('application/pdf');
+  elsif pvOutputType = K_Email_Attachment then
+	ranger.PLSQL_MAIL_ATTACH.setsender('pdftest@dartmouth.edu');
+	ranger.PLSQL_MAIL_ATTACH.SetRecipient( UserEmail );
+	ranger.PLSQL_MAIL_ATTACH.SetSubject(pvFileName || '.PDF conversion');
+	ranger.PLSQL_MAIL_ATTACH.addline('Is attached');
+	-- PLSQL_MAIL_ATTACH.attachmentopen(pvFileName || '.PDF');
+	dbms_lob.createtemporary(pvBlob,true);
+  elsif pvOutputType = K_blob then
+	dbms_lob.createtemporary(pvBlob,true);
+  end if;
+  WriteHeader;
+end BeginDoc;
+Procedure EndDoc is
+begin
+  WritexRef;
+  If pvOutputType = K_Email_Attachment then
+	-- PLSQL_MAIL_ATTACH.Attachmentclose;
+	ranger.PLSQL_MAIL_ATTACH.AttachBinary(pvBlob, pvFileName || '.pdf');
+	ranger.PLSQL_MAIL_ATTACH.sendmail;
+  end if;
+End EndDoc;
+
+Procedure Rectangle(pPage in out page_r,
+                	pX in number,
+   				 pY in number,
+   				 pWidth in number,
+   				 pHeight in number,
+   				 pUnit in varchar2 default null)
+is
+  vHeight  number(6);
+  vWidth  number(6);
+  vUnit varchar2(1);
+  vX number(6);
+  vY number(6);
+  vPtr integer;
+begin
+  if pUnit = 'c' then
+	vUnit := 'r';
+  else
+	vUnit := pUnit;
+  end if;
+  vHeight := ConvertUnits(pHeight,vUnit,'p');
+  vY := ConvertUnits(pY,vUnit,'p');
+  if pUnit = 'r' then
+	vUnit := 'c';
+  else
+	vUnit := pUnit;
+  end if;
+  vWidth := ConvertUnits(pWidth, vUnit,'p');
+  vX := ConvertUnits(pX,vUnit,'p');
+  if pPage.GraphicsStream.exists(1) then
+	vPtr := pPage.GraphicsStream.last + 1;
+  else
+	vPtr := 1;
+  end if;
+  pPage.GraphicsStream(vPtr) :=
+	to_char(LeftMargin + vX) || ' ' ||
+    to_char(TopMargin - Vy)  || ' ' ||
+    to_Char(vWidth) || ' ' ||
+    to_char(vHeight) || ' re';
+
+
+
+
+
+
+End Rectangle;
+Function GetFontHeight return number
+is
+begin
+  return pvLineHeight;
+end GetFontHeight;
+procedure SetFontHeight( pPoints in number)
+is
+begin
+  pvLineHeight := pPoints;
+end SetFontHeight;
+Function Getblob return blob
+is
+begin
+  if pvOutputType <> K_BLob then
+	raise_application_error(-20001,'invalid output type for getblob');
+  else
+	return pvBlob;
+  end if;
+End GetBlob;
+function getfilename return varchar2 is
+begin
+  return pvFileName;
+end getfilename;
+Procedure SetCharWidth(pPoints in number)
+is
+begin
+  CharWidth := pPoints;
+end;  
+Function GetCharWidth return number
+is
+begin
+  return CharWidth;
+end;  
+procedure Shade(pPage in out page_r,
+            	pX1 in number,
+            	pY1 in number,
+            	pX2 in number,
+            	pY2 in number,
+            	pScale in number default null,
+            	pUnit in varchar2 default null)
+is
+  vptr integer;
+  vX1  number(5);
+  vX2  number(5);
+  vY1  number(5);
+  vY2  number(5);
+  vUnit  varchar2(1);
+begin
+  if pUnit = 'c' then
+	vUnit := 'r';
+  else
+	vUnit := pUnit;
+  end if;    
+  vY1 := ConvertUnits(pY1,vUnit,'p');
+  vY2 := ConvertUnits(PY2,vUnit,'p');
+  if vUnit = 'r' then
+	vUnit := 'c';
+  end if;
+  vX1 := ConvertUnits(pX1,vUnit,'p');
+  vX2 := ConvertUnits(pX2,vUnit,'p');
+    
+  if pPage.GraphicsStream.exists(1) then
+	vptr := ppage.GraphicsStream.last + 1;
+  else
+	vPtr := 1;
+  end if;
+  pPage.GraphicsStream(vPtr) := to_char( nvl(pScale,0.9),'990.00')
+	|| ' g';
+    
+  pPage.GraphicsStream(vPtr + 1) :=
+	to_char(LeftMargin + vX1)|| ' ' || to_char(TopMargin - vY1) || ' ' ||
+  	to_char(vX2 - vX1) || ' ' || (vY2 - (vY1 + LeftMargin)) || ' re ';
+  pPage.GraphicsStream(vPtr + 2) := 'f 0 g';
+end shade;    	 
+procedure SetTab(pTabNo in number, pTabPos in number, pAlign in varchar2 default 'l')
+is
+begin
+  pvTabs(pTabNo).pos := pTabPos;
+  pvTabs(pTabNo).align := pAlign;
+End SetTab;  
+Procedure SetTabs(p1 in number default null,p2 in number default null,p3 in number default null,
+              	p4 in number default null,p5 in number default null,p6 in number default null,
+              	p7 in number default null,p8 in number default null,p9 in number default null,
+              	p10 in number default null,p11 in number default null,p12 in number default null)
+is
+begin
+  if p1 is not null then
+	SetTab(1,p1);
+  end if;
+  if p2 is not null then
+	SetTab(2,p2);
+  end if;
+  if p3 is not null then
+	SetTab(3,p3);
+  end if;
+  if p4 is not null then
+	SetTab(4,p4);
+  end if;
+  if p5 is not null then
+	SetTab(5,p5);
+  end if;
+  if p6 is not null then
+	SetTab(6,p6);
+  end if;
+  if p7 is not null then
+	SetTab(7,p7);
+  end if;
+  if p8 is not null then
+	SetTab(8,p8);
+  end if;
+  if p9 is not null then
+	SetTab(9,p9);
+  end if;
+  if p10 is not null then
+	SetTab(10,p10);
+  end if;
+  if p11 is not null then
+	SetTab(11,p11);
+  end if;
+  if p12 is not null then
+	SetTab(12,p12);
+  end if;
+    
+end SetTabs;                                               	 
+procedure SetTabsAlign(pAlign in varchar2, p1 in number default null, p2 in number default null,
+                   	p3 in number default null, p4 in number default null,
+                   	p5 in number default null)
+is
+begin
+  if p1 is not null then
+	SetTabAlign(p1,pAlign);
+  end if;
+  if p2 is not null then
+	SetTabAlign(p2,pAlign);
+  end if;
+  if p3 is not null then
+	SetTabAlign(p3,pAlign);
+  end if;
+  if p4 is not null then
+	SetTabAlign(p4,pAlign);
+  end if;
+  if p5 is not null then
+	SetTabAlign(p5,pAlign);
+  end if;
+End SetTabsAlign;                      	 
+procedure SetTabAlign(pTab in number, pAlign in varchar2)
+is
+begin
+  pvTabs(pTab).align := pALign;
+End SetTabAlign;
+procedure WriteTab(pPage in out page_r,
+               	pY in number,
+               	pTab in number, -- tab number
+               	pText in varchar2)
+is
+begin
+  Write(pPage,pvTabs(pTab).pos,pY,pText,pvTabs(pTab).align);
+end WriteTab;
+procedure WriteTabList(pPage in out page_r,
+                   	pY in number,
+                   	pT1 in varchar2 default null,
+                   	pT2 in varchar2 default null,
+                   	pT3 in varchar2 default null,
+                   	pT4 in varchar2 default null,
+                   	pT5 in varchar2 default null,
+                   	pT6 in varchar2 default null,
+                   	pT7 in varchar2 default null,
+                   	pT8 in varchar2 default null)
+is
+begin
+
+  if pt1 is not null then
+	WriteTab(pPage,pY,1,Pt1);
+  end if;
+  if pt2 is not null then
+	WriteTab(pPage,pY,2,Pt2);
+  end if;
+  if pt3 is not null then
+	WriteTab(pPage,pY,3,Pt3);
+  end if;
+  if pt4 is not null then
+	WriteTab(pPage,pY,4,Pt4);
+  end if;
+  if pt5 is not null then
+	WriteTab(pPage,pY,5,Pt5);
+  end if;
+  if pt6 is not null then
+	WriteTab(pPage,pY,6,Pt6);
+  end if;
+  if pt7 is not null then
+	WriteTab(pPage,pY,7,Pt7);
+  end if;
+  if pt8 is not null then
+	WriteTab(pPage,pY,8,Pt8);
+  end if;
+ 
+exception
+  when others then raise_application_error(-20001,'WriteTabList Error ' || SqlErrm);    
+end WriteTabList;                  	 
+
+                                                                                          	 
+                                                                          	 
+    
+	 
+   	 
+ 
+             	 
+
+END;
+/
+
+
+

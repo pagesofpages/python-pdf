@@ -1,0 +1,428 @@
+%PDF-1.2
+%%ÚÛﬂ„
+1 0 obj
+<<
+/Type /Catalog
+/Pages 3 0 R
+/Outlines 2 0 R
+>>
+endobj
+2 0 obj
+<<
+/Type /Outlines
+/Count 0
+>>
+endobj
+4 0 obj
+[/PDF /Text /ImageB /ImageC]
+endobj
+5 0 obj
+<<
+/CreationDate (D:20200401130442)
+/Author (Gary Menchen)
+/Producer (Gary Menchens PDF Code)
+>>
+endobj
+9 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F1
+/BaseFont /Courier
+/Encoding /WinAnsiEncoding
+>>
+endobj
+6 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/MediaBox [0 0 612.0 792]
+/Contents 7 0 R
+/Resources << /ProcSet 4 0 R
+/Font << /F1 9 0 R >>
+>>
+>>
+endobj
+7 0 obj
+<< /Length 8 0 R >>
+stream
+0.90 g
+94.8 638.2 198.0 62.5 re
+f 0 g
+0.90 g
+292.8 513.2 132.0 62.5 re
+f 0 g
+0.00 g
+94.8 388.2 198.0 25.0 re
+f 0 g
+0.60 g
+358.8 388.2 99.0 25.0 re
+f 0 g
+0.10 g
+94.8 325.7 198.0 25.0 re
+f 0 g
+0.70 g
+358.8 325.7 99.0 25.0 re
+f 0 g
+0.20 g
+94.8 275.7 198.0 12.5 re
+f 0 g
+0.30 g
+94.8 225.7 198.0 12.5 re
+f 0 g
+0.40 g
+94.8 175.7 198.0 12.5 re
+f 0 g
+0.90 g
+358.8 175.7 99.0 12.5 re
+f 0 g
+0.50 g
+94.8 100.7 198.0 12.5 re
+f 0 g
+1.00 g
+358.8 100.7 99.0 12.5 re
+f 0 g
+BT
+/F1 10 Tf
+0 Tc 0 Tw 100 Tz 0 TL 0 Tr 0 Ts
+204.0 762.2 Td
+(PDF Graphics Test Routines - shade) Tj
+1 0 0 1 0 0 Tm
+30.8 762.2 Td
+(shade\( 10, 10, 15, 40, 'r'\) ) Tj
+1 0 0 1 0 0 Tm
+0 Tc 0 Tw 100 Tz 0 TL 0 Tr 0 Ts
+30.8 753.2 Td
+(shade\( 40, 20, 60, 25\) r) Tj
+1 0 0 1 0 0 Tm
+42.0 450.7 Td
+(Testing grayscale ranges from 0.0 to 1.00) Tj
+1 0 0 1 0 0 Tm
+94.8 425.7 Td
+(0.0) Tj
+1 0 0 1 0 0 Tm
+358.8 425.7 Td
+(0.6) Tj
+1 0 0 1 0 0 Tm
+94.8 350.7 Td
+(0.1) Tj
+1 0 0 1 0 0 Tm
+358.8 350.7 Td
+(0.7) Tj
+1 0 0 1 0 0 Tm
+94.8 300.7 Td
+(0.2) Tj
+1 0 0 1 0 0 Tm
+94.8 250.7 Td
+(0.3) Tj
+1 0 0 1 0 0 Tm
+94.8 200.7 Td
+(0.4) Tj
+1 0 0 1 0 0 Tm
+358.8 200.7 Td
+(0.9) Tj
+1 0 0 1 0 0 Tm
+94.8 125.7 Td
+(0.5) Tj
+1 0 0 1 0 0 Tm
+358.8 125.7 Td
+(1.0) Tj
+1 0 0 1 0 0 Tm
+ET
+endstream
+endobj
+8 0 obj
+1300
+endobj
+10 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/MediaBox [0 0 612.0 792]
+/Contents 11 0 R
+/Resources << /ProcSet 4 0 R
+/Font << /F1 9 0 R >>
+>>
+>>
+endobj
+11 0 obj
+<< /Length 12 0 R >>
+stream
+0.90 g
+35.4 636.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 611.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 586.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 561.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 536.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 511.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 486.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 461.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 436.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 411.325 547.8 9.375 re
+f 0 g
+0.90 g
+35.4 386.325 547.8 9.375 re
+f 0 g
+BT
+/F1 10 Tf
+0 Tc 0 Tw 100 Tz 0 TL 0 Tr 0 Ts
+198.0 762.2 Td
+(PDF Graphics Test Routines - grayBar) Tj
+1 0 0 1 0 0 Tm
+94.8 638.2 Td
+(This is text in row 10) Tj
+1 0 0 1 0 0 Tm
+94.8 613.2 Td
+(This is text in row 12) Tj
+1 0 0 1 0 0 Tm
+94.8 588.2 Td
+(This is text in row 14) Tj
+1 0 0 1 0 0 Tm
+94.8 563.2 Td
+(This is text in row 16) Tj
+1 0 0 1 0 0 Tm
+94.8 538.2 Td
+(This is text in row 18) Tj
+1 0 0 1 0 0 Tm
+94.8 513.2 Td
+(This is text in row 20) Tj
+1 0 0 1 0 0 Tm
+94.8 488.2 Td
+(This is text in row 22) Tj
+1 0 0 1 0 0 Tm
+94.8 463.2 Td
+(This is text in row 24) Tj
+1 0 0 1 0 0 Tm
+94.8 438.2 Td
+(This is text in row 26) Tj
+1 0 0 1 0 0 Tm
+94.8 413.2 Td
+(This is text in row 28) Tj
+1 0 0 1 0 0 Tm
+94.8 388.2 Td
+(This is text in row 30) Tj
+1 0 0 1 0 0 Tm
+ET
+endstream
+endobj
+12 0 obj
+1292
+endobj
+13 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/MediaBox [0 0 612.0 792]
+/Contents 14 0 R
+/Resources << /ProcSet 4 0 R
+/Font << /F1 9 0 R >>
+>>
+>>
+endobj
+14 0 obj
+<< /Length 15 0 R >>
+stream
+94.8 638.2 m 517.2 638.2 l s
+94.8 613.2 m 517.2 613.2 l s
+94.8 588.2 m 517.2 588.2 l s
+94.8 563.2 m 517.2 563.2 l s
+94.8 538.2 m 517.2 538.2 l s
+94.8 513.2 m 517.2 513.2 l s
+94.8 488.2 m 517.2 488.2 l s
+94.8 463.2 m 517.2 463.2 l s
+94.8 438.2 m 517.2 438.2 l s
+94.8 413.2 m 517.2 413.2 l s
+94.8 388.2 m 517.2 388.2 l s
+BT
+/F1 10 Tf
+0 Tc 0 Tw 100 Tz 0 TL 0 Tr 0 Ts
+195.0 762.2 Td
+(PDF Graphics Test Routines - drawLine) Tj
+1 0 0 1 0 0 Tm
+94.8 650.7 Td
+(This is text the row above the line at 10) Tj
+1 0 0 1 0 0 Tm
+94.8 625.7 Td
+(This is text the row above the line at 12) Tj
+1 0 0 1 0 0 Tm
+94.8 600.7 Td
+(This is text the row above the line at 14) Tj
+1 0 0 1 0 0 Tm
+94.8 575.7 Td
+(This is text the row above the line at 16) Tj
+1 0 0 1 0 0 Tm
+94.8 550.7 Td
+(This is text the row above the line at 18) Tj
+1 0 0 1 0 0 Tm
+94.8 525.7 Td
+(This is text the row above the line at 20) Tj
+1 0 0 1 0 0 Tm
+94.8 500.7 Td
+(This is text the row above the line at 22) Tj
+1 0 0 1 0 0 Tm
+94.8 475.7 Td
+(This is text the row above the line at 24) Tj
+1 0 0 1 0 0 Tm
+94.8 450.7 Td
+(This is text the row above the line at 26) Tj
+1 0 0 1 0 0 Tm
+94.8 425.7 Td
+(This is text the row above the line at 28) Tj
+1 0 0 1 0 0 Tm
+94.8 400.7 Td
+(This is text the row above the line at 30) Tj
+1 0 0 1 0 0 Tm
+ET
+endstream
+endobj
+15 0 obj
+1326
+endobj
+16 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/MediaBox [0 0 612.0 792]
+/Contents 17 0 R
+/Resources << /ProcSet 4 0 R
+/Font << /F1 9 0 R >>
+>>
+>>
+endobj
+17 0 obj
+<< /Length 18 0 R >>
+stream
+160.8 613.2 m 424.8 613.2 l s
+160.8 363.2 m 424.8 363.2 l s
+160.8 613.2 m 160.8 363.2 l s
+424.8 613.2 m 424.8 363.2 l s
+28.8 263.2 m 588.2 263.2 l s
+292.8 763.2 m 292.8 23.8 l s
+28.8 763.2 m 588.2 763.2 l s
+28.8 23.8 m 588.2 23.8 l s
+28.8 763.2 m 28.8 23.8 l s
+588.2 763.2 m 588.2 23.8 l s
+BT
+/F1 10 Tf
+0 Tc 0 Tw 100 Tz 0 TL 0 Tr 0 Ts
+54.0 738.2 Td
+(PDF Graphics Test Routines - rectangle, lineAcrossPage, pageBorder, verticalPageLine) Tj
+1 0 0 1 0 0 Tm
+61.8 638.2 Td
+(rectangle\( 20, 12, 40, 20, r\)) Tj
+1 0 0 1 0 0 Tm
+61.8 513.2 Td
+(lineAcrossPage\( 40 , r \)) Tj
+1 0 0 1 0 0 Tm
+ET
+endstream
+endobj
+18 0 obj
+606
+endobj
+19 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/MediaBox [0 0 612.0 792]
+/Contents 20 0 R
+/Resources << /ProcSet 4 0 R
+/Font << /F1 9 0 R >>
+>>
+>>
+endobj
+20 0 obj
+<< /Length 21 0 R >>
+stream
+q
+2 w
+1 i
+172.8 475.2 m
+172.8 514.964501988 237.270996024 547.2 316.8 547.2 c
+396.329003976 547.2 460.8 514.964501988 460.8 475.2 c
+460.8 435.435498012 396.329003976 403.2 316.8 403.2 c
+237.270996024 403.2 172.8 435.435498012 172.8 475.2 c
+S Q
+q
+3 w
+1 i
+100.8 403.2 m
+100.8 442.964501988 133.035498012 475.2 172.8 475.2 c
+212.564501988 475.2 244.8 442.964501988 244.8 403.2 c
+244.8 363.435498012 212.564501988 331.2 172.8 331.2 c
+133.035498012 331.2 100.8 363.435498012 100.8 403.2 c
+S Q
+BT
+/F1 10 Tf
+0 Tc 0 Tw 100 Tz 0 TL 0 Tr 0 Ts
+198.0 738.2 Td
+(PDF Graphics Test Routines - ellipse) Tj
+1 0 0 1 0 0 Tm
+61.8 638.2 Td
+(ellipse\(\)) Tj
+1 0 0 1 0 0 Tm
+61.8 625.7 Td
+(	def ellipse\(self, pX, pY, pRadiusX, pRadiusY, pUnit = None, pLineWidth = None\)) Tj
+1 0 0 1 0 0 Tm
+61.8 613.2 Td
+(	p.ellipse\( 4, 4, 2, 1, i, None\)) Tj
+1 0 0 1 0 0 Tm
+172.8 403.2 Td
+(A Circle) Tj
+1 0 0 1 0 0 Tm
+ET
+endstream
+endobj
+21 0 obj
+919
+endobj
+3 0  obj
+<< /Type /Pages
+/Kids [6 0 R 10 0 R 13 0 R 16 0 R 19 0 R ]
+/Count 5
+>>
+endobj
+xref
+0 22
+0000000000 65535 f
+0000000019 00000 n
+0000000091 00000 n
+0000007006 00000 n
+0000000143 00000 n
+0000000190 00000 n
+0000000422 00000 n
+0000000575 00000 n
+0000001908 00000 n
+0000000309 00000 n
+0000001931 00000 n
+0000002086 00000 n
+0000003416 00000 n
+0000003440 00000 n
+0000003595 00000 n
+0000004981 00000 n
+0000005005 00000 n
+0000005160 00000 n
+0000005826 00000 n
+0000005849 00000 n
+0000006004 00000 n
+0000006983 00000 n
+trailer
+<< /Size 22
+/Root 1 0 R
+/Info 5 0 R
+>>
+startxref
+7099
+%%EOF
