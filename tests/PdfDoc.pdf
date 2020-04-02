@@ -18,7 +18,7 @@ endobj
 endobj
 5 0 obj
 <<
-/CreationDate (D:20200401125337)
+/CreationDate (D:20200402145058)
 /Author (Gary Menchen)
 /Producer (Gary Menchens PDF Code)
 >>
@@ -1666,7 +1666,7 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(		does encoding to 'ascii', appends '\r\n' to the end, \(per pdf specs\)
+(		does encoding to 'ascii' \(???\), appends '\r\n' to the end, \(per pdf specs\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
@@ -1698,11 +1698,11 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		self.handle.write\( vMessage.encode\('ascii'\)+'\r\n'\)	
+(		self.handle.write\( vMessage.encode\('ascii'\) +  b'\r\n'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(  		self.offset = self.offset + vLength 
+(		self.offset = self.offset + vLength 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
@@ -1711,7 +1711,7 @@ BT
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
 44.64 531.2 Td
-(  	def putAsIs\( self, pMessage\):
+(	def putAsIs\( self, pMessage\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
@@ -1724,239 +1724,239 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(  		can be used to output binary strings \(such as a bytearray\)
+(		can be used to output binary strings \(such as a bytearray\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(  		Seealso: put\(\)
+(		Seealso: put\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(  		"""
+(		python3 issues
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(  		self.handle.write\( pMessage \)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(  		self.offset = self.offset + len\( pMessage \)
+(		self.handle.write\( pMessage \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(  	
+(		self.offset = self.offset + len\( pMessage \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(	#! this is an internal function.   				
+(	
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(	#! <pNum> is the object number
+(	#! this is an internal function.   				
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(	#! <offset> is the offset from the start of the file
+(	#! <pNum> is the object number
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(	#! <pLabel> is, I think, unused. Originated as a debugging aid
+(	#! <offset> is the offset from the start of the file
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(	# ord pos is pNum - 1, 
+(	#! <pLabel> is, I think, unused. Originated as a debugging aid
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(	#! these can be added in any sequence
+(	# ord pos is pNum - 1, 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
+(	#! these can be added in any sequence
+) Tj
+1 0 0 1 0 0 Tm
+44.64 403.2 Td
 (	#! number 2 goes in [1] because lists start at 0
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 403.2 Td
+44.64 395.2 Td
 (	def addxRef\(self, pNum, pOffset, pLabel\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 395.2 Td
+44.64 387.2 Td
 (		while len\(self.xRefOffset\) < pNum:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 387.2 Td
+44.64 379.2 Td
 (			self.xRefOffset.append\(None\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 379.2 Td
+44.64 371.2 Td
 (		while len\(self.xRefLabel\) < pNum:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 371.2 Td
+44.64 363.2 Td
 (			self.xRefLabel.append\(None\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 363.2 Td
+44.64 355.2 Td
 (		pOrd = pNum - 1
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 355.2 Td
+44.64 347.2 Td
 (		self.xRefOffset[pOrd] = pOffset
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 347.2 Td
+44.64 339.2 Td
 (		self.xRefLabel[pOrd] =  pLabel
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 339.2 Td
+44.64 331.2 Td
 (		# debug point here		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 331.2 Td
+44.64 323.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 323.2 Td
+44.64 315.2 Td
 (	#! registers a font for use in the document. Ok to call
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 315.2 Td
+44.64 307.2 Td
 (	#! multiple times.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 307.2 Td
+44.64 299.2 Td
 (	#R returns the font's index in the document fontOjbNoList list.
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 299.2 Td
+44.64 291.2 Td
 (	def registerFont\(self, pFontKey\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 291.2 Td
+44.64 283.2 Td
 (		""" internal use 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 283.2 Td
+44.64 275.2 Td
 (		Writes sufficient font information to the pdf file for the font to be usable.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 275.2 Td
+44.64 267.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 267.2 Td
+44.64 259.2 Td
 (		vPtr = -1
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 259.2 Td
+44.64 251.2 Td
 (		if len\(self.fontKeyList\) > 0:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 251.2 Td
+44.64 243.2 Td
 (			for i in range\(0, len\(self.fontKeyList\)\):
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 243.2 Td
+44.64 235.2 Td
 (				if self.fontKeyList[i] == pFontKey:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 235.2 Td
+44.64 227.2 Td
 (					vPtr = i
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 227.2 Td
+44.64 219.2 Td
 (		vFontPtr = None
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 219.2 Td
+44.64 211.2 Td
 (		if vPtr == -1:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 211.2 Td
+44.64 203.2 Td
 (			# then the font has not been registred
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 203.2 Td
+44.64 195.2 Td
 (			vFontPtr = self.findFontByKey\( pFontKey\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 195.2 Td
+44.64 187.2 Td
 (			assert vFontPtr > -1,'Invalid font key '+ pFontKey
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 187.2 Td
+44.64 179.2 Td
 (			self.fontKeyList.append\( pFontKey \)			
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 179.2 Td
+44.64 171.2 Td
 (			vPtr = len\( self.fontKeyList\) - 1
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 171.2 Td
+44.64 163.2 Td
 (			self.fontObjNoList.append\( self.getNextObjNo\(\)\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 163.2 Td
+44.64 155.2 Td
 (			self.addxRef\( self.fontObjNoList[-1], self.offset,'font'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 155.2 Td
+44.64 147.2 Td
 (			self.put\(str\(self.fontObjNoList[vPtr]\) + ' 0 obj'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 147.2 Td
+44.64 139.2 Td
 (			self.put\('<< /Type /Font'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 139.2 Td
+44.64 131.2 Td
 (			self.put\('   /Subtype /Type1'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 131.2 Td
+44.64 123.2 Td
 (			self.put\('   /Name /' +  self.fontKeyList[vPtr]\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 123.2 Td
+44.64 115.2 Td
 (			self.put\('   /BaseFont /' + self.pvFontTable[vFontPtr].name\)  # ; -- Courier'\);
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 115.2 Td
+44.64 107.2 Td
 (			self.put\('   /Encoding /WinAnsiEncoding'\);
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 107.2 Td
+44.64 99.2 Td
 (			self.put\('>>'\);
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 99.2 Td
+44.64 91.2 Td
 (			self.put\('endobj'\);
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 91.2 Td
+44.64 83.2 Td
 (		vObjectNo = self.fontObjNoList[vPtr]
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 83.2 Td
+44.64 75.2 Td
 (		return vObjectNo   
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 75.2 Td
+44.64 67.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 67.2 Td
+44.64 59.2 Td
 (	def setDefaultFont\(self, pFontKey, pFontSize\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 59.2 Td
-(		""" set the currentFontkey and currentFontSize attributes of the PdfDocument 
-) Tj
-1 0 0 1 0 0 Tm
 /F1I 6 Tf
 32.76 28.8 Td
 (PdfDoc.py) Tj
@@ -1968,7 +1968,7 @@ ET
 endstream
 endobj
 23 0 obj
-6758
+6690
 endobj
 24 0 obj
 << /Type /Page
@@ -1991,351 +1991,351 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		.. seealso:: setFont\(\)
+(		""" set the currentFontkey and currentFontSize attributes of the PdfDocument 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(		"""
+(		.. seealso:: setFont\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(		self.currentFontKey = pFontKey
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(		self.currentFontSize = pFontSize
+(		self.currentFontKey = pFontKey
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(  		
+(		self.currentFontSize = pFontSize
+) Tj
+1 0 0 1 0 0 Tm
+44.64 699.2 Td
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 699.2 Td
+44.64 691.2 Td
 (	def writeHeader\( self \): 
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 691.2 Td
+44.64 683.2 Td
 (		""" write the beginning of the pdf file. Writes the current date to the header,
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 683.2 Td
+44.64 675.2 Td
 (		and my name as well.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 675.2 Td
+44.64 667.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 667.2 Td
+44.64 659.2 Td
 (		_vBucket = 0
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 659.2 Td
+44.64 651.2 Td
 (		self.offset = 0
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 651.2 Td
+44.64 643.2 Td
 (		self.put\('%PDF-1.2'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 643.2 Td
-(
-) Tj
-1 0 0 1 0 0 Tm
 44.64 635.2 Td
-(		#  -- Try some high order bytes on the second line. This is a convention
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 627.2 Td
-(		#  -- to prevent some programs from treating this as an ascii text file,
+(		#  -- Try some high order bytes on the second line. This is a convention
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(		#  -- and possibly converting eol characters
+(		#  -- to prevent some programs from treating this as an ascii text file,
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(		bytes = bytearray\([ 37, 37,  25, \(15 * 16\) + 2, \(15 * 16\) + 3, \(13 * 16\) + 15, \(14 * 16 \) + 3, 13, 10]\)
+(		#  -- and possibly converting eol characters
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(  		#self.put\('%%'+chr\(25\)+chr\(\(15*16\)+2\)+chr\(\(15*16\)+3\)+chr\(\(13*16\)+15\) + chr\( \(14 * 16\) + 3\)\) 
+(		bytes = bytearray\([ 37, 37,  25, \(15 * 16\) + 2, \(15 * 16\) + 3, \(13 * 16\) + 15, \(14 * 16 \) + 3, 13, 10]\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
-(		self.putAsIs\( bytes \)
+(		#self.put\('%%'+chr\(25\)+chr\(\(15*16\)+2\)+chr\(\(15*16\)+3\)+chr\(\(13*16\)+15\) + chr\( \(14 * 16\) + 3\)\) 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 587.2 Td
-(		#self.put\('%%'\)
+(		self.putAsIs\( bytes \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 579.2 Td
-(		#  -- Write the catalog. Pages in object 3
+(		#self.put\('%%'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 571.2 Td
-(		self.addxRef\(1,self.offset,'Catalog'\)
+(		#  -- Write the catalog. Pages in object 3
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 563.2 Td
-(  		self.put\('1 0 obj'\)
+(		self.addxRef\(1,self.offset,'Catalog'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		self.put\('<<'\)
+(		self.put\('1 0 obj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(  		self.put\('/Type /Catalog'\)
+(		self.put\('<<'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(		self.put\('/Pages 3 0 R'\)
+(		self.put\('/Type /Catalog'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		self.put\('/Outlines 2 0 R'\)
+(		self.put\('/Pages 3 0 R'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		self.put\('>>'\)
+(		self.put\('/Outlines 2 0 R'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
-(		self.put\('endobj'\)
+(		self.put\('>>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(		self.addxRef\(2,self.offset,'Outlines'\)
+(		self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		self.put\('2 0 obj'\)
+(		self.addxRef\(2,self.offset,'Outlines'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		self.put\('<<'\)
+(		self.put\('2 0 obj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		self.put\('/Type /Outlines'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 475.2 Td
-(		self.put\('/Count 0'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 467.2 Td
-(		self.put\('>>'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 459.2 Td
-(		self.put\('endobj'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 451.2 Td
-(  		#-- add a procset
-) Tj
-1 0 0 1 0 0 Tm
-44.64 443.2 Td
-(		self.addxRef\(4,self.offset,'ProcSet'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 435.2 Td
-(		self.put\('4 0 obj'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 427.2 Td
-(		self.put\('  [/PDF /Text /ImageB /ImageC]'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 419.2 Td
-(		self.put\('endobj'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 411.2 Td
-(		# -- Add some information
-) Tj
-1 0 0 1 0 0 Tm
-44.64 403.2 Td
-(		self.addxRef\(5,self.offset,'General Info'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 395.2 Td
-(		self.put\('5 0 obj'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 387.2 Td
 (		self.put\('<<'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 379.2 Td
-(		self.put\('/CreationDate \(D:' + datetime.datetime.now\(\).strftime\('%Y%m%d%H%M%S'\) + '\)'\)
+44.64 475.2 Td
+(		self.put\('/Type /Outlines'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 371.2 Td
-(		self.put\('/Author \(Gary Menchen\)'\)
+44.64 467.2 Td
+(		self.put\('/Count 0'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 363.2 Td
-(		self.put\('/Producer \(Gary Menchen''s PDF Code\)'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 355.2 Td
+44.64 459.2 Td
 (		self.put\('>>'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 347.2 Td
+44.64 451.2 Td
 (		self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 443.2 Td
+(		#-- add a procset
+) Tj
+1 0 0 1 0 0 Tm
+44.64 435.2 Td
+(		self.addxRef\(4,self.offset,'ProcSet'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 427.2 Td
+(		self.put\('4 0 obj'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 419.2 Td
+(		self.put\('  [/PDF /Text /ImageB /ImageC]'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 411.2 Td
+(		self.put\('endobj'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 403.2 Td
+(		# -- Add some information
+) Tj
+1 0 0 1 0 0 Tm
+44.64 395.2 Td
+(		self.addxRef\(5,self.offset,'General Info'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 387.2 Td
+(		self.put\('5 0 obj'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 379.2 Td
+(		self.put\('<<'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 371.2 Td
+(		self.put\('/CreationDate \(D:' + datetime.datetime.now\(\).strftime\('%Y%m%d%H%M%S'\) + '\)'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 363.2 Td
+(		self.put\('/Author \(Gary Menchen\)'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 355.2 Td
+(		self.put\('/Producer \(Gary Menchen''s PDF Code\)'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 347.2 Td
+(		self.put\('>>'\)
+) Tj
+1 0 0 1 0 0 Tm
 44.64 339.2 Td
-(		self.nextObjNo  = 6
+(		self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 331.2 Td
-(
+(		self.nextObjNo  = 6
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 323.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 315.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 307.2 Td
 (	def writePages\(self, pObject, pParent = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 307.2 Td
+44.64 299.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 299.2 Td
+44.64 291.2 Td
 (		Internal use.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 291.2 Td
+44.64 283.2 Td
 (		#-- Goal is to have about 6 page objects as children of a page object.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 283.2 Td
+44.64 275.2 Td
 (		#-- The parent number is assigned to each /page object by the GetNewPage
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 275.2 Td
+44.64 267.2 Td
 (		#-- function. For each page.parentobj# value we write a single /pages object,
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 267.2 Td
+44.64 259.2 Td
 (		#-- write the /Page object numbers to the kids list,and, if we are not at
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 259.2 Td
+44.64 251.2 Td
 (		#-- the end of the list of page objects, add the parentobj# of the subsequent
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 251.2 Td
+44.64 243.2 Td
 (		#-- page. As a result each /Pages object will have a kids list that contains
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 243.2 Td
+44.64 235.2 Td
 (		#-- up to 6 /Page objects.  The kids list will end with a reference to another
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 235.2 Td
+44.64 227.2 Td
 (		#-- /Pages object if we are not at the end of the list of /Page objects.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 227.2 Td
-( 		#  -- Note that the parameters after pDoc are not used.
-) Tj
-1 0 0 1 0 0 Tm
 44.64 219.2 Td
-( 		"""
+(		#  -- Note that the parameters after pDoc are not used.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(		vParent = None
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(		vObject = None
+(		vParent = None
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
-(		i  = None
+(		vObject = None
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(		vLine = ''
+(		i  = None
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
-(		vPageCtr  = 0 #-- number of /page objects listed in a /pages object
+(		vLine = ''
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 171.2 Td
-(		vTotalPages = len\( self.pageObjList \)
+(		vPageCtr  = 0 #-- number of /page objects listed in a /pages object
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 163.2 Td
-(	  	i = 0
+(		vTotalPages = len\( self.pageObjList \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 155.2 Td
-(		while i  < len\(self.pageObjList\):
+(		i = 0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 147.2 Td
-(		    #-- begin the pages object
+(		while i  < len\(self.pageObjList\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 139.2 Td
-(			vObject = self.pageParentList[i]
+(			#-- begin the pages object
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 131.2 Td
-(			self.addxRef\(vObject,self.offset,'Pages'\)
+(			vObject = self.pageParentList[i]
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 123.2 Td
-(			self.put\(str\(vObject\) + ' 0  obj'\)
+(			self.addxRef\(vObject,self.offset,'Pages'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 115.2 Td
-(			self.put\('<< /Type /Pages'\)
+(			self.put\(str\(vObject\) + ' 0  obj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 107.2 Td
-(			if i > 0: 
+(			self.put\('<< /Type /Pages'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 99.2 Td
-(				self.put\('/Parent ' + str\(vParent\)+ ' 0 R'\)
+(			if i > 0: 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 91.2 Td
-(			vLine = '/Kids ['
+(				self.put\('/Parent ' + str\(vParent\)+ ' 0 R'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 83.2 Td
-(			vPageCtr = 0
+(			vLine = '/Kids ['
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 75.2 Td
-(			while i <    len\(self.pageObjList\) and vObject == self.pageParentList[i]:
+(			vPageCtr = 0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 67.2 Td
-(				vLine = vLine + str\(self.pageObjList[i]\) + ' 0 R '
+(			while i <    len\(self.pageObjList\) and vObject == self.pageParentList[i]:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(				vPageCtr = vPageCtr + 1
+(				vLine = vLine + str\(self.pageObjList[i]\) + ' 0 R '
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -2349,7 +2349,7 @@ ET
 endstream
 endobj
 26 0 obj
-6782
+6817
 endobj
 28 0 obj
 << /Type /Page
@@ -2372,361 +2372,361 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(				i = i + 1;
+(				vPageCtr = vPageCtr + 1
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(			#	-- Check if we need to add a /Pages object to the end of the kids list
+(				i = i + 1;
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(			if i < len\(self.pageObjList\) :
+(			#	-- Check if we need to add a /Pages object to the end of the kids list
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(				vLine = vLine + str\(self.pageParentList[i]\) + ' 0 R '
+(			if i < len\(self.pageObjList\) :
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(				vParent = vObject
+(				vLine = vLine + str\(self.pageParentList[i]\) + ' 0 R '
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 699.2 Td
-(			# --'Parent changed to ' || to_Char\(vParent\)\);
+(				vParent = vObject
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 691.2 Td
-(			vLine = vLine + ']'
+(			# --'Parent changed to ' || to_Char\(vParent\)\);
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 683.2 Td
-(			self.put\( vLine\)
+(			vLine = vLine + ']'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 675.2 Td
-(			self.put\( '/Count ' + str\(vTotalPages\)\)
+(			self.put\( vLine\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 667.2 Td
-(			self.put\('>>'\)
+(			self.put\( '/Count ' + str\(vTotalPages\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 659.2 Td
-(			self.put\('endobj'\)
+(			self.put\('>>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 651.2 Td
-(			vTotalPages = vTotalPages - vPageCtr
+(			self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 643.2 Td
-(		# end of main loop
+(			vTotalPages = vTotalPages - vPageCtr
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 635.2 Td
-(	# end writePages
+(		# end of main loop
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 627.2 Td
+(	# end writePages
+) Tj
+1 0 0 1 0 0 Tm
+44.64 619.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 619.2 Td
+44.64 611.2 Td
 (	def writexRef\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 611.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(		
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
-(		#! write the cross-reference table and the trailer at the end of the document
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 587.2 Td
-(		"""
+(		#! write the cross-reference table and the trailer at the end of the document
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 579.2 Td
-(		self.writePages\(3,None\)	
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 571.2 Td
-(		vOffset = self.offset
+(		self.writePages\(3,None\)	
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 563.2 Td
-(		self.put\('xref'\)
+(		vOffset = self.offset
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		vNext = self.getNextObjNo\(\)
+(		self.put\('xref'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(		self.put\('0 ' + str\(vNext\)\)
+(		vNext = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(		self.put\( str\(0\).zfill\(10\)  +' '+str\(65535\).zfill\(5\)+' f' \)
+(		self.put\('0 ' + str\(vNext\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(
+(		self.put\( str\(0\).zfill\(10\)  +' '+str\(65535\).zfill\(5\)+' f' \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		for i in range\(0, len\(self.xRefOffset\) \):
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
-(			self.put\( str\( self.xRefOffset[i]\).zfill\(10\) +' '+str\(0\).zfill\(5\)+' n'\)
+(		for i in range\(0, len\(self.xRefOffset\) \):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(
+(			self.put\( str\( self.xRefOffset[i]\).zfill\(10\) +' '+str\(0\).zfill\(5\)+' n'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		self.put\('trailer'\)
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		self.put\('<< /Size ' + str\(vNext\)\)
+(		self.put\('trailer'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		self.put\('   /Root 1 0 R'\)
+(		self.put\('<< /Size ' + str\(vNext\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		self.put\('   /Info 5 0 R'\)
+(		self.put\('   /Root 1 0 R'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(		self.put\('>>'\)
+(		self.put\('   /Info 5 0 R'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(		self.put\('startxref'\)
+(		self.put\('>>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(		self.put\(str\(vOffset\)\)
+(		self.put\('startxref'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(		self.put\( '%%EOF'\)
+(		self.put\(str\(vOffset\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(
+(		self.put\( '%%EOF'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 419.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 411.2 Td
 (	def checkMeasurementUnit\(self, pUnit\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 411.2 Td
+44.64 403.2 Td
 (		""" validate the unit of measurement: r, c, i, p or m """ 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 403.2 Td
+44.64 395.2 Td
 (		assert pUnit in [ 'r','c','i','p','m'],'Invalid Unit :'+ pUnit+':'
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 395.2 Td
+44.64 387.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 387.2 Td
+44.64 379.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 379.2 Td
+44.64 371.2 Td
 (	def addFont\( self, fontName, fontKey, pFixedOrVar, pAvgSize\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 371.2 Td
+44.64 363.2 Td
 (		""" add a font to the pvFontTable attribute. Primarily for internal use. """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 363.2 Td
+44.64 355.2 Td
 (		font = PdfFont\( fontKey, fontName, pFixedOrVar, pAvgSize \)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 355.2 Td
-(		self.pvFontTable.append\( font  \) 
-) Tj
-1 0 0 1 0 0 Tm
 44.64 347.2 Td
-(
+(		self.pvFontTable.append\( font  \) 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 339.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 331.2 Td
-(	def beginDoc\(self,  name = None\):
-) Tj
-1 0 0 1 0 0 Tm
-/F1 8 Tf
-44.64 323.2 Td
-(		""" 
-) Tj
-1 0 0 1 0 0 Tm
-44.64 315.2 Td
-(		Initialize a new document. In general <name> should be passed as a parameter.
-) Tj
-1 0 0 1 0 0 Tm
-44.64 307.2 Td
-(		This method opens the output file for writing. If name is not passed as a parameter,
-) Tj
-1 0 0 1 0 0 Tm
-44.64 299.2 Td
-(		and the attribute has not been previously set, then an error will be generated.
-) Tj
-1 0 0 1 0 0 Tm
-44.64 291.2 Td
-(		seealso: setFileName\(self, pName\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 283.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
-44.64 275.2 Td
-(		if name is not None:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 267.2 Td
-(			self.fileName = name
-) Tj
-1 0 0 1 0 0 Tm
-44.64 259.2 Td
-(		assert self.fileName is not None
-) Tj
-1 0 0 1 0 0 Tm
-44.64 251.2 Td
-(		# open the file
-) Tj
-1 0 0 1 0 0 Tm
-44.64 243.2 Td
-(		self.handle = open\( self.fileName,'w'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 235.2 Td
-(		self.writeHeader\(  \)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 227.2 Td
-(		self.setDefaultFont\('F1',10\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 219.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
+44.64 323.2 Td
+(	def beginDoc\(self,  name = None\):
+) Tj
+1 0 0 1 0 0 Tm
+/F1 8 Tf
+44.64 315.2 Td
+(		""" 
+) Tj
+1 0 0 1 0 0 Tm
+44.64 307.2 Td
+(		Initialize a new document. In general <name> should be passed as a parameter.
+) Tj
+1 0 0 1 0 0 Tm
+44.64 299.2 Td
+(		This method opens the output file for writing. If name is not passed as a parameter,
+) Tj
+1 0 0 1 0 0 Tm
+44.64 291.2 Td
+(		and the attribute has not been previously set, then an error will be generated.
+) Tj
+1 0 0 1 0 0 Tm
+44.64 283.2 Td
+(		seealso: setFileName\(self, pName\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 275.2 Td
+(		"""
+) Tj
+1 0 0 1 0 0 Tm
+44.64 267.2 Td
+(		if name is not None:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 259.2 Td
+(			self.fileName = name
+) Tj
+1 0 0 1 0 0 Tm
+44.64 251.2 Td
+(		assert self.fileName is not None
+) Tj
+1 0 0 1 0 0 Tm
+44.64 243.2 Td
+(		# open the file
+) Tj
+1 0 0 1 0 0 Tm
+44.64 235.2 Td
+(		self.handle = open\( self.fileName,'wb'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 227.2 Td
+(		self.writeHeader\(  \)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 219.2 Td
+(		self.setDefaultFont\('F1',10\)
+) Tj
+1 0 0 1 0 0 Tm
 44.64 211.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 203.2 Td
 (	def endDoc\(self\)	:
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 203.2 Td
+44.64 195.2 Td
 (		""" after all pages are ended. Finish the document, close the file """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 195.2 Td
+44.64 187.2 Td
 (		self.writexRef\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 187.2 Td
+44.64 179.2 Td
 (		self.handle.close\(\)	
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 179.2 Td
+44.64 171.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 171.2 Td
+44.64 163.2 Td
 (	def getFileName\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 163.2 Td
+44.64 155.2 Td
 (		""" Return the name of the file. appends .pdf if no extension has been specified."""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 155.2 Td
+44.64 147.2 Td
 (		if self.fileName is None or len\(self.fileName\) == 0:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 147.2 Td
+44.64 139.2 Td
 (			vReturn = 'pdftest.pdf'
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 139.2 Td
+44.64 131.2 Td
 (		else:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 131.2 Td
+44.64 123.2 Td
 (			vReturn = self.fileName
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 123.2 Td
+44.64 115.2 Td
 (		if not '.' in vReturn:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 115.2 Td
+44.64 107.2 Td
 (			vReturn = vReturn  + '.pdf'
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 107.2 Td
+44.64 99.2 Td
 (		return vReturn
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 99.2 Td
+44.64 91.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 91.2 Td
+44.64 83.2 Td
 (	def setFileName\(self, pName\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 83.2 Td
+44.64 75.2 Td
 (		""" set the fileName attribute 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 75.2 Td
+44.64 67.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 67.2 Td
-(		self.fileName = pName
-) Tj
-1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		
+(		self.fileName = pName
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -2740,7 +2740,7 @@ ET
 endstream
 endobj
 30 0 obj
-6368
+6394
 endobj
 31 0 obj
 << /Type /Page
@@ -2763,117 +2763,117 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
+(		
+) Tj
+1 0 0 1 0 0 Tm
+44.64 731.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 731.2 Td
+44.64 723.2 Td
 (	def newFormXObject\( self, pName, pWidth = 8.5 * 72, pHeight = 11.0 * 72, pUnit = 'p'\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 723.2 Td
+44.64 715.2 Td
 (		""" 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 715.2 Td
+44.64 707.2 Td
 (		Generates a new XObject and appends to the pvObjectTable list.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 707.2 Td
+44.64 699.2 Td
 (		An XObject may be moveable, depending upon the relationship between
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 699.2 Td
+44.64 691.2 Td
 (		the /BBox bounding box and the tm text Matrix.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 691.2 Td
+44.64 683.2 Td
 (		Positioning in an XObject must be within the bounds of the /BBox.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 683.2 Td
+44.64 675.2 Td
 (		Currently the /BBox is 0 0 :pWidth: :pHeight:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 675.2 Td
+44.64 667.2 Td
 (		seealso: endFormXObject\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 667.2 Td
+44.64 659.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 659.2 Td
+44.64 651.2 Td
 (		vPage = PdfPage\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 651.2 Td
+44.64 643.2 Td
 (		vPage.name = pName
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 643.2 Td
+44.64 635.2 Td
 (		vPage.pageObjNo = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 635.2 Td
-(		
-) Tj
-1 0 0 1 0 0 Tm
 44.64 627.2 Td
-(		vUnit = self.resolveUnit\(pUnit, 'c'\)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(		vWidth = self.convertUnits\( pWidth, vUnit, 'p'\)
+(		vUnit = self.resolveUnit\(pUnit, 'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(		vUnit = self.resolveUnit\(pUnit, 'r'\)
+(		vWidth = self.convertUnits\( pWidth, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(		vHeight = self.convertUnits\(pHeight, vUnit,'p'\)
+(		vUnit = self.resolveUnit\(pUnit, 'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
-(		
+(		vHeight = self.convertUnits\(pHeight, vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 587.2 Td
-(		# use of XForm object is in transition
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 579.2 Td
-(		vObject = XObject\(\)
+(		# use of XForm object is in transition
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 571.2 Td
-(		vObject.name = pName
+(		vObject = XObject\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 563.2 Td
-(		vObject.objectNo = vPage.pageObjNo
+(		vObject.name = pName
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		vObject.width = vWidth
+(		vObject.objectNo = vPage.pageObjNo
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(		vObject.height = vHeight
+(		vObject.width = vWidth
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(		vPage.width = vWidth
+(		vObject.height = vHeight
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		vPage.height = vHeight
+(		vPage.width = vWidth
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		
+(		vPage.height = vHeight
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
@@ -2885,231 +2885,231 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		self.pvXObjectTable.append\( vObject \)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		self.page = vPage
+(		self.pvXObjectTable.append\( vObject \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		self.setFont\( self.currentFontKey, self.currentFontSize\)
+(		self.page = vPage
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		self.currentRow = 0
+(		self.setFont\( self.currentFontKey, self.currentFontSize\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(		self.currentCol = 0
+(		self.currentRow = 0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(
+(		self.currentCol = 0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 443.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 435.2 Td
 (	def newPage\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 435.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(		Initialize a new page - required for each page of output.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(		Tracks the page hierarchy, internally.
+(		Initialize a new page - required for each page of output.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
-(		"""
+(		Tracks the page hierarchy, internally.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 403.2 Td
-(		vPage = PdfPage\(\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 395.2 Td
-(		vPage.pageObjNo = self.getNextObjNo\(\)
+(		vPage = PdfPage\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		vPage.streamObjNo = self.getNextObjNo\(\)
+(		vPage.pageObjNo = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 379.2 Td
-(		vPage.sizeObjNo = self.getNextObjNo\(\)
+(		vPage.streamObjNo = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 371.2 Td
-(		self.currentPageNo = self.currentPageNo + 1
+(		vPage.sizeObjNo = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 363.2 Td
-(		vPage.pageNo = self.currentPageNo
+(		self.currentPageNo = self.currentPageNo + 1
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 355.2 Td
-(		
+(		vPage.pageNo = self.currentPageNo
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 347.2 Td
-(		self.pageObjList.append\( vPage.pageObjNo  \)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 339.2 Td
-(
+(		self.pageObjList.append\( vPage.pageObjNo  \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 331.2 Td
-(		vPtr = len\(self.pageObjList\)
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 323.2 Td
-(		if vPtr % 6 == 0:
+(		vPtr = len\(self.pageObjList\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 315.2 Td
-(			# switch to a new parent
+(		if vPtr % 6 == 0:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 307.2 Td
-(			self.currentParentNo = self.getNextObjNo\(\)
+(			# switch to a new parent
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 299.2 Td
-(		self.pageParentList.append\( self.currentParentNo \) 
+(			self.currentParentNo = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 291.2 Td
-(  		vPage.parentObjNo = self.currentParentNo
+(		self.pageParentList.append\( self.currentParentNo \) 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 283.2 Td
-(  		# I don';t think there is a good reason for the font, and the row/col
+(		vPage.parentObjNo = self.currentParentNo
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 275.2 Td
-(  		# information to be attributes of the document instead of the page
+(		# I don';t think there is a good reason for the font, and the row/col
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 267.2 Td
-(	  	self.page = vPage;    
+(		# information to be attributes of the document instead of the page
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 259.2 Td
-(		self.setFont\( self.currentFontKey,self.currentFontSize\)
+(		self.page = vPage;    
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 251.2 Td
-(		self.currentRow = 0;
+(		self.setFont\( self.currentFontKey,self.currentFontSize\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 243.2 Td
-(		self.currentCol = 0;  
+(		self.currentRow = 0;
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 235.2 Td
+(		self.currentCol = 0;  
+) Tj
+1 0 0 1 0 0 Tm
+44.64 227.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 227.2 Td
+44.64 219.2 Td
 (	def endFormXObject\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 219.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(		End an XObject - much like a page must be ended
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(		Adds an entry to the xref table for the xobject, via addxRef\(\)
+(		End an XObject - much like a page must be ended
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
-(		writes out the actual xobject form entry
+(		Adds an entry to the xref table for the xobject, via addxRef\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(		writes aout any graphics stream
+(		writes out the actual xobject form entry
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
-(		writes out any textstream
+(		writes aout any graphics stream
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 171.2 Td
-(		"""
+(		writes out any textstream
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 163.2 Td
-(		self.addxRef\(self.page.pageObjNo, self.offset,'For Xobject '+self.page.name\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 155.2 Td
-(		self.put\(str\(self.page.pageObjNo\) + ' 0 obj'\)   
+(		self.addxRef\(self.page.pageObjNo, self.offset,'For Xobject '+self.page.name\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 147.2 Td
-(		self.put\('<</Type /XObject'\)
+(		self.put\(str\(self.page.pageObjNo\) + ' 0 obj'\)   
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 139.2 Td
-(		self.put\('  /Subtype /Form'\)
+(		self.put\('<</Type /XObject'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 131.2 Td
-(		self.put\('  /FormType 1'\)
+(		self.put\('  /Subtype /Form'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 123.2 Td
-(		# 792 612 is the outer dimension of a standard page
+(		self.put\('  /FormType 1'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 115.2 Td
-(		t = '[ 0    0    '+str\(self.page.height\)+'   '+str\(self.page.width \)+ ' ]'
+(		# 792 612 is the outer dimension of a standard page
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 107.2 Td
-(		self.put\('  /BBox ' + t \)
+(		t = '[ 0    0    '+str\(self.page.height\)+'   '+str\(self.page.width \)+ ' ]'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 99.2 Td
-(		self.put\('  /Matrix [1   0   0   1   0   0  ]'\)
+(		self.put\('  /BBox ' + t \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 91.2 Td
-(		self.put\('  /Resources << /Procset [ /PDF ] '\)
+(		self.put\('  /Matrix [1   0   0   1   0   0  ]'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 83.2 Td
-(		self.put\('  /Font << ' + self.page.fontList +' >>'\)
+(		self.put\('  /Resources << /Procset [ /PDF ] '\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 75.2 Td
-(		self.put\('>>'\);
+(		self.put\('  /Font << ' + self.page.fontList +' >>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 67.2 Td
-(
+(		self.put\('>>'\);
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		vLen = 0
+(
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -3123,7 +3123,7 @@ ET
 endstream
 endobj
 33 0 obj
-6495
+6479
 endobj
 34 0 obj
 << /Type /Page
@@ -3146,355 +3146,355 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		if len\(self.page.graphicsStream\) > 0:
+(		vLen = 0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(			for s in self.page.graphicsStream:
+(		if len\(self.page.graphicsStream\) > 0:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(				vLen = vLen + len\(s\) + 2
+(			for s in self.page.graphicsStream:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(		for s in self.page.textStream:
+(				vLen = vLen + len\(s\) + 2
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(			vLen = vLen + len\(s\) + 2
-) Tj
-1 0 0 1 0 0 Tm
-44.64 699.2 Td
-(			
-) Tj
-1 0 0 1 0 0 Tm
-44.64 691.2 Td
-(  		vLen = vLen + 8 #-- For Begintext and endtext \(2/6 changed from 6\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 683.2 Td
-(		self.put\('  /Length ' + str\(vLen\)\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 675.2 Td
-(		self.put\('>>'\);
-) Tj
-1 0 0 1 0 0 Tm
-44.64 667.2 Td
-(		self.put\('stream'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 659.2 Td
-(  		if  len\(self.page.graphicsStream\) > 0:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 651.2 Td
-(  			for s in self.page.graphicsStream:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 643.2 Td
-(  				self.put\(s\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 635.2 Td
-(		self.put\('BT'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 627.2 Td
 (		for s in self.page.textStream:
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 699.2 Td
+(			vLen = vLen + len\(s\) + 2
+) Tj
+1 0 0 1 0 0 Tm
+44.64 691.2 Td
+(			
+) Tj
+1 0 0 1 0 0 Tm
+44.64 683.2 Td
+(		vLen = vLen + 8 #-- For Begintext and endtext \(2/6 changed from 6\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 675.2 Td
+(		self.put\('  /Length ' + str\(vLen\)\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 667.2 Td
+(		self.put\('>>'\);
+) Tj
+1 0 0 1 0 0 Tm
+44.64 659.2 Td
+(		self.put\('stream'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 651.2 Td
+(		if  len\(self.page.graphicsStream\) > 0:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 643.2 Td
+(			for s in self.page.graphicsStream:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 635.2 Td
+(				self.put\(s\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 627.2 Td
+(		self.put\('BT'\)
+) Tj
+1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(			self.put\(s\)
+(		for s in self.page.textStream:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(		self.put\('ET'\)
+(			self.put\(s\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(		self.put\('endstream'\)
+(		self.put\('ET'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
-(		self.put\('endobj'\)
+(		self.put\('endstream'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 587.2 Td
+(		self.put\('endobj'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 579.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 579.2 Td
+44.64 571.2 Td
 (	def endPage\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 571.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 563.2 Td
-(		required at the end of each page of output. hWrites output to the pdf file,
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		and sets the page to None.
+(		required at the end of each page of output. hWrites output to the pdf file,
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(		* uses addxRef\(\) to add the page object number to the xref table
+(		and sets the page to None.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(		* writes the page object
+(		* uses addxRef\(\) to add the page object number to the xref table
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		* writes the stream as a separate object
+(		* writes the page object
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		* writes the length of the stream as a separate object. 
+(		* writes the stream as a separate object
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
-(		"""
+(		* writes the length of the stream as a separate object. 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(		self.addxRef\(self.page.pageObjNo, self.offset, 'Page ' + str\(self.page.pageNo\)\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		self.put\(str\(self.page.pageObjNo\) + ' 0 obj'\)
+(		self.addxRef\(self.page.pageObjNo, self.offset, 'Page ' + str\(self.page.pageNo\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		self.put\('<< /Type /Page'\)
+(		self.put\(str\(self.page.pageObjNo\) + ' 0 obj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		self.put\('   /Parent ' + str\(self.page.parentObjNo\) + ' 0 R'\)
+(		self.put\('<< /Type /Page'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		self.put\('  /MediaBox [0 0 ' + str\(self.pageWidth\)+  ' ' + str\(self.pageHeight\)+']' \)
+(		self.put\('   /Parent ' + str\(self.page.parentObjNo\) + ' 0 R'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(
+(		self.put\('  /MediaBox [0 0 ' + str\(self.pageWidth\)+  ' ' + str\(self.pageHeight\)+']' \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(  		self.put\('   /Contents ' +  str\(self.page.streamObjNo\)+' 0 R'\)
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(		self.put\('   /Resources << /ProcSet 4 0 R '\)
+(		self.put\('   /Contents ' +  str\(self.page.streamObjNo\)+' 0 R'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(  		if len\(self.page.xObjectList\) > 0:
+(		self.put\('   /Resources << /ProcSet 4 0 R '\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(			self.put\('   /XObject << ' +  self.page.xObjectList +' >>'\)
+(		if len\(self.page.xObjectList\) > 0:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(
+(			self.put\('   /XObject << ' +  self.page.xObjectList +' >>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(		self.put\('                 /Font << ' +  self.page.fontList + ' >>'\)
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
-(		self.put\('              >>'\)
+(		self.put\('                 /Font << ' +  self.page.fontList + ' >>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 403.2 Td
-(		self.put\('>>'\)
+(		self.put\('              >>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 395.2 Td
-(		self.put\('endobj'\)
+(		self.put\('>>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		#-- now the stream
-) Tj
-1 0 0 1 0 0 Tm
-44.64 379.2 Td
-(		
-) Tj
-1 0 0 1 0 0 Tm
-44.64 371.2 Td
-(		self.addxRef\(self.page.streamObjNo,self.offset,'Stream ' + str\(self.page.pageNo\)\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 363.2 Td
-(		self.put\(str\(self.page.streamObjNo\) + ' 0 obj'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 355.2 Td
-(		self.put\('<< /Length ' + str\(self.page.sizeObjNo\) + ' 0 R >>'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 347.2 Td
-(		self.put\('stream'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 339.2 Td
-(		vLen = 0
-) Tj
-1 0 0 1 0 0 Tm
-44.64 331.2 Td
-(		if len\(self.page.graphicsStream \) > 0:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 323.2 Td
-(			for s in self.page.graphicsStream:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 315.2 Td
-(				self.put\(s\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 307.2 Td
-(				vLen = vLen + len\(s\) + 2
-) Tj
-1 0 0 1 0 0 Tm
-44.64 299.2 Td
-(  		self.put\('BT'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 291.2 Td
-(		for s in self.page.textStream:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 283.2 Td
-(			self.put\( s\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 275.2 Td
-(			vLen = vLen + len\(s\) + 2
-) Tj
-1 0 0 1 0 0 Tm
-44.64 267.2 Td
-(		self.put\('ET'\);
-) Tj
-1 0 0 1 0 0 Tm
-44.64 259.2 Td
-(  		vLen = vLen + 8 # -- For BT and ET
-) Tj
-1 0 0 1 0 0 Tm
-44.64 251.2 Td
-(  		self.put\('endstream'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 243.2 Td
 (		self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 379.2 Td
+(		#-- now the stream
+) Tj
+1 0 0 1 0 0 Tm
+44.64 371.2 Td
+(		
+) Tj
+1 0 0 1 0 0 Tm
+44.64 363.2 Td
+(		self.addxRef\(self.page.streamObjNo,self.offset,'Stream ' + str\(self.page.pageNo\)\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 355.2 Td
+(		self.put\(str\(self.page.streamObjNo\) + ' 0 obj'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 347.2 Td
+(		self.put\('<< /Length ' + str\(self.page.sizeObjNo\) + ' 0 R >>'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 339.2 Td
+(		self.put\('stream'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 331.2 Td
+(		vLen = 0
+) Tj
+1 0 0 1 0 0 Tm
+44.64 323.2 Td
+(		if len\(self.page.graphicsStream \) > 0:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 315.2 Td
+(			for s in self.page.graphicsStream:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 307.2 Td
+(				self.put\(s\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 299.2 Td
+(				vLen = vLen + len\(s\) + 2
+) Tj
+1 0 0 1 0 0 Tm
+44.64 291.2 Td
+(		self.put\('BT'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 283.2 Td
+(		for s in self.page.textStream:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 275.2 Td
+(			self.put\( s\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 267.2 Td
+(			vLen = vLen + len\(s\) + 2
+) Tj
+1 0 0 1 0 0 Tm
+44.64 259.2 Td
+(		self.put\('ET'\);
+) Tj
+1 0 0 1 0 0 Tm
+44.64 251.2 Td
+(		vLen = vLen + 8 # -- For BT and ET
+) Tj
+1 0 0 1 0 0 Tm
+44.64 243.2 Td
+(		self.put\('endstream'\)
+) Tj
+1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(		#-- Now write the length object
+(		self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(		self.addxRef\(self.page.sizeObjNo,self.offset,'Size ' +  str\(self.page.pageNo\)\)
+(		#-- Now write the length object
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(		self.put\(str\(self.page.sizeObjNo\) + ' 0 obj'\)
+(		self.addxRef\(self.page.sizeObjNo,self.offset,'Size ' +  str\(self.page.pageNo\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(  		self.put\('  ' + str\(vLen - 2\) \)
+(		self.put\(str\(self.page.sizeObjNo\) + ' 0 obj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(  		self.put\('endobj'\)
+(		self.put\('  ' + str\(vLen - 2\) \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
-(  		self.page = None
+(		self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(
+(		self.page = None
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 171.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 163.2 Td
 (	def setDefaultUnit\( self, pUnit\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 163.2 Td
+44.64 155.2 Td
 (		""" Set the defaultUnit attribute """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 155.2 Td
+44.64 147.2 Td
 (		self.defaultUnit = pUnit
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 147.2 Td
+44.64 139.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 139.2 Td
+44.64 131.2 Td
 (	def getDefaultUnit\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 131.2 Td
+44.64 123.2 Td
 (		"""return the current value of the defaultUnit attribute """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 123.2 Td
+44.64 115.2 Td
 (		return self.defaultUnit
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 115.2 Td
+44.64 107.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 107.2 Td
+44.64 99.2 Td
 (	def convertUnits\(self, pUnits, pFrom, pTo\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 99.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 91.2 Td
-(		Convert between any of the different units of measurement.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 83.2 Td
-(		Units may be i: inches r: row c: col p: points. Default is p
+(		Convert between any of the different units of measurement.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 75.2 Td
-(		r and c use charWidth and lineHeight
+(		Units may be i: inches r: row c: col p: points. Default is p
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 67.2 Td
-(		"""
+(		r and c use charWidth and lineHeight
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		# 1 millimeter = 0.0393701 inches
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -3508,7 +3508,7 @@ ET
 endstream
 endobj
 36 0 obj
-6601
+6552
 endobj
 37 0 obj
 << /Type /Page
@@ -3531,357 +3531,357 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		self.checkMeasurementUnit\( pFrom \)
+(		# 1 millimeter = 0.0393701 inches
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(		self.checkMeasurementUnit\( pTo\)
+(		self.checkMeasurementUnit\( pFrom \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(		if pFrom == 'i':
+(		self.checkMeasurementUnit\( pTo\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(			vPoints = pUnits * 72
+(		if pFrom == 'i':
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(		elif pFrom == 'r':
+(			vPoints = pUnits * 72
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 699.2 Td
-(			vPoints = pUnits * self.lineHeight
+(		elif pFrom == 'r':
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 691.2 Td
-(		elif pFrom == 'c':
+(			vPoints = pUnits * self.lineHeight
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 683.2 Td
-(			vPoints = pUnits * self.charWidth
+(		elif pFrom == 'c':
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 675.2 Td
-(		elif pFrom == 'p':
+(			vPoints = pUnits * self.charWidth
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 667.2 Td
-(			vPoints = pUnits
+(		elif pFrom == 'p':
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 659.2 Td
-(		elif pFrom == 'm':
-) Tj
-1 0 0 1 0 0 Tm
-44.64 651.2 Td
-(			vPoints  = pUnits * 0.0393701 / 72.0
-) Tj
-1 0 0 1 0 0 Tm
-44.64 643.2 Td
-(		else:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 635.2 Td
 (			vPoints = pUnits
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 627.2 Td
-(			
+44.64 651.2 Td
+(		elif pFrom == 'm':
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 619.2 Td
-(		if pTo == 'i':
+44.64 643.2 Td
+(			vPoints  = pUnits * 0.0393701 / 72.0
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 611.2 Td
-(			vReturn = vPoints / 72.0
-) Tj
-1 0 0 1 0 0 Tm
-44.64 603.2 Td
-(		elif pTo == 'r' :
-) Tj
-1 0 0 1 0 0 Tm
-44.64 595.2 Td
-(			vReturn	= vPoints / \( 1.0 * self.lineHeight	\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 587.2 Td
-(		elif pTo == 'c':
-) Tj
-1 0 0 1 0 0 Tm
-44.64 579.2 Td
-(			vReturn = vPoints / \(1.0 * self.charWidth\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 571.2 Td
-(		elif pTo == 'm':
-) Tj
-1 0 0 1 0 0 Tm
-44.64 563.2 Td
-(			# 1 inch = 25.4 millimeters
-) Tj
-1 0 0 1 0 0 Tm
-44.64 555.2 Td
-(			vReturn = vPoints / 72.0 * 25.4
-) Tj
-1 0 0 1 0 0 Tm
-44.64 547.2 Td
+44.64 635.2 Td
 (		else:
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 627.2 Td
+(			vPoints = pUnits
+) Tj
+1 0 0 1 0 0 Tm
+44.64 619.2 Td
+(			
+) Tj
+1 0 0 1 0 0 Tm
+44.64 611.2 Td
+(		if pTo == 'i':
+) Tj
+1 0 0 1 0 0 Tm
+44.64 603.2 Td
+(			vReturn = vPoints / 72.0
+) Tj
+1 0 0 1 0 0 Tm
+44.64 595.2 Td
+(		elif pTo == 'r' :
+) Tj
+1 0 0 1 0 0 Tm
+44.64 587.2 Td
+(			vReturn	= vPoints / \( 1.0 * self.lineHeight	\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 579.2 Td
+(		elif pTo == 'c':
+) Tj
+1 0 0 1 0 0 Tm
+44.64 571.2 Td
+(			vReturn = vPoints / \(1.0 * self.charWidth\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 563.2 Td
+(		elif pTo == 'm':
+) Tj
+1 0 0 1 0 0 Tm
+44.64 555.2 Td
+(			# 1 inch = 25.4 millimeters
+) Tj
+1 0 0 1 0 0 Tm
+44.64 547.2 Td
+(			vReturn = vPoints / 72.0 * 25.4
+) Tj
+1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(			vReturn = vPoints
+(		else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		return vReturn
+(			vReturn = vPoints
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
+(		return vReturn
+) Tj
+1 0 0 1 0 0 Tm
+44.64 515.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 515.2 Td
+44.64 507.2 Td
 (	def findFontByKey\(self, pFontKey\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 507.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		search the pvFontTable list for the font identified by <pFontKey>, and return its
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		offset into that list. Returns -1 if not present. Does not return the actual font
+(		search the pvFontTable list for the font identified by <pFontKey>, and return its
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		object.
+(		offset into that list. Returns -1 if not present. Does not return the actual font
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		"""
+(		object.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(		vReturn = -1
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(		
+(		vReturn = -1
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(		for i in range\(0, len\(self.pvFontTable\)\):
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(			if self.pvFontTable[i].key == pFontKey:
+(		for i in range\(0, len\(self.pvFontTable\)\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(				vReturn = i
+(			if self.pvFontTable[i].key == pFontKey:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(				break
+(				vReturn = i
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(		return vReturn
+(				break
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
+(		return vReturn
+) Tj
+1 0 0 1 0 0 Tm
+44.64 403.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 403.2 Td
+44.64 395.2 Td
 (	def getFontKey\(self, pFontName\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 395.2 Td
+44.64 387.2 Td
 (		""" 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 387.2 Td
+44.64 379.2 Td
 (		looks up the font name in the pvFontTable list, and returns the corresponding font key.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 379.2 Td
+44.64 371.2 Td
 (		Returns None if not found.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 371.2 Td
+44.64 363.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 363.2 Td
+44.64 355.2 Td
 (		vReturn = None
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 355.2 Td
+44.64 347.2 Td
 (		for font in self.pvFontTable:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 347.2 Td
+44.64 339.2 Td
 (			if font.name == pFontName:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 339.2 Td
+44.64 331.2 Td
 (				vReturn = font.key
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 331.2 Td
+44.64 323.2 Td
 (				break
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 323.2 Td
+44.64 315.2 Td
 (		return vReturn
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 315.2 Td
+44.64 307.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 307.2 Td
+44.64 299.2 Td
 (	def setLineHeightFactor\(self,  factor\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 299.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 291.2 Td
-(		the lineHeightFactor is multiplied times the font size to set the lineHeight.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 283.2 Td
-(		lineHeight is reset at every setFont\(\) call. 
+(		the lineHeightFactor is multiplied times the font size to set the lineHeight.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 275.2 Td
-(		"""
+(		lineHeight is reset at every setFont\(\) call. 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 267.2 Td
-(		self.lineHeightFactor = factor
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 259.2 Td
+(		self.lineHeightFactor = factor
+) Tj
+1 0 0 1 0 0 Tm
+44.64 251.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 251.2 Td
+44.64 243.2 Td
 (	def charWidthFactor\(self,  factor \):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 243.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(		mmultiplier used to determine a character width for a font size. 
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(		charWidth becomes font.avgSize * charWidthFactor * fontSize / 1000
+(		mmultiplier used to determine a character width for a font size. 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(		"""
+(		charWidth becomes font.avgSize * charWidthFactor * fontSize / 1000
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(		self.charWidthFactor = factor
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
+(		self.charWidthFactor = factor
+) Tj
+1 0 0 1 0 0 Tm
+44.64 195.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 195.2 Td
+44.64 187.2 Td
 (	def setFont\(self, pFontKey, pFontSize\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 187.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 179.2 Td
-(		setFont sets the current font to the values in the parameters.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 171.2 Td
-(		Invokes registerFont if necessary.
+(		setFont sets the current font to the values in the parameters.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 163.2 Td
-(		Resets the following attributes:
+(		Invokes registerFont if necessary.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 155.2 Td
-(		currentFontSize - pFontSize
+(		Resets the following attributes:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 147.2 Td
-(		currentFontKey -  pFontKey
+(		currentFontSize - pFontSize
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 139.2 Td
-(		lineHeight - lineHeightFactor * pFontSize
+(		currentFontKey -  pFontKey
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 131.2 Td
-(		charWidth  - 1.05 * vFont.avgSize * pFontSize  1000
+(		lineHeight - lineHeightFactor * pFontSize
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 123.2 Td
-( 		charWidth is an approximation, at best.
+(		charWidth  - 1.05 * vFont.avgSize * pFontSize  1000
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 115.2 Td
-( 		Each page tracks the fonts set during it's construction. A
+(		charWidth is an approximation, at best.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 107.2 Td
-( 		command is added to the page's textstream to set the font and size.
+(		Each page tracks the fonts set during it's construction. A
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 99.2 Td
-( 		
+(		command is added to the page's textstream to set the font and size.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 91.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
-44.64 83.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 83.2 Td
+(		"""
+) Tj
+1 0 0 1 0 0 Tm
 44.64 75.2 Td
-(	
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 67.2 Td
-(		vPtr = self.findFontByKey\( pFontKey\)
+(	
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		assert vPtr > -1 , 'unable to locate font key '+pFontKey
+(		vPtr = self.findFontByKey\( pFontKey\)
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -3895,7 +3895,7 @@ ET
 endstream
 endobj
 39 0 obj
-6091
+6064
 endobj
 40 0 obj
 << /Type /Page
@@ -3918,23 +3918,23 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		vFont = self.pvFontTable[vPtr]
+(		assert vPtr > -1 , 'unable to locate font key '+pFontKey
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(		vFontObjNo = self.registerFont\( pFontKey\)
+(		vFont = self.pvFontTable[vPtr]
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(		t = '/' + vFont.key +' '+ str\( pFontSize\)+' Tf'
+(		vFontObjNo = self.registerFont\( pFontKey\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(		self.page.textStream.append\( t \)
+(		t = '/' + vFont.key +' '+ str\( pFontSize\)+' Tf'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(
+(		self.page.textStream.append\( t \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 699.2 Td
@@ -3942,335 +3942,335 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 691.2 Td
-(		vString = '/' + pFontKey+' '+str\(vFontObjNo\)+' 0 R'
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 683.2 Td
-(		if self.page.fontList is None or len\(self.page.fontList\) < 1:
+(		vString = '/' + pFontKey+' '+str\(vFontObjNo\)+' 0 R'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 675.2 Td
-(			self.page.fontList = vString
+(		if self.page.fontList is None or len\(self.page.fontList\) < 1:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 667.2 Td
-(		else:
+(			self.page.fontList = vString
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 659.2 Td
-(			if vString not in self.page.fontList:
+(		else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 651.2 Td
-(				self.page.fontList = self.page.fontList + ' '+ vString
+(			if vString not in self.page.fontList:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 643.2 Td
-(		self.currentFontSize = pFontSize
+(				self.page.fontList = self.page.fontList + ' '+ vString
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 635.2 Td
-(		self.currentFontKey = pFontKey
+(		self.currentFontSize = pFontSize
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 627.2 Td
-(		
+(		self.currentFontKey = pFontKey
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(		# typically lineHeight is 1.5 times the point size
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(		# and character with 1.1 times?  lets try it
+(		# typically lineHeight is 1.5 times the point size
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(		# string with is the sum of each charcater width * point size  / 10000
+(		# and character with 1.1 times?  lets try it
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
-(		self.lineHeight = self.lineHeightFactor * pFontSize
+(		# string with is the sum of each charcater width * point size  / 10000
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 587.2 Td
-(		self.charWidth = vFont.avgSize  * self.charWidthFactor * pFontSize / 1000
+(		self.lineHeight = self.lineHeightFactor * pFontSize
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 579.2 Td
+(		self.charWidth = vFont.avgSize  * self.charWidthFactor * pFontSize / 1000
+) Tj
+1 0 0 1 0 0 Tm
+44.64 571.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 571.2 Td
+44.64 563.2 Td
 (	def pushFont\( self, pFontKey, pFontSize\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 563.2 Td
+44.64 555.2 Td
 (		""" Save the current font on a stackm and invoke setFont\( pFontKey, pFontSize\)"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 555.2 Td
+44.64 547.2 Td
 (		self.fontStack.append\( { "fontKey": self.currentFontKey, "fontSize" : self.currentFontSize} \)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 547.2 Td
+44.64 539.2 Td
 (		self.setFont\( pFontKey, pFontSize\)
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 539.2 Td
+44.64 531.2 Td
 (	def popFont\(self \):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 531.2 Td
+44.64 523.2 Td
 (		""" restore the font at the top of self.fontStack, passing its contents to setFont\(\)"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 523.2 Td
+44.64 515.2 Td
 (		font = self.fontStack.pop\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 515.2 Td
+44.64 507.2 Td
 (		self.setFont\( font["fontKey"], font["fontSize"]\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 507.2 Td
+44.64 499.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 499.2 Td
+44.64 491.2 Td
 (	def setCharWidth\( self, pPoints \):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 491.2 Td
+44.64 483.2 Td
 (		""" Set the charWidth attribute, in points \( i.e at 72/ince\) """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 483.2 Td
+44.64 475.2 Td
 (		self.charWidth = pPoints
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 475.2 Td
+44.64 467.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 467.2 Td
-(	#--
-) Tj
-1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(	#-- Write routines
+(	#--
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(	#--
+(	#-- Write routines
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(	#--@ Write
+(	#--
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(	#--@ because the positioning begins at the bottom right, the current row
+(	#--@ Write
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(	#--@ is the point value of the row subtracted from the page height\( along with
+(	#--@ because the positioning begins at the bottom right, the current row
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(	#--@ the top margin\).
+(	#--@ is the point value of the row subtracted from the page height\( along with
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
+(	#--@ the top margin\).
+) Tj
+1 0 0 1 0 0 Tm
+44.64 403.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 403.2 Td
+44.64 395.2 Td
 (	def write\( self, pX, pY, pString, pAlign = 'l', pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 395.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		write is the standard way to generate text at a specific position on a page.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 379.2 Td
-(		If <pUnit> is not specified then the documents defaultUnit attribute will be used.
+(		write is the standard way to generate text at a specific position on a page.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 371.2 Td
-(		<pX> is the x-axis coordinate: the column
+(		If <pUnit> is not specified then the documents defaultUnit attribute will be used.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 363.2 Td
-(		<pY> is the y-axis coordinate: the row
+(		<pX> is the x-axis coordinate: the column
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 355.2 Td
-(		In general, when you must be specific its best to use points or inches.
+(		<pY> is the y-axis coordinate: the row
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 347.2 Td
-(		Note that this method resets the internal positioning \(of the pdf engine, not of
+(		In general, when you must be specific its best to use points or inches.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 339.2 Td
-(		this instance\) to the origin of 0,0.
+(		Note that this method resets the internal positioning \(of the pdf engine, not of
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 331.2 Td
-(		"""
+(		this instance\) to the origin of 0,0.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 323.2 Td
-(		vUnit = self.resolveUnit\( pUnit, 'r'\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 315.2 Td
-(		vLength = self.strLength\(self.currentFontKey, self.currentFontSize, pString\)
+(		vUnit = self.resolveUnit\( pUnit, 'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 307.2 Td
-(  		self.currentRow = self.convertUnits\(pY,vUnit,'p'\)
+(		vLength = self.strLength\(self.currentFontKey, self.currentFontSize, pString\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 299.2 Td
-(		
+(		self.currentRow = self.convertUnits\(pY,vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 291.2 Td
-(		vUnit = self.resolveUnit\(pUnit,'c'\)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 283.2 Td
-(  		self.currentCol = self.convertUnits\(pX,vUnit,'p'\)
+(		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 275.2 Td
-(			
+(		self.currentCol = self.convertUnits\(pX,vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 267.2 Td
-(		if pAlign == 'c':
+(			
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 259.2 Td
-(			self.currentCol = self.currentCol - \( vLength / 2.0\)
+(		if pAlign == 'c':
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 251.2 Td
-(		elif pAlign == 'r':
+(			self.currentCol = self.currentCol - \( vLength / 2.0\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 243.2 Td
-(			self.currentCol = self.currentCol - vLength
+(		elif pAlign == 'r':
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(		nString = ''
+(			self.currentCol = self.currentCol - vLength
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(		for c in pString:
+(		nString = ''
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(			if c == '\(':
+(		for c in pString:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(				nString = nString + '\\' + c
+(			if c == '\(':
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(			elif c == '\)':
-) Tj
-1 0 0 1 0 0 Tm
-44.64 195.2 Td
 (				nString = nString + '\\' + c
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 195.2 Td
+(			elif c == '\)':
+) Tj
+1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(			else:
+(				nString = nString + '\\' + c
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
-(				nString = nString + c
+(			else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 171.2 Td
-(		t = str\(self.leftMargin + self.currentCol\) + ' '+ str\(\(self.pageHeight - self.topMargin\) - self.currentRow\) + ' Td'
+(				nString = nString + c
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 163.2 Td
-(		self.page.textStream.append\( t \)
+(		t = str\(self.leftMargin + self.currentCol\) + ' '+ str\(\(self.pageHeight - self.topMargin\) - self.currentRow\) + ' Td'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 155.2 Td
-(		self.page.textStream.append\('\(' + nString + '\) Tj'\)
+(		self.page.textStream.append\( t \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 147.2 Td
-(		self.page.textStream.append\( '1 0 0 1 0 0 Tm' \)
+(		self.page.textStream.append\('\(' + nString + '\) Tj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 139.2 Td
-(		self.currentCol = self.currentCol + vLength
+(		self.page.textStream.append\( '1 0 0 1 0 0 Tm' \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 131.2 Td
+(		self.currentCol = self.currentCol + vLength
+) Tj
+1 0 0 1 0 0 Tm
+44.64 123.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 123.2 Td
+44.64 115.2 Td
 (	def writeOut\( self, pString\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 115.2 Td
+44.64 107.2 Td
 (		""" write text at the current position: currentRow and CurrentCol """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 107.2 Td
+44.64 99.2 Td
 (		self.write\( self.currentCol, self.currentRow, pString, None, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 99.2 Td
+44.64 91.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 91.2 Td
+44.64 83.2 Td
 (	def writeNext\(self, pX, pString, pAlign = 'l', pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 83.2 Td
+44.64 75.2 Td
 (		""" write text at the specified column position <pX> and the next row """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 75.2 Td
+44.64 67.2 Td
 (		vUnit = self.resolveUnit\( pUnit, 'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 67.2 Td
-(		self.write\( self.convertUnits\(pX,vUnit,'p'\), self.currentRow + self.lineHeight, pString, pAlign, 'p'\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(
+(		self.write\( self.convertUnits\(pX,vUnit,'p'\), self.currentRow + self.lineHeight, pString, pAlign, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -4284,7 +4284,7 @@ ET
 endstream
 endobj
 42 0 obj
-7209
+7263
 endobj
 43 0 obj
 << /Type /Page
@@ -4310,372 +4310,372 @@ BT
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 731.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 723.2 Td
 (	def writeCol\(self,  pX, pString, pAlign = 'l',pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 723.2 Td
+44.64 715.2 Td
 (		""" write in the current row at the specified column position <pX> """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 715.2 Td
+44.64 707.2 Td
 (		vUnit = self.resolveUnit\( pUnit,'c'\)		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 707.2 Td
-(		self.write\( self.convertUnits\(pX,vUnit,'p'\),self.currentRow,pString, pAlign, 'p'\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 699.2 Td
-(
+(		self.write\( self.convertUnits\(pX,vUnit,'p'\),self.currentRow,pString, pAlign, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 691.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 683.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 675.2 Td
 (	def writeCenteredInLine\( self, pY, pString, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 675.2 Td
+44.64 667.2 Td
 (		""" write text centered in the row identified by <pY> """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 667.2 Td
+44.64 659.2 Td
 (		vUnit = self.resolveUnit\(pUnit, 'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 659.2 Td
+44.64 651.2 Td
 (		# what is the column position of the center of the line
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 651.2 Td
+44.64 643.2 Td
 (		vCol = self.getLineWidth\('p'\) / 2.0
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 643.2 Td
+44.64 635.2 Td
 (		self.write\(vCol, self.convertUnits\(pY, vUnit,'p'\), pString, 'c','p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 635.2 Td
+44.64 627.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 627.2 Td
+44.64 619.2 Td
 (	def getCurrentRow\(self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 619.2 Td
+44.64 611.2 Td
 (		""" return the current row, in the specified \(or default\) unit of measurement,
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 611.2 Td
+44.64 603.2 Td
 (			base upon the current font and size."""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 603.2 Td
+44.64 595.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 595.2 Td
+44.64 587.2 Td
 (		return self.convertUnits\(self.currentRow,'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 587.2 Td
+44.64 579.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 579.2 Td
+44.64 571.2 Td
 (	def getCurrentCol\(self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 571.2 Td
+44.64 563.2 Td
 (		""" return the current col, in the specified \( or default\) unit of measurement
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 563.2 Td
+44.64 555.2 Td
 (			This is different from the position tracker internal to pdf.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 555.2 Td
+44.64 547.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 547.2 Td
+44.64 539.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 539.2 Td
+44.64 531.2 Td
 (		return self.convertUnits\(self.currentCol,'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 531.2 Td
+44.64 523.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 523.2 Td
+44.64 515.2 Td
 (	def setCurrentRow\(self, pValue, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 515.2 Td
+44.64 507.2 Td
 (		""" set the attribute that tracks current row position """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 507.2 Td
+44.64 499.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 499.2 Td
-(		self.currentRow = self.convertUnits\(pValue,vUnit, 'p'\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		
+(		self.currentRow = self.convertUnits\(pValue,vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 475.2 Td
+(		
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 467.2 Td
 (	def setCurrentCol\(self, pValue, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 467.2 Td
+44.64 459.2 Td
 (		""" set the attribute that tracks current column position."""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 459.2 Td
+44.64 451.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 451.2 Td
+44.64 443.2 Td
 (		self.currentCol = self.convertUnits\(pValue, vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 443.2 Td
+44.64 435.2 Td
 (				
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 435.2 Td
+44.64 427.2 Td
 (	def getBottomRow\(self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 427.2 Td
+44.64 419.2 Td
 (		""" return the bottom row, in the specified or default unit of measurement.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 419.2 Td
+44.64 411.2 Td
 (			pageHeight - top and bottom margins divided by lineHeight
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 411.2 Td
-(		
-) Tj
-1 0 0 1 0 0 Tm
 44.64 403.2 Td
-(			while self.getCurrentRow\('r'\) < self.getBottomRow\('r'\):
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 395.2 Td
-(				self.writeNext\(  < a line of output > \)
+(			while self.getCurrentRow\('r'\) < self.getBottomRow\('r'\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		
+(				self.writeNext\(  < a line of output > \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 379.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
-44.64 371.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 371.2 Td
+(		"""
+) Tj
+1 0 0 1 0 0 Tm
 44.64 363.2 Td
-(		vReturn = \(self.pageHeight - \( self.topMargin + self.bottomMargin\)\) / self.lineHeight
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 355.2 Td
-(		vUnit = self.resolveUnit\(pUnit,'r'\)
+(		vReturn = \(self.pageHeight - \( self.topMargin + self.bottomMargin\)\) / self.lineHeight
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 347.2 Td
-(		return self.convertUnits\( vReturn, 'r', vUnit\)
+(		vUnit = self.resolveUnit\(pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 339.2 Td
+(		return self.convertUnits\( vReturn, 'r', vUnit\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 331.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 331.2 Td
+44.64 323.2 Td
 (	def getFreeRows\( self \):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 323.2 Td
+44.64 315.2 Td
 (		""" rows available after the current row """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 315.2 Td
+44.64 307.2 Td
 (		return \(self.getBottomRow\('p'\) - self.getCurrentRow\('p'\)\) / self.getLineHeight\('p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 307.2 Td
+44.64 299.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 299.2 Td
+44.64 291.2 Td
 (	def getRightColumn\( self, pUnit = None\) :
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 291.2 Td
+44.64 283.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 283.2 Td
+44.64 275.2 Td
 (		vReturn = \(self.pageWidth - self.rightMargin - self.leftMargin \) / self.charWidth
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 275.2 Td
+44.64 267.2 Td
 (		return self.convertUnits\( vReturn, vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 267.2 Td
-(		
-) Tj
-1 0 0 1 0 0 Tm
 44.64 259.2 Td
-(
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 251.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 243.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 235.2 Td
 (	def setTarget\(self, pTarget\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 235.2 Td
+44.64 227.2 Td
 (		"""  obsolete """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 227.2 Td
+44.64 219.2 Td
 (		self.target = pTarget
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 219.2 Td
+44.64 211.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 211.2 Td
+44.64 203.2 Td
 (	def getTarget\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 203.2 Td
+44.64 195.2 Td
 (		return self.target
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 195.2 Td
+44.64 187.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 187.2 Td
+44.64 179.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 179.2 Td
+44.64 171.2 Td
 (	def setPageNumber\(self, pNumber\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 171.2 Td
+44.64 163.2 Td
 (		self.currentPageNo = pNumber
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 163.2 Td
+44.64 155.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 155.2 Td
+44.64 147.2 Td
 (	def getPageNumber\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 147.2 Td
+44.64 139.2 Td
 (		return self.currentPageNo
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 139.2 Td
+44.64 131.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 131.2 Td
+44.64 123.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 123.2 Td
+44.64 115.2 Td
 (	def setPageSize\( self, pHeight, pWidth, pUnits = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 115.2 Td
+44.64 107.2 Td
 (		""" set the shape of the page however you like
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 107.2 Td
+44.64 99.2 Td
 (		Margins are not modified by this method.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 99.2 Td
+44.64 91.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 91.2 Td
+44.64 83.2 Td
 (		vUnits = self.resolveUnit\(pUnits,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 83.2 Td
+44.64 75.2 Td
 (		self.pageHeight = self.convertUnits\(pHeight, vUnits,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 75.2 Td
+44.64 67.2 Td
 (		vUnits = self.resolveUnit\(pUnits,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 67.2 Td
-(		self.pageWidth = self.convertUnits\(pWidth, vUnits, 'p'\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(
+(		self.pageWidth = self.convertUnits\(pWidth, vUnits, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -4715,370 +4715,370 @@ BT
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 731.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 723.2 Td
 (	def getLeftMargin\(self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 723.2 Td
+44.64 715.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 715.2 Td
-(		return self.convertUnits\(self.leftMargin,'p',vUnit\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(
+(		return self.convertUnits\(self.leftMargin,'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 699.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 691.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 683.2 Td
 (	def setLeftMargin\(self, pMargin, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 683.2 Td
+44.64 675.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 675.2 Td
+44.64 667.2 Td
 (		self.leftMargin = self.convertUnits\(pMargin,vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 667.2 Td
+44.64 659.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 659.2 Td
+44.64 651.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 651.2 Td
+44.64 643.2 Td
 (	def setRightMargin\(self, pMargin, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 643.2 Td
+44.64 635.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 635.2 Td
-(		self.rightMargin = self.convertUnits\( pMargin, vUnit, 'p'\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 627.2 Td
-(
+(		self.rightMargin = self.convertUnits\( pMargin, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 611.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 603.2 Td
 (	def getRightMargin\(self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 603.2 Td
+44.64 595.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 595.2 Td
-(		return self.convertUnits\( self.rightMargin,'p',vUnit\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 587.2 Td
-(
+(		return self.convertUnits\( self.rightMargin,'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 579.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 571.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 563.2 Td
 (	def getRightColumn\( self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 563.2 Td
+44.64 555.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 555.2 Td
+44.64 547.2 Td
 (		vPoints = self.pageWidth - \(self.leftMargin \)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 547.2 Td
-(		return self.convertUnits\(vPoints,'p',vUnit\)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(
+(		return self.convertUnits\(vPoints,'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 523.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 515.2 Td
 (	def setTopMargin\(self, pMargin, pUnit\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 515.2 Td
+44.64 507.2 Td
 (		vUnit = self.resolveUnit\( pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 507.2 Td
+44.64 499.2 Td
 (		self.topMargin = self.convertUnits\(pMargin,vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 499.2 Td
+44.64 491.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 491.2 Td
+44.64 483.2 Td
 (				
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 483.2 Td
+44.64 475.2 Td
 (	def getTopMargin\(self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 475.2 Td
+44.64 467.2 Td
 (		vUnit = self.resolveUnit\( pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 467.2 Td
+44.64 459.2 Td
 (		return self.convertUnits\(self.topMargin,'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 459.2 Td
+44.64 451.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 451.2 Td
+44.64 443.2 Td
 (	def setLineHeight\( self, pHeight, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 443.2 Td
+44.64 435.2 Td
 (		""" Set the lineHeight attribute. Use to override the value set by the last setFont call. 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 435.2 Td
-(		
-) Tj
-1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(		"""
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(		vUnit = self.resolveUnit\(pUnit,'r'\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
-(		self.lineHeight = self.convertUnits\(pHeight,vUnit,'p'\)
+(		vUnit = self.resolveUnit\(pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 403.2 Td
-(		
+(		self.lineHeight = self.convertUnits\(pHeight,vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 395.2 Td
+(		
+) Tj
+1 0 0 1 0 0 Tm
+44.64 387.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 387.2 Td
+44.64 379.2 Td
 (	def getLineHeight\(self, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 379.2 Td
+44.64 371.2 Td
 (		""" returns the current line height, in the specified or default unit of measurement.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 371.2 Td
+44.64 363.2 Td
 (			It would be expected that the lineHeight, for the Unit r or c, would be 1.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 363.2 Td
+44.64 355.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 355.2 Td
+44.64 347.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 347.2 Td
+44.64 339.2 Td
 (		return self.convertUnits\(self.lineHeight, 'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 339.2 Td
+44.64 331.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 331.2 Td
+44.64 323.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 323.2 Td
+44.64 315.2 Td
 (	def setBottomMargin\(self, pMargin, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 315.2 Td
+44.64 307.2 Td
 (		""" Set the bottomMargin attribute """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 307.2 Td
+44.64 299.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 299.2 Td
+44.64 291.2 Td
 (		self.bottomMargin = self.convertUnits\(pMargin, vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 291.2 Td
+44.64 283.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 283.2 Td
+44.64 275.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 275.2 Td
+44.64 267.2 Td
 (	def getBottomMargin\(self, pUnit \):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 267.2 Td
+44.64 259.2 Td
 (		""" return the size of the bottom margin """ 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 259.2 Td
+44.64 251.2 Td
 (		#! makes no sense not to specify the unit
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 251.2 Td
+44.64 243.2 Td
 (		vUnit = self.resolveUnit\(pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 243.2 Td
+44.64 235.2 Td
 (		return self.convertUnits\(self.bottomMargin,'p',vUnit\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 235.2 Td
+44.64 227.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 227.2 Td
+44.64 219.2 Td
 (	def setTextState\(self, pCharSpace = 0, pWordSpace = 0, pScale = 100, pLeading = 0, pRender = 0, pRise = 0\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 219.2 Td
+44.64 211.2 Td
 (		""" Initializes the textStream environment. Should be reset for each page. """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 211.2 Td
+44.64 203.2 Td
 (		t = str\(pCharSpace\) + ' Tc ' + str\(pWordSpace\) + ' Tw '
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 203.2 Td
+44.64 195.2 Td
 (		t = t + str\(pScale\) + ' Tz ' + str\(pLeading\) + ' TL '
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 195.2 Td
+44.64 187.2 Td
 (		t = t + str\(pRender\) + ' Tr ' + str\(pRise\) + ' Ts '
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 187.2 Td
+44.64 179.2 Td
 (		self.page.textStream.append\( t \)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 179.2 Td
-(		
-) Tj
-1 0 0 1 0 0 Tm
 44.64 171.2 Td
-(
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 163.2 Td
-(		
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 155.2 Td
+(		
+) Tj
+1 0 0 1 0 0 Tm
+44.64 147.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 147.2 Td
+44.64 139.2 Td
 (	def strLength\(self, pFontKey, pFontSize, pString\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 139.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 131.2 Td
-(		This strLength method returns a rough approximation of the length of a string.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 123.2 Td
-(		Each font has an average character size. If it is a fixed font then that average
+(		This strLength method returns a rough approximation of the length of a string.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 115.2 Td
-(		size will also be the size \(width\) of every character in its character set, and the
+(		Each font has an average character size. If it is a fixed font then that average
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 107.2 Td
-(		length of the string calculated by this method should be accurate. However, for
+(		size will also be the size \(width\) of every character in its character set, and the
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 99.2 Td
-(		proportional fonts - such as F2 and F3 - this will be a crude approximation. See
+(		length of the string calculated by this method should be accurate. However, for
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 91.2 Td
-(		the PdfFontMetrics class for more precise string lengths.
+(		proportional fonts - such as F2 and F3 - this will be a crude approximation. See
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 83.2 Td
-(		Returns a width, in points.
+(		the PdfFontMetrics class for more precise string lengths.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 75.2 Td
-(		Returns points.
+(		Returns a width, in points.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 67.2 Td
-(		
+(		Returns points.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		"""
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -5092,7 +5092,7 @@ ET
 endstream
 endobj
 49 0 obj
-6892
+6887
 endobj
 50 0 obj
 << /Type /Page
@@ -5115,353 +5115,353 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		vPtr = self.findFontByKey\(pFontKey\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(		avgSize = self.pvFontTable[vPtr].avgSize
+(		vPtr = self.findFontByKey\(pFontKey\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(		return \(pFontSize * len\( pString\) *  avgSize \) / 1000.0
+(		avgSize = self.pvFontTable[vPtr].avgSize
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(		#! there is data available on the width of each character in the variable fonts.
+(		return \(pFontSize * len\( pString\) *  avgSize \) / 1000.0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(		#! is it worth the time?
+(		#! there is data available on the width of each character in the variable fonts.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 699.2 Td
+(		#! is it worth the time?
+) Tj
+1 0 0 1 0 0 Tm
+44.64 691.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 691.2 Td
+44.64 683.2 Td
 (	def setGrayScale\( self, pScale = 0\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 683.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 675.2 Td
-(		Sets the density of printed output. 0 is black, 0.9 is a light transparent gray.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 667.2 Td
-(		"""
+(		Sets the density of printed output. 0 is black, 0.9 is a light transparent gray.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 659.2 Td
-(		s = "%6.2f" % pScale
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 651.2 Td
-(		self.page.textStream.append\(  s + ' g'\)
+(		s = "%6.2f" % pScale
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 643.2 Td
-(		
+(		self.page.textStream.append\(  s + ' g'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 635.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 627.2 Td
+(		
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 619.2 Td
 (	def waterMark\(self, pText\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 619.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(		This method generates a watermark, with <pText> in a large F3I font, in the center
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(		of row 10. It would be better, for large documents, to create a reusable XObject.
+(		This method generates a watermark, with <pText> in a large F3I font, in the center
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
-(		This writes to the current page. Current font is saved at the start and restored
+(		of row 10. It would be better, for large documents, to create a reusable XObject.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 587.2 Td
-(		at the end.
+(		This writes to the current page. Current font is saved at the start and restored
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 579.2 Td
-(		"""
+(		at the end.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 571.2 Td
-(		self.setGrayScale\( 0.80\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 563.2 Td
-(		vSaveFontSize = self.currentFontSize
+(		self.setGrayScale\( 0.80\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		vSaveFontKey = self.currentFontKey
+(		vSaveFontSize = self.currentFontSize
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(		self.setFont\('F3I',40\)
+(		vSaveFontKey = self.currentFontKey
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(		self.writeCenteredInLine\(10,pText,'r'\)
+(		self.setFont\('F3I',40\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		self.setFont\(vSaveFontKey, vSaveFontSize\)
+(		self.writeCenteredInLine\(10,pText,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		self.setGrayScale\( 0 \)
+(		self.setFont\(vSaveFontKey, vSaveFontSize\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
+(		self.setGrayScale\( 0 \)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 507.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 507.2 Td
+44.64 499.2 Td
 (	def defineImageXObject\( self, hexStrings, pName, pWidth, pHeight, pBitsPerComponent, pColorSpace = None, pImageMask = None, pImageLib = None, pFilter = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 499.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		define an image XObject, that can later be invoked by <pName>.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		hexStrings - See readImage\(\) for info on the :hexStrings: parameter - which is a list of ascii characters
+(		define an image XObject, that can later be invoked by <pName>.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		pWidth and pHeight is the size to display the image
+(		hexStrings - See readImage\(\) for info on the :hexStrings: parameter - which is a list of ascii characters
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(		pBitsPerComponent depends on the graphics format. 8 for jpg
+(		pWidth and pHeight is the size to display the image
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(		pColorSpace  DeviceRGB for jpeg
+(		pBitsPerComponent depends on the graphics format. 8 for jpg
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(		pImageMask
+(		pColorSpace  DeviceRGB for jpeg
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(		pImageLib ImageB for jpg
+(		pImageMask
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(		pFilter - DCTDecode for jpg
+(		pImageLib ImageB for jpg
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(		self.defineImageXObject\( hexStrings,'Sh1', 274,283,8,'DeviceRGB',None,'ImageB','DCTDecode'\)
+(		pFilter - DCTDecode for jpg
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(		No matrix or bounding box is defined, but width and height are specified.
+(		self.defineImageXObject\( hexStrings,'Sh1', 274,283,8,'DeviceRGB',None,'ImageB','DCTDecode'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
-(
+(		No matrix or bounding box is defined, but width and height are specified.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 403.2 Td
-(		"""
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 395.2 Td
-(		vObject = self.getNextObjNo\(\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		vObjLen = self.getNextObjNo\(\)
+(		vObject = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 379.2 Td
-(		self.addxRef\(vObject,self.offset, 'Image ' +  pName\)
+(		vObjLen = self.getNextObjNo\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 371.2 Td
-(		self.put\( str\(vObject\) + ' 0 obj'\)
+(		self.addxRef\(vObject,self.offset, 'Image ' +  pName\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 363.2 Td
-(		self.put\('<< /Type /XObject /Subtype /Image'\)
+(		self.put\( str\(vObject\) + ' 0 obj'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 355.2 Td
-(		self.put\('   /Width ' + str\(pWidth\) + ' /Height ' + str\(pHeight\)\)
+(		self.put\('<< /Type /XObject /Subtype /Image'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 347.2 Td
-(		if pColorSpace is not None:
+(		self.put\('   /Width ' + str\(pWidth\) + ' /Height ' + str\(pHeight\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 339.2 Td
-(			self.put\('   /ColorSpace /' + pColorSpace\)
+(		if pColorSpace is not None:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 331.2 Td
-(		if pImageMask is not None:
+(			self.put\('   /ColorSpace /' + pColorSpace\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 323.2 Td
-(			self.put\('   /ImageMask ' +  pImageMask\)
+(		if pImageMask is not None:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 315.2 Td
-(
+(			self.put\('   /ImageMask ' +  pImageMask\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 307.2 Td
-(		self.put\('   /Name /' +  pName\)
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 299.2 Td
-(		self.put\('   /BitsPerComponent ' +  str\(pBitsPerComponent\)\)
+(		self.put\('   /Name /' +  pName\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 291.2 Td
-(		self.put\('   /Length ' +  str\(vObjLen\) +  ' 0 R '\)
+(		self.put\('   /BitsPerComponent ' +  str\(pBitsPerComponent\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 283.2 Td
-(		if pFilter is not None:
+(		self.put\('   /Length ' +  str\(vObjLen\) +  ' 0 R '\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 275.2 Td
-(			self.put\('   /Filter [/ASCIIHexDecode /' + pFilter + '] >>'\)
+(		if pFilter is not None:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 267.2 Td
-(		else:
+(			self.put\('   /Filter [/ASCIIHexDecode /' + pFilter + '] >>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 259.2 Td
-(			self.put\('  /Filter /ASCIIHexDecode >>'\)
+(		else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 251.2 Td
-(   
+(			self.put\('  /Filter /ASCIIHexDecode >>'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 243.2 Td
-(		self.put\('stream'\)
+(   
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(		vLength = 0
+(		self.put\('stream'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(		hexStrings[-1] = hexStrings[-1] + '>'
+(		vLength = 0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(		for s in hexStrings:
+(		hexStrings[-1] = hexStrings[-1] + '>'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(			self.put\(s\)
+(		for s in hexStrings:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(			vLength = vLength + len\(s\) + 2
+(			self.put\(s\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
-(		self.put\('endstream'\)
+(			vLength = vLength + len\(s\) + 2
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(		self.put\('endobj'\)
+(		self.put\('endstream'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
-(		#  Now write the length object
-) Tj
-1 0 0 1 0 0 Tm
-44.64 171.2 Td
-(
-) Tj
-1 0 0 1 0 0 Tm
-44.64 163.2 Td
-(		self.addxRef\(vObjLen, self.offset,'image size'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 155.2 Td
-(		self.put\( str\(vObjLen\) + ' 0 obj'\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 147.2 Td
-(		self.put\('  '  + str\(vLength\) \)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 139.2 Td
 (		self.put\('endobj'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 131.2 Td
+44.64 171.2 Td
+(		#  Now write the length object
+) Tj
+1 0 0 1 0 0 Tm
+44.64 163.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 155.2 Td
+(		self.addxRef\(vObjLen, self.offset,'image size'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 147.2 Td
+(		self.put\( str\(vObjLen\) + ' 0 obj'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 139.2 Td
+(		self.put\('  '  + str\(vLength\) \)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 131.2 Td
+(		self.put\('endobj'\)
+) Tj
+1 0 0 1 0 0 Tm
 44.64 123.2 Td
-(		# now add this to the xobject tabl
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 115.2 Td
-(		
+(		# now add this to the xobject tabl
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 107.2 Td
-(		newXObject = XObject\(\)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 99.2 Td
-(		newXObject.name = pName
+(		newXObject = XObject\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 91.2 Td
-(		newXObject.objectNo = vObject
+(		newXObject.name = pName
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 83.2 Td
-(		newXObject.width = pWidth
+(		newXObject.objectNo = vObject
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 75.2 Td
-(		newXObject.height = pHeight
+(		newXObject.width = pWidth
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 67.2 Td
-(		newXObject.device = pColorSpace
+(		newXObject.height = pHeight
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		newXObject.imageLib = pImageLib
+(		newXObject.device = pColorSpace
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -5475,7 +5475,7 @@ ET
 endstream
 endobj
 52 0 obj
-6761
+6733
 endobj
 53 0 obj
 << /Type /Page
@@ -5498,77 +5498,77 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		newXObject.imageMask = pImageMask
+(		newXObject.imageLib = pImageLib
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(		
+(		newXObject.imageMask = pImageMask
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(		self.pvXObjectTable.append\( newXObject\)		
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
+(		self.pvXObjectTable.append\( newXObject\)		
+) Tj
+1 0 0 1 0 0 Tm
+44.64 707.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 707.2 Td
+44.64 699.2 Td
 (	def findXObject\(self, pName\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 699.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 691.2 Td
-(		Search for an entry in the pvXObjectTable list, return its offset in the list.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 683.2 Td
-(		Return -1 if <pName> is not located
+(		Search for an entry in the pvXObjectTable list, return its offset in the list.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 675.2 Td
-(		"""
+(		Return -1 if <pName> is not located
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 667.2 Td
-(		vReturn = None
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 659.2 Td
-(		for i in range\( 0, len\(self.pvXObjectTable\)\):
+(		vReturn = None
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 651.2 Td
-(			if self.pvXObjectTable[i].name == pName:
+(		for i in range\( 0, len\(self.pvXObjectTable\)\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 643.2 Td
-(				vReturn = i
+(			if self.pvXObjectTable[i].name == pName:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 635.2 Td
-(				break
+(				vReturn = i
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 627.2 Td
-(		assert vReturn > -1,'Unable to find XObject '+ pName
+(				break
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(		return vReturn
+(		assert vReturn > -1,'Unable to find XObject '+ pName
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(		
+(		return vReturn
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
@@ -5583,270 +5583,270 @@ BT
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 571.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 563.2 Td
 (	def showImage\(self, pName, pX, pY, pUnit = None, pScaleX = None, pScaleY = None, pSkewX = 0, pSkewY = 0, pGrayScale = 0\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 563.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		for an image already recorded in the pvXObjectTable list \(see defineImageXObject\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(		this method places it in the current page, and the position specified by <pX> and <py>
+(		for an image already recorded in the pvXObjectTable list \(see defineImageXObject\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(		Optionally, dimensionally scaled as specified by <pScaleX> and <pScaleY>
+(		this method places it in the current page, and the position specified by <pX> and <py>
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		Optionally skewed as defined by <pSkewX> and pSkewY>
+(		Optionally, dimensionally scaled as specified by <pScaleX> and <pScaleY>
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		and with optional grayscaling, <pGrayScale>.
+(		Optionally skewed as defined by <pSkewX> and pSkewY>
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
-(		The image to output is identified by <pName>
+(		and with optional grayscaling, <pGrayScale>.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(		"""
+(		The image to output is identified by <pName>
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		vImage = self.findXObject\( pName\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		vUnit = self.resolveUnit\( pUnit, 'r'\)
+(		vImage = self.findXObject\( pName\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		vX = self.convertUnits\(pX, vUnit,'p'\) + self.leftMargin
+(		vUnit = self.resolveUnit\( pUnit, 'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		vUnit = self.resolveUnit\(pUnit,'c'\)
+(		vX = self.convertUnits\(pX, vUnit,'p'\) + self.leftMargin
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(		vY = self.convertUnits\( pY,  vUnit, 'p'\)
+(		vUnit = self.resolveUnit\(pUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(		vY = self.pageHeight - \(self.topMargin + vY\)
+(		vY = self.convertUnits\( pY,  vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(		if pScaleX is None:
+(		vY = self.pageHeight - \(self.topMargin + vY\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(			vScaleX = self.pvXObjectTable[vImage].width
+(		if pScaleX is None:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(		else:
+(			vScaleX = self.pvXObjectTable[vImage].width
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(			vScaleX = pScaleX
-) Tj
-1 0 0 1 0 0 Tm
-44.64 419.2 Td
-(		if pScaleY is None:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 411.2 Td
-(			vScaleY = self.pvXObjectTable[vImage].height
-) Tj
-1 0 0 1 0 0 Tm
-44.64 403.2 Td
 (		else:
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 419.2 Td
+(			vScaleX = pScaleX
+) Tj
+1 0 0 1 0 0 Tm
+44.64 411.2 Td
+(		if pScaleY is None:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 403.2 Td
+(			vScaleY = self.pvXObjectTable[vImage].height
+) Tj
+1 0 0 1 0 0 Tm
 44.64 395.2 Td
-(			vScaleY = pScaleY
+(		else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		
+(			vScaleY = pScaleY
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 379.2 Td
-(			
-) Tj
-1 0 0 1 0 0 Tm
-44.64 371.2 Td
-(		# "%4.2f" % 0
-) Tj
-1 0 0 1 0 0 Tm
-44.64 363.2 Td
-(		# vLine = 'q ' +  str\(pGrayScale,'990.99'\)+ ' g ' + str \(vScaleX\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 355.2 Td
-(		vGrayScale = "%6.2f" % pGrayScale
-) Tj
-1 0 0 1 0 0 Tm
-44.64 347.2 Td
-(		vLine = 'q ' +  vGrayScale + ' g ' + str \(vScaleX\)
-) Tj
-1 0 0 1 0 0 Tm
-44.64 339.2 Td
-(		vLine = vLine + '   ' + str\( pSkewX\) + '   ' + str\(pSkewY\) + '   '
-) Tj
-1 0 0 1 0 0 Tm
-44.64 331.2 Td
-(		vLine = vLine + str\(vScaleY\) + '   ' + str\(vX\) + '   ' + str\(vY\) + ' cm /'+pName+' Do Q'
-) Tj
-1 0 0 1 0 0 Tm
-44.64 323.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 371.2 Td
+(			
+) Tj
+1 0 0 1 0 0 Tm
+44.64 363.2 Td
+(		# "%4.2f" % 0
+) Tj
+1 0 0 1 0 0 Tm
+44.64 355.2 Td
+(		# vLine = 'q ' +  str\(pGrayScale,'990.99'\)+ ' g ' + str \(vScaleX\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 347.2 Td
+(		vGrayScale = "%6.2f" % pGrayScale
+) Tj
+1 0 0 1 0 0 Tm
+44.64 339.2 Td
+(		vLine = 'q ' +  vGrayScale + ' g ' + str \(vScaleX\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 331.2 Td
+(		vLine = vLine + '   ' + str\( pSkewX\) + '   ' + str\(pSkewY\) + '   '
+) Tj
+1 0 0 1 0 0 Tm
+44.64 323.2 Td
+(		vLine = vLine + str\(vScaleY\) + '   ' + str\(vX\) + '   ' + str\(vY\) + ' cm /'+pName+' Do Q'
+) Tj
+1 0 0 1 0 0 Tm
 44.64 315.2 Td
-(		self.page.graphicsStream.append\( vLine \)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 307.2 Td
-(
+(		self.page.graphicsStream.append\( vLine \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 299.2 Td
-(		if not '/'+ pName in self.page.xObjectList:
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 291.2 Td
-(			self.page.xObjectList = self.page.xObjectList + '/' + pName+' '+ str\(self.pvXObjectTable[vImage].objectNo\)+ ' 0 R'			
+(		if not '/'+ pName in self.page.xObjectList:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 283.2 Td
+(			self.page.xObjectList = self.page.xObjectList + '/' + pName+' '+ str\(self.pvXObjectTable[vImage].objectNo\)+ ' 0 R'			
+) Tj
+1 0 0 1 0 0 Tm
+44.64 275.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 275.2 Td
+44.64 267.2 Td
 (	def showForm\(self,  pName \):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 267.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 259.2 Td
-(		A simple method to display a form XObject, such as a template that is reused on 
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 251.2 Td
-(		multiple pages. This is a page overlay, it is not moved around on the page
+(		A simple method to display a form XObject, such as a template that is reused on 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 243.2 Td
-(		
+(		multiple pages. This is a page overlay, it is not moved around on the page
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(		"""
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(		#if pUnit is None:
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(		#	vUnit = self.defaultUnit
+(		#if pUnit is None:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(		#else:
+(		#	vUnit = self.defaultUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(		#	vUnit = pUnit
+(		#else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
-(		#vUnit = self.resolveUnit\(vUnit,'c'\)
+(		#	vUnit = pUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(		#vX = self.convertUnits\( pX, vUnit,'p'\)
+(		#vUnit = self.resolveUnit\(vUnit,'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
-(		#vUnt = self.resolveUnit\(vUnit,'r'\)
+(		#vX = self.convertUnits\( pX, vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 171.2 Td
-(		#vY = self.convertUnits\( pY, vUnit,'p'\)
+(		#vUnt = self.resolveUnit\(vUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 163.2 Td
-(		vPtr = self.findXObject\(pName\)
+(		#vY = self.convertUnits\( pY, vUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 155.2 Td
-(		self.page.graphicsStream.append\( '1   0   0   1   0   0  cm /' + pName + ' Do  ' \)
+(		vPtr = self.findXObject\(pName\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 147.2 Td
-(		# self.page.graphicsStream.append\( '1   0   0   1 100 100 cm  /' + pName + ' Do  ' \)		
+(		self.page.graphicsStream.append\( '1   0   0   1   0   0  cm /' + pName + ' Do  ' \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 139.2 Td
-(		if not pName in self.page.xObjectList:
+(		# self.page.graphicsStream.append\( '1   0   0   1 100 100 cm  /' + pName + ' Do  ' \)		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 131.2 Td
-(			self.page.xObjectList = self.page.xObjectList + ' /'+pName + ' ' + str\( self.pvXObjectTable[vPtr].objectNo\) + ' 0 R'
+(		if not pName in self.page.xObjectList:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 123.2 Td
-(
+(			self.page.xObjectList = self.page.xObjectList + ' /'+pName + ' ' + str\( self.pvXObjectTable[vPtr].objectNo\) + ' 0 R'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 115.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
-/F1B 8 Tf
 44.64 107.2 Td
+(
+) Tj
+1 0 0 1 0 0 Tm
+/F1B 8 Tf
+44.64 99.2 Td
 (	def readImage\(self,  name\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 99.2 Td
+44.64 91.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 91.2 Td
+44.64 83.2 Td
 (		read an image into a bytearray
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 83.2 Td
+44.64 75.2 Td
 (		:name: is the filename, passed to the open function.
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 75.2 Td
+44.64 67.2 Td
 (		Uses binascii.hexlify\(\) to conver it to a hex string \(twice as long\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 67.2 Td
-(		The results are split itno a list of strings each with a length of 40 - until end
-) Tj
-1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		The functionm return that list. Used to write binary data to a pdf file. 
+(		The results are split itno a list of strings each with a length of 40 - until end
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -5860,7 +5860,7 @@ ET
 endstream
 endobj
 55 0 obj
-6863
+6821
 endobj
 56 0 obj
 << /Type /Page
@@ -5883,357 +5883,357 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		seealso: defineImageXObject\(\)
+(		The functionm return that list. Used to write binary data to a pdf file. 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(		"""
+(		seealso: defineImageXObject\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(		b = open\(name,'rb'\).read\(\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(		c = binascii.hexlify\( b \)
+(		b = open\(name,'rb'\).read\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(		clines = []
+(		c = binascii.hexlify\( b \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 699.2 Td
-(		vlen = 60
+(		clines = []
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 691.2 Td
-(		p = 0
+(		vlen = 60
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 683.2 Td
-(		while p < len\(c\):
+(		p = 0
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 675.2 Td
-(			clines.append\( c[p: p + vlen]\)
+(		while p < len\(c\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 667.2 Td
-(			p = p + vlen
+(			clines.append\( c[p: p + vlen]\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 659.2 Td
-(		return clines
+(			p = p + vlen
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 651.2 Td
-(			
+(		return clines
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 643.2 Td
-(		
+(			
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 635.2 Td
-(	#
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 627.2 Td
-(	# Graphics routines
+(	#
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(	# shade
+(	# Graphics routines
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(	# grayBar
+(	# shade
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(	# drawLine
+(	# grayBar
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
+(	# drawLine
+) Tj
+1 0 0 1 0 0 Tm
+44.64 587.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 587.2 Td
+44.64 579.2 Td
 (	def shade\( self, pX1, pY1, pX2, pY2, pScale = 0.9, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 579.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 571.2 Td
-(		GrayScale the rectagular area defined by the two points.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 563.2 Td
-(		See grayBar\(\) for an example.
+(		GrayScale the rectagular area defined by the two points.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(		"""
+(		See grayBar\(\) for an example.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
-(		#! grayscale the rectanbular area defined by the pX & pY parameters
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 539.2 Td
-(		vUnit = self.resolveUnit\( pUnit, 'r'\)
+(		#! grayscale the rectanbular area defined by the pX & pY parameters
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		vY1 = self.convertUnits\(pY1, vUnit, 'p'\)
+(		vUnit = self.resolveUnit\( pUnit, 'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		vY2 = self.convertUnits\(pY2, vUnit, 'p'\)
+(		vY1 = self.convertUnits\(pY1, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
-(		vUnit = self.resolveUnit\(pUnit, 'c'\)
+(		vY2 = self.convertUnits\(pY2, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(		vX1 = self.convertUnits\(pX1, vUnit, 'p'\)
+(		vUnit = self.resolveUnit\(pUnit, 'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		vX2 = self.convertUnits\(pX2, vUnit, 'p'\)
+(		vX1 = self.convertUnits\(pX1, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(		vScale = "%6.2f" % pScale
+(		vX2 = self.convertUnits\(pX2, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		self.page.graphicsStream.append\( vScale + ' g'\)
+(		vScale = "%6.2f" % pScale
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		vLine = str\(self.leftMargin + vX1\) + ' '+str\(self.pageHeight - self.topMargin - vY1\)+' '
+(		self.page.graphicsStream.append\( vScale + ' g'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(		vLine = vLine + str\(vX2 - vX1\) + ' ' +str\( vY2 - vY1\) + ' re'
+(		vLine = str\(self.leftMargin + vX1\) + ' '+str\(self.pageHeight - self.topMargin - vY1\)+' '
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(		self.page.graphicsStream.append\( vLine \)
+(		vLine = vLine + str\(vX2 - vX1\) + ' ' +str\( vY2 - vY1\) + ' re'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(		self.page.graphicsStream.append\( 'f 0 g' \)
+(		self.page.graphicsStream.append\( vLine \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
+(		self.page.graphicsStream.append\( 'f 0 g' \)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 435.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 435.2 Td
+44.64 427.2 Td
 (	def grayBar\( self, pY, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 427.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(		set the background for one row across the page to a light gray.
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
-(		pUnit is resolved to row, identified by pY, which is then shaded
+(		set the background for one row across the page to a light gray.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 403.2 Td
-(		to a height of lineHeight. Uses shade\(\) to draw the bar.
+(		pUnit is resolved to row, identified by pY, which is then shaded
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 395.2 Td
-(		"""
+(		to a height of lineHeight. Uses shade\(\) to draw the bar.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		vUnit = self.resolveUnit\( pUnit,'r'\)
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 379.2 Td
-(		vRow = self.convertUnits\( pY, vUnit, 'r'\)
+(		vUnit = self.resolveUnit\( pUnit,'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 371.2 Td
-(		self.shade\(1, vRow + 0.15, self.getLineWidth\('c'\), vRow + 0.9, 0.9,'r'\)
+(		vRow = self.convertUnits\( pY, vUnit, 'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 363.2 Td
+(		self.shade\(1, vRow + 0.15, self.getLineWidth\('c'\), vRow + 0.9, 0.9,'r'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 355.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 355.2 Td
+44.64 347.2 Td
 (	def drawLine\( self, pX1, pY1, pX2, pY2, pUnit = None, pWidth = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 347.2 Td
+44.64 339.2 Td
 (		""" Draw a line between two points 
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 339.2 Td
+44.64 331.2 Td
 (			
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 331.2 Td
+44.64 323.2 Td
 (		"""
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 323.2 Td
+44.64 315.2 Td
 (		if pWidth is not None:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 315.2 Td
+44.64 307.2 Td
 (			self.page.graphicsStream.append\( str\(pWidth\)+ ' w'\)			
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 307.2 Td
+44.64 299.2 Td
 (		if pUnit is None:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 299.2 Td
+44.64 291.2 Td
 (			vUnit = self.defaultUnit
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 291.2 Td
-(		else:
-) Tj
-1 0 0 1 0 0 Tm
 44.64 283.2 Td
-(			vUnit = pUnit
+(		else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 275.2 Td
-(		if vUnit in [ 'r','c']:
+(			vUnit = pUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 267.2 Td
-(			vRowUnit = 'r'
+(		if vUnit in [ 'r','c']:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 259.2 Td
-(			vColUnit = 'c'
+(			vRowUnit = 'r'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 251.2 Td
-(		else:
+(			vColUnit = 'c'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 243.2 Td
-(			vRowUnit = vUnit
+(		else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(			vColUnit = vUnit
+(			vRowUnit = vUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(						
+(			vColUnit = vUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(		vX1 = self.leftMargin + self.convertUnits\( pX1, vColUnit, 'p'\)
+(						
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(		vY1 = self.pageHeight - self.topMargin - self.convertUnits\(pY1, vRowUnit, 'p'\)
+(		vX1 = self.leftMargin + self.convertUnits\( pX1, vColUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(		vX2 = self.leftMargin + self.convertUnits\( pX2, vColUnit,'p'\)
+(		vY1 = self.pageHeight - self.topMargin - self.convertUnits\(pY1, vRowUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
-(		vY2 = self.pageHeight - self.topMargin - self.convertUnits\(pY2, vRowUnit, 'p'\)
+(		vX2 = self.leftMargin + self.convertUnits\( pX2, vColUnit,'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(		self.page.graphicsStream.append\( str\(vX1\) + ' '+str\(vY1\)+' m '+str\(vX2\)+' '+str\(vY2\)+' l s'\) 
+(		vY2 = self.pageHeight - self.topMargin - self.convertUnits\(pY2, vRowUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
+(		self.page.graphicsStream.append\( str\(vX1\) + ' '+str\(vY1\)+' m '+str\(vX2\)+' '+str\(vY2\)+' l s'\) 
+) Tj
+1 0 0 1 0 0 Tm
+44.64 171.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 171.2 Td
+44.64 163.2 Td
 (	def rectangle\( self, pX, pY, pWidth, pHeight, pUnit = None, pLineWidth = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 163.2 Td
+44.64 155.2 Td
 (		""" draw 4 lines, forming a rectangle. """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 155.2 Td
+44.64 147.2 Td
 (		self.drawLine\(pX,pY,pX + pWidth, pY,pUnit,pLineWidth \)  # top line
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 147.2 Td
+44.64 139.2 Td
 (		self.drawLine\(pX,pY + pHeight,pX + pWidth, pY + pHeight,pUnit,pLineWidth\) # bottom line
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 139.2 Td
+44.64 131.2 Td
 (		self.drawLine\(pX,pY,pX, pY + pHeight,pUnit,pLineWidth\) # left side
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 131.2 Td
+44.64 123.2 Td
 (		self.drawLine\(pX + pWidth,pY,pX + pWidth, pY + pHeight,pUnit,pLineWidth\) #  right side
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 123.2 Td
+44.64 115.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 115.2 Td
+44.64 107.2 Td
 (	def lineAcrossPage\(self, pY, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 107.2 Td
+44.64 99.2 Td
 (		""" draw a line across the page, to intersect a page border, if present
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 99.2 Td
+44.64 91.2 Td
 (		sets the current row to pY, current col to 0
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 91.2 Td
+44.64 83.2 Td
 (		 """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 83.2 Td
+44.64 75.2 Td
 (		vUnit = self.resolveUnit\( pUnit, 'r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 75.2 Td
+44.64 67.2 Td
 (		vRow = self.convertUnits\( pY, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 67.2 Td
-(		self.currentRow = vRow
-) Tj
-1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		self.drawLine\(0, vRow, self.getLineWidth\('p'\) + 5, vRow, 'p'\)
+(		self.currentRow = vRow
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -6247,7 +6247,7 @@ ET
 endstream
 endobj
 58 0 obj
-6808
+6816
 endobj
 59 0 obj
 << /Type /Page
@@ -6270,105 +6270,105 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
+(		self.drawLine\(0, vRow, self.getLineWidth\('p'\) + 5, vRow, 'p'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 731.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 731.2 Td
+44.64 723.2 Td
 (	def verticalPageLine\(self, pX, pUnit = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 723.2 Td
+44.64 715.2 Td
 (		""" vertical line the full height of a page, intersecting a page border if present
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 715.2 Td
+44.64 707.2 Td
 (		sets the current column to Px
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 707.2 Td
+44.64 699.2 Td
 (		 """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 699.2 Td
+44.64 691.2 Td
 (		vUnit = self.resolveUnit\(pUnit, 'c'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 691.2 Td
+44.64 683.2 Td
 (		vCol = self.convertUnits\( pX, vUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 683.2 Td
+44.64 675.2 Td
 (		self.currentCol = vCol
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 675.2 Td
+44.64 667.2 Td
 (		self.drawLine\( vCol, 0, vCol, self.pageHeight - self.bottomMargin - self.topMargin + 5, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 667.2 Td
+44.64 659.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 659.2 Td
+44.64 651.2 Td
 (	def pageBorder\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 651.2 Td
+44.64 643.2 Td
 (		""" draw lines around the page, offset by margins, and based on page size. """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 643.2 Td
+44.64 635.2 Td
 (		vBottom = self.getBottomRow\('p'\) + 5
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 635.2 Td
+44.64 627.2 Td
 (		vRight = self.getLineWidth\('p'\) + 5
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 627.2 Td
+44.64 619.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 619.2 Td
+44.64 611.2 Td
 (		self.drawLine\(0,0, vRight , 0, 'p'\) # top of page
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 611.2 Td
+44.64 603.2 Td
 (		self.drawLine\(0, vBottom, vRight, vBottom, 'p'\) # bottom of page
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 603.2 Td
+44.64 595.2 Td
 (		self.drawLine\(0,0,0, vBottom,'p'\) # left side
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 595.2 Td
+44.64 587.2 Td
 (		self.drawLine\(vRight, 0, vRight, vBottom,'p'\) # right side
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 587.2 Td
+44.64 579.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 579.2 Td
+44.64 571.2 Td
 (	def addGraphic\( self, pText \):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 571.2 Td
+44.64 563.2 Td
 (		""" primitive to add <pText> to the page graphic stream """
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 563.2 Td
-(		self.page.graphicsStream.append\( pText \)
-) Tj
-1 0 0 1 0 0 Tm
 44.64 555.2 Td
-(
+(		self.page.graphicsStream.append\( pText \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 547.2 Td
@@ -6380,27 +6380,27 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(	#an ellipse is drawn with 4 bezier curves.
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(	#see http://www.codeguru.com/gdi/ellipse.shtml
+(	#an ellipse is drawn with 4 bezier curves.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
-(	#                   //                        /
+(	#see http://www.codeguru.com/gdi/ellipse.shtml
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(	#                   //        2___3___4       /
+(	#                   //                        /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(	#                   //     1             5    /
+(	#                   //        2___3___4       /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(	#                   //     |             |    /
+(	#                   //     1             5    /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
@@ -6408,11 +6408,11 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(	#                   //     0,12          6    /
+(	#                   //     |             |    /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(	#                   //     |             |    /
+(	#                   //     0,12          6    /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
@@ -6420,205 +6420,205 @@ BT
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(	#                   //    11             7    /
+(	#                   //     |             |    /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(	#                   //       10___9___8       /
+(	#                   //    11             7    /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(	#                   //                        /
+(	#                   //       10___9___8       /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(	#                   //------------------------*
+(	#                   //                        /
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
+(	#                   //------------------------*
+) Tj
+1 0 0 1 0 0 Tm
+44.64 411.2 Td
 (
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 411.2 Td
+44.64 403.2 Td
 (	def ellipse\(self, pX, pY, pRadiusX, pRadiusY, pUnit = None, pLineWidth = None\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 403.2 Td
-(		"""
-) Tj
-1 0 0 1 0 0 Tm
 44.64 395.2 Td
-(		#! draw an ellipse centered at <pX>, <pY>
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 387.2 Td
-(		#! with a horizontal radius of <pRadiusX> and a vertical radius of <pRadiusY>
+(		#! draw an ellipse centered at <pX>, <pY>
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 379.2 Td
-(		#! best to use inches or points as the unit here
+(		#! with a horizontal radius of <pRadiusX> and a vertical radius of <pRadiusY>
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 371.2 Td
-(		#! if the X radius and the Y radius are equal then its a circle
+(		#! best to use inches or points as the unit here
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 363.2 Td
-(		This routine draws 4 arcs.
+(		#! if the X radius and the Y radius are equal then its a circle
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 355.2 Td
-(		"""
+(		This routine draws 4 arcs.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 347.2 Td
-(		vMagic = 0.2761423749154
+(		"""
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 339.2 Td
-(		self.addGraphic\( 'q'\)
+(		vMagic = 0.2761423749154
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 331.2 Td
-(		if pLineWidth is not None:
+(		self.addGraphic\( 'q'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 323.2 Td
-(			self.addGraphic\( str\(pLineWidth\)+ ' w'\)
+(		if pLineWidth is not None:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 315.2 Td
-(		self.addGraphic\('1 i'\)
+(			self.addGraphic\( str\(pLineWidth\)+ ' w'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 307.2 Td
-(		if pUnit is None:
+(		self.addGraphic\('1 i'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 299.2 Td
-(			vUnit = self.defaultUnit
+(		if pUnit is None:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 291.2 Td
-(		else:
+(			vUnit = self.defaultUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 283.2 Td
-(			vUnit = pUnit
-) Tj
-1 0 0 1 0 0 Tm
-44.64 275.2 Td
-(		if vUnit in [ 'r','c']:
-) Tj
-1 0 0 1 0 0 Tm
-44.64 267.2 Td
-(			vRowUnit = 'r'
-) Tj
-1 0 0 1 0 0 Tm
-44.64 259.2 Td
-(			vColUnit = 'c'
-) Tj
-1 0 0 1 0 0 Tm
-44.64 251.2 Td
 (		else:
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 275.2 Td
+(			vUnit = pUnit
+) Tj
+1 0 0 1 0 0 Tm
+44.64 267.2 Td
+(		if vUnit in [ 'r','c']:
+) Tj
+1 0 0 1 0 0 Tm
+44.64 259.2 Td
+(			vRowUnit = 'r'
+) Tj
+1 0 0 1 0 0 Tm
+44.64 251.2 Td
+(			vColUnit = 'c'
+) Tj
+1 0 0 1 0 0 Tm
 44.64 243.2 Td
-(			vRowUnit = vUnit
+(		else:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(			vColUnit = vUnit
+(			vRowUnit = vUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(		vX = self.convertUnits\( pX, vColUnit, 'p'\)
+(			vColUnit = vUnit
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(		vY = self.convertUnits\( pY, vRowUnit, 'p'\)
+(		vX = self.convertUnits\( pX, vColUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(		
+(		vY = self.convertUnits\( pY, vRowUnit, 'p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(		vCenter = _point\( vX + self.leftMargin, self.pageHeight - self.topMargin - vY \)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
-(		
+(		vCenter = _point\( vX + self.leftMargin, self.pageHeight - self.topMargin - vY \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 187.2 Td
-(		# self.write\(vCenter.x, vCenter.y,'X','l','p'\)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 179.2 Td
-(		vRadius = _point\( self.convertUnits\(pRadiusX, vColUnit,'p'\), self.convertUnits\(pRadiusY,vRowUnit,'p'\)\)	
+(		# self.write\(vCenter.x, vCenter.y,'X','l','p'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 171.2 Td
-(		
+(		vRadius = _point\( self.convertUnits\(pRadiusX, vColUnit,'p'\), self.convertUnits\(pRadiusY,vRowUnit,'p'\)\)	
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 163.2 Td
-(		vOffset = _point\( 2 * vRadius.x * vMagic, 2 * vRadius.y * vMagic\)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 155.2 Td
-(		# now we need a list with elements 0:12
+(		vOffset = _point\( 2 * vRadius.x * vMagic, 2 * vRadius.y * vMagic\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 147.2 Td
-(		vXy = []
+(		# now we need a list with elements 0:12
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 139.2 Td
-(		for i in range\(0,13\):
+(		vXy = []
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 131.2 Td
-(			vXy.append\( _point\(0,0\)\)
+(		for i in range\(0,13\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 123.2 Td
-(	
+(			vXy.append\( _point\(0,0\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 115.2 Td
-(		# we now have the center point, vCenter
+(	
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 107.2 Td
-(		# the horizontal radius vX, and the vertical radius vY = vRadius
+(		# we now have the center point, vCenter
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 99.2 Td
-(
+(		# the horizontal radius vX, and the vertical radius vY = vRadius
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 91.2 Td
-(		vXy[0].x = vCenter.x - vRadius.x
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 83.2 Td
-(		vXy[1].x = vXy[0].x
+(		vXy[0].x = vCenter.x - vRadius.x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 75.2 Td
-(		vXy[11].x = vXy[0].x
+(		vXy[1].x = vXy[0].x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 67.2 Td
-(		vXy[12].x = vXy[0].x
+(		vXy[11].x = vXy[0].x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(		
+(		vXy[12].x = vXy[0].x
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -6632,7 +6632,7 @@ ET
 endstream
 endobj
 61 0 obj
-6713
+6778
 endobj
 62 0 obj
 << /Type /Page
@@ -6655,351 +6655,351 @@ BT
 1 0 0 1 0 0 Tm
 /F1 8 Tf
 44.64 739.2 Td
-(		vXy[5].x = vCenter.x + vRadius.x
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 731.2 Td
-(		vXy[6].x = vXy[5].x
+(		vXy[5].x = vCenter.x + vRadius.x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 723.2 Td
-(		vXy[7].x = vXy[5].x
+(		vXy[6].x = vXy[5].x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 715.2 Td
-(		
+(		vXy[7].x = vXy[5].x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 707.2 Td
-(		vXy[2].x = vCenter.x - vOffset.x
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 699.2 Td
-(		vXy[10].x = vXy[2].x
+(		vXy[2].x = vCenter.x - vOffset.x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 691.2 Td
-(		
+(		vXy[10].x = vXy[2].x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 683.2 Td
-(		vXy[3].x = vCenter.x
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 675.2 Td
-(		vXy[9].x = vCenter.x
+(		vXy[3].x = vCenter.x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 667.2 Td
-(		
+(		vXy[9].x = vCenter.x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 659.2 Td
-(		vXy[4].x = vCenter.x + vOffset.x
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 651.2 Td
-(		vXy[8].x = vXy[4].x
+(		vXy[4].x = vCenter.x + vOffset.x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 643.2 Td
-(	
+(		vXy[8].x = vXy[4].x
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 635.2 Td
-(		vXy[2].y = vCenter.y + vRadius.y
+(	
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 627.2 Td
-(		vXy[3].y = vXy[2].y
+(		vXy[2].y = vCenter.y + vRadius.y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 619.2 Td
-(		vXy[4].y = vXy[2].y
+(		vXy[3].y = vXy[2].y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 611.2 Td
-(		
+(		vXy[4].y = vXy[2].y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 603.2 Td
-(		vXy[8].y = vCenter.y - vRadius.y
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 595.2 Td
-(		vXy[9].y = vXy[8].y
+(		vXy[8].y = vCenter.y - vRadius.y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 587.2 Td
-(		vXy[10].y = vXy[8].y
+(		vXy[9].y = vXy[8].y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 579.2 Td
-(		
+(		vXy[10].y = vXy[8].y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 571.2 Td
-(		vXy[0].y = vCenter.y
-) Tj
-1 0 0 1 0 0 Tm
-44.64 563.2 Td
-(		vXy[1].y = vCenter.y + vOffset.y
-) Tj
-1 0 0 1 0 0 Tm
-44.64 555.2 Td
-(		vXy[11].y = vCenter.y - vOffset.y
-) Tj
-1 0 0 1 0 0 Tm
-44.64 547.2 Td
-(		vXy[12].y = vCenter.y
-) Tj
-1 0 0 1 0 0 Tm
-44.64 539.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
+44.64 563.2 Td
+(		vXy[0].y = vCenter.y
+) Tj
+1 0 0 1 0 0 Tm
+44.64 555.2 Td
+(		vXy[1].y = vCenter.y + vOffset.y
+) Tj
+1 0 0 1 0 0 Tm
+44.64 547.2 Td
+(		vXy[11].y = vCenter.y - vOffset.y
+) Tj
+1 0 0 1 0 0 Tm
+44.64 539.2 Td
+(		vXy[12].y = vCenter.y
+) Tj
+1 0 0 1 0 0 Tm
 44.64 531.2 Td
-(		vXy[5].y = vCenter.y + vOffset.y
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 523.2 Td
-(		vXy[6].y = vCenter.y
+(		vXy[5].y = vCenter.y + vOffset.y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 515.2 Td
-(		vXy[7].y = vCenter.y - vOffset.y
+(		vXy[6].y = vCenter.y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 507.2 Td
-(		#for i in range\(0,13\):
+(		vXy[7].y = vCenter.y - vOffset.y
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 499.2 Td
-(		#	self.write\(5,20 + i, str\(i\)+': '+str\(vXy[i]\),'l','r'\)
+(		#for i in range\(0,13\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 491.2 Td
-(
+(		#	self.write\(5,20 + i, str\(i\)+': '+str\(vXy[i]\),'l','r'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 483.2 Td
-(		#  move to the left point.
+(
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 475.2 Td
-(		self.addGraphic\( str\( vXy[0].x\)  + ' ' + str\(vXy[0].y\) + ' m'\)
+(		#  move to the left point.
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 467.2 Td
-(		# draw the four arcs, each arc with 3 points
+(		self.addGraphic\( str\( vXy[0].x\)  + ' ' + str\(vXy[0].y\) + ' m'\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 459.2 Td
-(		for p in [1,4,7, 10]:
+(		# draw the four arcs, each arc with 3 points
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 451.2 Td
-(			t = str\(vXy[p].x\)+' '+ str\(vXy[ p].y\) +' ' 
+(		for p in [1,4,7, 10]:
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 443.2 Td
-(			t = t + str\(vXy[p + 1].x\) +' '+ str\(vXy[p + 1].y\) + ' ' 
+(			t = str\(vXy[p].x\)+' '+ str\(vXy[ p].y\) +' ' 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 435.2 Td
-(			t = t + str\(vXy[p + 2].x\) + ' '+ str\(vXy[p + 2].y\) + ' c'
+(			t = t + str\(vXy[p + 1].x\) +' '+ str\(vXy[p + 1].y\) + ' ' 
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 427.2 Td
-(			self.addGraphic\(t\)
+(			t = t + str\(vXy[p + 2].x\) + ' '+ str\(vXy[p + 2].y\) + ' c'
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 419.2 Td
-(		self.addGraphic\('S Q'\)
+(			self.addGraphic\(t\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 411.2 Td
+(		self.addGraphic\('S Q'\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 403.2 Td
 (		            
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 403.2 Td
+44.64 395.2 Td
 (	def helloWorld\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 395.2 Td
+44.64 387.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 387.2 Td
+44.64 379.2 Td
 (		self.beginDoc\('hello_world.pdf'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 379.2 Td
+44.64 371.2 Td
 (		self.newPage\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 371.2 Td
+44.64 363.2 Td
 (		self.setTextState\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 363.2 Td
+44.64 355.2 Td
 (		self.writeCol\(20,'this is writeCol at 20'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 355.2 Td
+44.64 347.2 Td
 (		self.writeNext\(20,'this is writeNext at 20'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 347.2 Td
+44.64 339.2 Td
 (		self.writeCenteredInLine\(15,'writeCenteredInLine at row 15'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 339.2 Td
+44.64 331.2 Td
 (		self.write\( 10,10,'write','l','r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 331.2 Td
+44.64 323.2 Td
 (		self.setFont\('F3',8\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 323.2 Td
+44.64 315.2 Td
 (		self.write\(20,30,'This is a different font'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 315.2 Td
+44.64 307.2 Td
 (		for row in range\(30,50\):
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 307.2 Td
+44.64 299.2 Td
 (			self.write\(20,row,'This is row '+str\(row\),'l','r' \)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 299.2 Td
+44.64 291.2 Td
 (		self.waterMark\('WaterMark!'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 291.2 Td
-(		
-) Tj
-1 0 0 1 0 0 Tm
 44.64 283.2 Td
-(		self.endPage\(\)
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 275.2 Td
-(		
+(		self.endPage\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 267.2 Td
-(		for i in range\(0, 50\):
+(		
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 259.2 Td
-(			self.newPage\(\)
+(		for i in range\(0, 50\):
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 251.2 Td
-(			self.setTextState\(\)
+(			self.newPage\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 243.2 Td
-(			self.setFont\('F3',16\)
+(			self.setTextState\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 235.2 Td
-(			self.write\( 20, 40,'This is page number '+ str\(self.currentPageNo\) \)
+(			self.setFont\('F3',16\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 227.2 Td
-(			self.write\( 30, 50,'This is page number '+ str\(self.page.pageNo\) \)
+(			self.write\( 20, 40,'This is page number '+ str\(self.currentPageNo\) \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 219.2 Td
-(			self.waterMark\(str\(i\)\)
+(			self.write\( 30, 50,'This is page number '+ str\(self.page.pageNo\) \)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 211.2 Td
-(			self.endPage\(\)
+(			self.waterMark\(str\(i\)\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 203.2 Td
-(		self.endDoc\(\)
+(			self.endPage\(\)
 ) Tj
 1 0 0 1 0 0 Tm
 44.64 195.2 Td
+(		self.endDoc\(\)
+) Tj
+1 0 0 1 0 0 Tm
+44.64 187.2 Td
 (	
 ) Tj
 1 0 0 1 0 0 Tm
 /F1B 8 Tf
-44.64 187.2 Td
+44.64 179.2 Td
 (	def pageLayout\(self\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1 8 Tf
-44.64 179.2 Td
+44.64 171.2 Td
 (		self.beginDoc\('pagelayout.pdf'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 171.2 Td
+44.64 163.2 Td
 (		self.setDefaultUnit\('r'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 163.2 Td
+44.64 155.2 Td
 (		
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 155.2 Td
+44.64 147.2 Td
 (		for font in [ 'F1','F2','F3']:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 147.2 Td
+44.64 139.2 Td
 (			for size in [ 8, 10, 12, 14, 16, 18 ]:
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 139.2 Td
+44.64 131.2 Td
 (				self.newPage\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 131.2 Td
+44.64 123.2 Td
 (				self.setTextState\(\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 123.2 Td
+44.64 115.2 Td
 (				self.setFont\( font, size\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 115.2 Td
+44.64 107.2 Td
 (				self.writeCenteredInLine\( 1, 'Font '+ font + ' Size ' + str\(size\)\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 107.2 Td
+44.64 99.2 Td
 (				self.write\(10,2,'0123456789012345678901234567890'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 99.2 Td
+44.64 91.2 Td
 (				self.write\(50,2,'abcdefghijklmnopqrstuvwxyz'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 91.2 Td
+44.64 83.2 Td
 (				for i in range\(10,40\):
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 83.2 Td
+44.64 75.2 Td
 (					self.write\(i,3,str\(i%10\),'l'\)
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 75.2 Td
+44.64 67.2 Td
 (				alpha = 'abcdefghijklmnopqrstuvwxyz'
 ) Tj
 1 0 0 1 0 0 Tm
-44.64 67.2 Td
-(				for i in range\(0,26\):
-) Tj
-1 0 0 1 0 0 Tm
 44.64 59.2 Td
-(					self.write\(50 + i, 3, alpha[i],'l'\)
+(				for i in range\(0,26\):
 ) Tj
 1 0 0 1 0 0 Tm
 /F1I 6 Tf
@@ -7013,7 +7013,7 @@ ET
 endstream
 endobj
 64 0 obj
-6176
+6136
 endobj
 3 0  obj
 << /Type /Pages
@@ -7047,7 +7047,7 @@ xref
 0000000000 65535 f
 0000000019 00000 n
 0000000091 00000 n
-0000124546 00000 n
+0000124459 00000 n
 0000000143 00000 n
 0000000190 00000 n
 0000000665 00000 n
@@ -7067,54 +7067,54 @@ xref
 0000027358 00000 n
 0000027382 00000 n
 0000027561 00000 n
-0000034380 00000 n
-0000034404 00000 n
-0000034584 00000 n
-0000041427 00000 n
-0000124647 00000 n
-0000041451 00000 n
-0000041631 00000 n
-0000048060 00000 n
-0000048084 00000 n
-0000048264 00000 n
-0000054820 00000 n
-0000054844 00000 n
-0000055024 00000 n
-0000061686 00000 n
-0000061710 00000 n
-0000061890 00000 n
-0000068042 00000 n
-0000068066 00000 n
-0000068246 00000 n
-0000075516 00000 n
-0000075540 00000 n
-0000075720 00000 n
-0000082719 00000 n
-0000124772 00000 n
-0000082743 00000 n
-0000082923 00000 n
-0000089876 00000 n
-0000089900 00000 n
-0000090080 00000 n
-0000096902 00000 n
-0000096926 00000 n
-0000097106 00000 n
-0000104030 00000 n
-0000104054 00000 n
-0000104234 00000 n
-0000111103 00000 n
-0000111127 00000 n
-0000111307 00000 n
-0000118081 00000 n
-0000118105 00000 n
-0000118285 00000 n
-0000124522 00000 n
-0000124897 00000 n
+0000034312 00000 n
+0000034336 00000 n
+0000034516 00000 n
+0000041394 00000 n
+0000124560 00000 n
+0000041418 00000 n
+0000041598 00000 n
+0000048053 00000 n
+0000048077 00000 n
+0000048257 00000 n
+0000054797 00000 n
+0000054821 00000 n
+0000055001 00000 n
+0000061614 00000 n
+0000061638 00000 n
+0000061818 00000 n
+0000067943 00000 n
+0000067967 00000 n
+0000068147 00000 n
+0000075471 00000 n
+0000075495 00000 n
+0000075675 00000 n
+0000082674 00000 n
+0000124685 00000 n
+0000082698 00000 n
+0000082878 00000 n
+0000089826 00000 n
+0000089850 00000 n
+0000090030 00000 n
+0000096824 00000 n
+0000096848 00000 n
+0000097028 00000 n
+0000103910 00000 n
+0000103934 00000 n
+0000104114 00000 n
+0000110991 00000 n
+0000111015 00000 n
+0000111195 00000 n
+0000118034 00000 n
+0000118058 00000 n
+0000118238 00000 n
+0000124435 00000 n
+0000124810 00000 n
 trailer
 << /Size 69
 /Root 1 0 R
 /Info 5 0 R
 >>
 startxref
-124987
+124900
 %%EOF
