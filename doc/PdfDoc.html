@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>PdfDoc</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/garymenchen/python/pdf/PdfDoc.py">/Users/garymenchen/python/pdf/PdfDoc.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Library/Python/2.7/site-packages/PdfDoc.py">/Library/Python/2.7/site-packages/PdfDoc.py</a></font></td></tr></table>
     <p><tt>#!&nbsp;classes&nbsp;for&nbsp;pdf&nbsp;generation</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -218,11 +218,10 @@ seealso:&nbsp;<a href="#PdfDocument-setFileName">setFileName</a>(self,&nbsp;pNam
 <dl><dt><a name="PdfDocument-charWidthFactor"><strong>charWidthFactor</strong></a>(self, factor)</dt><dd><tt>mmultiplier&nbsp;used&nbsp;to&nbsp;determine&nbsp;a&nbsp;character&nbsp;width&nbsp;for&nbsp;a&nbsp;font&nbsp;size.&nbsp;<br>
 charWidth&nbsp;becomes&nbsp;font.avgSize&nbsp;*&nbsp;charWidthFactor&nbsp;*&nbsp;fontSize&nbsp;/&nbsp;1000</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-checkMeasurementUnit"><strong>checkMeasurementUnit</strong></a>(self, pUnit)</dt><dd><tt>validate&nbsp;the&nbsp;unit&nbsp;of&nbsp;measurement:&nbsp;r,&nbsp;c,&nbsp;i,&nbsp;p&nbsp;or&nbsp;m</tt></dd></dl>
+<dl><dt><a name="PdfDocument-checkMeasurementUnit"><strong>checkMeasurementUnit</strong></a>(self, pUnit)</dt><dd><tt>validate&nbsp;the&nbsp;unit&nbsp;of&nbsp;measurement</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-convertUnits"><strong>convertUnits</strong></a>(self, pUnits, pFrom, pTo)</dt><dd><tt>Convert&nbsp;between&nbsp;any&nbsp;of&nbsp;the&nbsp;different&nbsp;units&nbsp;of&nbsp;measurement.<br>
-Units&nbsp;may&nbsp;be&nbsp;i:&nbsp;inches&nbsp;r:&nbsp;row&nbsp;c:&nbsp;col&nbsp;p:&nbsp;points.&nbsp;Default&nbsp;is&nbsp;p<br>
-r&nbsp;and&nbsp;c&nbsp;use&nbsp;charWidth&nbsp;and&nbsp;lineHeight</tt></dd></dl>
+Units&nbsp;may&nbsp;be&nbsp;i:&nbsp;inches&nbsp;r:&nbsp;row&nbsp;c:&nbsp;col&nbsp;p:&nbsp;points.&nbsp;Default&nbsp;is&nbsp;p</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-defineImageXObject"><strong>defineImageXObject</strong></a>(self, hexStrings, pName, pWidth, pHeight, pBitsPerComponent, pColorSpace<font color="#909090">=None</font>, pImageMask<font color="#909090">=None</font>, pImageLib<font color="#909090">=None</font>, pFilter<font color="#909090">=None</font>)</dt><dd><tt>define&nbsp;an&nbsp;image&nbsp;<a href="#XObject">XObject</a>,&nbsp;that&nbsp;can&nbsp;later&nbsp;be&nbsp;invoked&nbsp;by&nbsp;&lt;pName&gt;.<br>
 hexStrings&nbsp;-&nbsp;See&nbsp;<a href="#PdfDocument-readImage">readImage</a>()&nbsp;for&nbsp;info&nbsp;on&nbsp;the&nbsp;:hexStrings:&nbsp;parameter&nbsp;-&nbsp;which&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;ascii&nbsp;characters<br>
@@ -232,8 +231,7 @@ pColorSpace&nbsp;&nbsp;DeviceRGB&nbsp;for&nbsp;jpeg<br>
 pImageMask<br>
 pImageLib&nbsp;ImageB&nbsp;for&nbsp;jpg<br>
 pFilter&nbsp;-&nbsp;DCTDecode&nbsp;for&nbsp;jpg<br>
-self.<a href="#PdfDocument-defineImageXObject">defineImageXObject</a>(&nbsp;hexStrings,'Sh1',&nbsp;274,283,8,'DeviceRGB',None,'ImageB','DCTDecode')<br>
-No&nbsp;matrix&nbsp;or&nbsp;bounding&nbsp;box&nbsp;is&nbsp;defined,&nbsp;but&nbsp;width&nbsp;and&nbsp;height&nbsp;are&nbsp;specified.</tt></dd></dl>
+self.<a href="#PdfDocument-defineImageXObject">defineImageXObject</a>(&nbsp;hexStrings,'Sh1',&nbsp;274,283,8,'DeviceRGB',None,'ImageB','DCTDecode')</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-drawLine"><strong>drawLine</strong></a>(self, pX1, pY1, pX2, pY2, pUnit<font color="#909090">=None</font>, pWidth<font color="#909090">=None</font>)</dt><dd><tt>Draw&nbsp;a&nbsp;line&nbsp;between&nbsp;two&nbsp;points</tt></dd></dl>
 
@@ -262,8 +260,7 @@ and&nbsp;sets&nbsp;the&nbsp;page&nbsp;to&nbsp;None.<br>
 offset&nbsp;into&nbsp;that&nbsp;list.&nbsp;Returns&nbsp;-1&nbsp;if&nbsp;not&nbsp;present.&nbsp;Does&nbsp;not&nbsp;return&nbsp;the&nbsp;actual&nbsp;font<br>
 <a href="__builtin__.html#object">object</a>.</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-findXObject"><strong>findXObject</strong></a>(self, pName)</dt><dd><tt>Search&nbsp;for&nbsp;an&nbsp;entry&nbsp;in&nbsp;the&nbsp;pvXObjectTable&nbsp;list,&nbsp;return&nbsp;its&nbsp;offset&nbsp;in&nbsp;the&nbsp;list.<br>
-Return&nbsp;-1&nbsp;if&nbsp;&lt;pName&gt;&nbsp;is&nbsp;not&nbsp;located</tt></dd></dl>
+<dl><dt><a name="PdfDocument-findXObject"><strong>findXObject</strong></a>(self, pName)</dt><dd><tt>Search&nbsp;for&nbsp;an&nbsp;entry&nbsp;in&nbsp;the&nbsp;pvXObjectTable&nbsp;list,&nbsp;return&nbsp;its&nbsp;offset&nbsp;in&nbsp;the&nbsp;list.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-getBottomMargin"><strong>getBottomMargin</strong></a>(self, pUnit)</dt><dd><tt>return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;bottom&nbsp;margin</tt></dd></dl>
 
@@ -293,10 +290,9 @@ Returns&nbsp;None&nbsp;if&nbsp;not&nbsp;found.</tt></dd></dl>
 <dl><dt><a name="PdfDocument-getLineHeight"><strong>getLineHeight</strong></a>(self, pUnit<font color="#909090">=None</font>)</dt><dd><tt>returns&nbsp;the&nbsp;current&nbsp;line&nbsp;height,&nbsp;in&nbsp;the&nbsp;specified&nbsp;or&nbsp;default&nbsp;unit&nbsp;of&nbsp;measurement.<br>
 It&nbsp;would&nbsp;be&nbsp;expected&nbsp;that&nbsp;the&nbsp;lineHeight,&nbsp;for&nbsp;the&nbsp;Unit&nbsp;r&nbsp;or&nbsp;c,&nbsp;would&nbsp;be&nbsp;1.</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-getLineWidth"><strong>getLineWidth</strong></a>(self, pUnit<font color="#909090">=None</font>)</dt><dd><tt>get&nbsp;the&nbsp;page&nbsp;size&nbsp;minus&nbsp;left&nbsp;and&nbsp;right&nbsp;margins.&nbsp;Return&nbsp;in&nbsp;the<br>
-current&nbsp;default&nbsp;unit&nbsp;of&nbsp;measure&nbsp;unless&nbsp;&lt;pUnit&gt;&nbsp;is&nbsp;specified.&nbsp;<br>
-Returns&nbsp;the&nbsp;width&nbsp;of&nbsp;a&nbsp;line,&nbsp;which&nbsp;is<br>
-the&nbsp;page&nbsp;with&nbsp;with&nbsp;minus&nbsp;left&nbsp;and&nbsp;right&nbsp;margins.</tt></dd></dl>
+<dl><dt><a name="PdfDocument-getLineWidth"><strong>getLineWidth</strong></a>(self, pUnit<font color="#909090">=None</font>)</dt><dd><tt>get&nbsp;the&nbsp;page&nbsp;size&nbsp;minus&nbsp;left&nbsp;and&nbsp;right&nbsp;margins.&nbsp;Return&nbsp;in&nbsp;points<br>
+unless&nbsp;&lt;pUnit&gt;&nbsp;is&nbsp;specified.&nbsp;Returns&nbsp;the&nbsp;width&nbsp;of&nbsp;a&nbsp;line,&nbsp;which&nbsp;is<br>
+the&nbsp;page&nbsp;with&nbsp;minus&nbsp;left&nbsp;and&nbsp;right&nbsp;margins.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-getNextObjNo"><strong>getNextObjNo</strong></a>(self)</dt><dd><tt>Primarily&nbsp;internal&nbsp;use.<br>
 Returns&nbsp;the&nbsp;next&nbsp;available&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;number.&nbsp;Maintains&nbsp;a&nbsp;counter&nbsp;for&nbsp;the&nbsp;<a href="#PdfDocument">PdfDocument</a><br>
@@ -343,12 +339,10 @@ Tracks&nbsp;the&nbsp;page&nbsp;hierarchy,&nbsp;internally.</tt></dd></dl>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;does&nbsp;encoding&nbsp;to&nbsp;'ascii',&nbsp;appends&nbsp;'<br>
 '&nbsp;to&nbsp;the&nbsp;end,&nbsp;(per&nbsp;pdf&nbsp;specs)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;updates&nbsp;an&nbsp;offset&nbsp;attribute&nbsp;with&nbsp;the&nbsp;total&nbsp;output&nbsp;length.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Outfacing&nbsp;methods&nbsp;such&nbsp;as&nbsp;write&nbsp;make&nbsp;use&nbsp;of&nbsp;put.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seealso:&nbsp;<a href="#PdfDocument-putAsIs">putAsIs</a>()</tt></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Outfacing&nbsp;methods&nbsp;such&nbsp;as&nbsp;write&nbsp;make&nbsp;use&nbsp;of&nbsp;put.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-putAsIs"><strong>putAsIs</strong></a>(self, pMessage)</dt><dd><tt>put&nbsp;with&nbsp;no&nbsp;encoding,&nbsp;does&nbsp;not&nbsp;strip&nbsp;leading&nbsp;or&nbsp;trailing&nbsp;whitespace.<br>
-can&nbsp;be&nbsp;used&nbsp;to&nbsp;output&nbsp;binary&nbsp;strings&nbsp;(such&nbsp;as&nbsp;a&nbsp;bytearray)<br>
-Seealso:&nbsp;<a href="#PdfDocument-put">put</a>()</tt></dd></dl>
+can&nbsp;be&nbsp;used&nbsp;to&nbsp;output&nbsp;binary&nbsp;strings&nbsp;(such&nbsp;as&nbsp;a&nbsp;bytearray)</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-readImage"><strong>readImage</strong></a>(self, name)</dt><dd><tt>read&nbsp;an&nbsp;image&nbsp;into&nbsp;a&nbsp;bytearray<br>
 :name:&nbsp;is&nbsp;the&nbsp;filename,&nbsp;passed&nbsp;to&nbsp;the&nbsp;open&nbsp;function.<br>
@@ -359,8 +353,7 @@ seealso:&nbsp;<a href="#PdfDocument-defineImageXObject">defineImageXObject</a>()
 
 <dl><dt><a name="PdfDocument-rectangle"><strong>rectangle</strong></a>(self, pX, pY, pWidth, pHeight, pUnit<font color="#909090">=None</font>, pLineWidth<font color="#909090">=None</font>)</dt><dd><tt>draw&nbsp;4&nbsp;lines,&nbsp;forming&nbsp;a&nbsp;rectangle.</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-registerFont"><strong>registerFont</strong></a>(self, pFontKey)</dt><dd><tt>internal&nbsp;use&nbsp;<br>
-Writes&nbsp;sufficient&nbsp;font&nbsp;information&nbsp;to&nbsp;the&nbsp;pdf&nbsp;file&nbsp;for&nbsp;the&nbsp;font&nbsp;to&nbsp;be&nbsp;usable.</tt></dd></dl>
+<dl><dt><a name="PdfDocument-registerFont"><strong>registerFont</strong></a>(self, pFontKey)</dt><dd><tt>internal&nbsp;use</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-resolveUnit"><strong>resolveUnit</strong></a>(self, pUnit, pContext)</dt><dd><tt>Primarily&nbsp;to&nbsp;deal&nbsp;with&nbsp;the&nbsp;mixed&nbsp;use&nbsp;of&nbsp;r&nbsp;and&nbsp;c,&nbsp;and&nbsp;the&nbsp;conversion&nbsp;to&nbsp;and&nbsp;from<br>
 row/column&nbsp;coordinates&nbsp;and&nbsp;the&nbsp;other&nbsp;units&nbsp;of&nbsp;measurement.&nbsp;If&nbsp;pUnit&nbsp;is&nbsp;None&nbsp;then<br>
@@ -417,8 +410,8 @@ Margins&nbsp;are&nbsp;not&nbsp;modified&nbsp;by&nbsp;this&nbsp;method.</tt></dd>
 <dl><dt><a name="PdfDocument-shade"><strong>shade</strong></a>(self, pX1, pY1, pX2, pY2, pScale<font color="#909090">=0.9</font>, pUnit<font color="#909090">=None</font>)</dt><dd><tt>GrayScale&nbsp;the&nbsp;rectagular&nbsp;area&nbsp;defined&nbsp;by&nbsp;the&nbsp;two&nbsp;points.<br>
 See&nbsp;<a href="#PdfDocument-grayBar">grayBar</a>()&nbsp;for&nbsp;an&nbsp;example.</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-showForm"><strong>showForm</strong></a>(self, pName)</dt><dd><tt>A&nbsp;simple&nbsp;method&nbsp;to&nbsp;display&nbsp;a&nbsp;form&nbsp;<a href="#XObject">XObject</a>,&nbsp;such&nbsp;as&nbsp;a&nbsp;template&nbsp;that&nbsp;is&nbsp;reused&nbsp;on&nbsp;<br>
-multiple&nbsp;pages.&nbsp;This&nbsp;is&nbsp;a&nbsp;page&nbsp;overlay,&nbsp;it&nbsp;is&nbsp;not&nbsp;moved&nbsp;around&nbsp;on&nbsp;the&nbsp;page</tt></dd></dl>
+<dl><dt><a name="PdfDocument-showForm"><strong>showForm</strong></a>(self, pName, pX, pY, pUnit<font color="#909090">=None</font>)</dt><dd><tt>A&nbsp;simple&nbsp;method&nbsp;to&nbsp;display&nbsp;a&nbsp;form&nbsp;<a href="#XObject">XObject</a>,&nbsp;such&nbsp;as&nbsp;a&nbsp;template&nbsp;that&nbsp;is&nbsp;reused&nbsp;on&nbsp;<br>
+multiple&nbsp;pages</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-showImage"><strong>showImage</strong></a>(self, pName, pX, pY, pUnit<font color="#909090">=None</font>, pScaleX<font color="#909090">=None</font>, pScaleY<font color="#909090">=None</font>, pSkewX<font color="#909090">=0</font>, pSkewY<font color="#909090">=0</font>, pGrayScale<font color="#909090">=0</font>)</dt><dd><tt>for&nbsp;an&nbsp;image&nbsp;already&nbsp;recorded&nbsp;in&nbsp;the&nbsp;pvXObjectTable&nbsp;list&nbsp;(see&nbsp;defineImageXObject)<br>
 this&nbsp;method&nbsp;places&nbsp;it&nbsp;in&nbsp;the&nbsp;current&nbsp;page,&nbsp;and&nbsp;the&nbsp;position&nbsp;specified&nbsp;by&nbsp;&lt;pX&gt;&nbsp;and&nbsp;&lt;py&gt;<br>
@@ -442,9 +435,7 @@ Returns&nbsp;points.</tt></dd></dl>
 sets&nbsp;the&nbsp;current&nbsp;column&nbsp;to&nbsp;Px</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-waterMark"><strong>waterMark</strong></a>(self, pText)</dt><dd><tt>This&nbsp;method&nbsp;generates&nbsp;a&nbsp;watermark,&nbsp;with&nbsp;&lt;pText&gt;&nbsp;in&nbsp;a&nbsp;large&nbsp;F3I&nbsp;font,&nbsp;in&nbsp;the&nbsp;center<br>
-of&nbsp;row&nbsp;10.&nbsp;It&nbsp;would&nbsp;be&nbsp;better,&nbsp;for&nbsp;large&nbsp;documents,&nbsp;to&nbsp;create&nbsp;a&nbsp;reusable&nbsp;<a href="#XObject">XObject</a>.<br>
-This&nbsp;writes&nbsp;to&nbsp;the&nbsp;current&nbsp;page.&nbsp;Current&nbsp;font&nbsp;is&nbsp;saved&nbsp;at&nbsp;the&nbsp;start&nbsp;and&nbsp;restored<br>
-at&nbsp;the&nbsp;end.</tt></dd></dl>
+of&nbsp;row&nbsp;10.&nbsp;It&nbsp;would&nbsp;be&nbsp;better,&nbsp;for&nbsp;large&nbsp;documents,&nbsp;to&nbsp;create&nbsp;a&nbsp;reusable&nbsp;<a href="#XObject">XObject</a>.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-write"><strong>write</strong></a>(self, pX, pY, pString, pAlign<font color="#909090">='l'</font>, pUnit<font color="#909090">=None</font>)</dt><dd><tt>write&nbsp;is&nbsp;the&nbsp;standard&nbsp;way&nbsp;to&nbsp;generate&nbsp;text&nbsp;at&nbsp;a&nbsp;specific&nbsp;position&nbsp;on&nbsp;a&nbsp;page.<br>
 If&nbsp;&lt;pUnit&gt;&nbsp;is&nbsp;not&nbsp;specified&nbsp;then&nbsp;the&nbsp;documents&nbsp;defaultUnit&nbsp;attribute&nbsp;will&nbsp;be&nbsp;used.<br>
@@ -466,7 +457,7 @@ and&nbsp;my&nbsp;name&nbsp;as&nbsp;well.</tt></dd></dl>
 <dl><dt><a name="PdfDocument-writeOut"><strong>writeOut</strong></a>(self, pString)</dt><dd><tt>write&nbsp;text&nbsp;at&nbsp;the&nbsp;current&nbsp;position:&nbsp;currentRow&nbsp;and&nbsp;CurrentCol</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-writePages"><strong>writePages</strong></a>(self, pObject, pParent<font color="#909090">=None</font>)</dt><dd><tt>Internal&nbsp;use.<br>
-#--&nbsp;Goal&nbsp;is&nbsp;to&nbsp;have&nbsp;about&nbsp;6&nbsp;page&nbsp;objects&nbsp;as&nbsp;children&nbsp;of&nbsp;a&nbsp;page&nbsp;<a href="__builtin__.html#object">object</a>.<br>
+#--&nbsp;Goal&nbsp;is&nbsp;to&nbsp;have&nbsp;about&nbsp;6&nbsp;page&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;as&nbsp;kids&nbsp;to&nbsp;a&nbsp;page&nbsp;<a href="__builtin__.html#object">object</a>.<br>
 #--&nbsp;The&nbsp;parent&nbsp;number&nbsp;is&nbsp;assigned&nbsp;to&nbsp;each&nbsp;/page&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;by&nbsp;the&nbsp;GetNewPage<br>
 #--&nbsp;function.&nbsp;For&nbsp;each&nbsp;page.parentobj#&nbsp;value&nbsp;we&nbsp;write&nbsp;a&nbsp;single&nbsp;/pages&nbsp;<a href="__builtin__.html#object">object</a>,<br>
 #--&nbsp;write&nbsp;the&nbsp;/Page&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;numbers&nbsp;to&nbsp;the&nbsp;kids&nbsp;list,and,&nbsp;if&nbsp;we&nbsp;are&nbsp;not&nbsp;at<br>
