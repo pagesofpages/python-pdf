@@ -2,6 +2,6 @@
 *.bak
 *.jpg
 externaldocs
-tests/*.pdf
+*.pdf
 
 
