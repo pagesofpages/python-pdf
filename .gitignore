@@ -1,5 +1,7 @@
 *.pyc
 *.bak
+*.jpg
 externaldocs
-D
+*.pdf
+
 

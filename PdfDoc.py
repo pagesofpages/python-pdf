@@ -145,6 +145,7 @@ class PdfDocument( object ):
 	Font Control
 	The font families are [F1: Courier] [F2: Helvetica] [F3: Times-Roman]
 	
+	
 	setDefaultFont(self, pFontKey, pFontSize)
 	findFontByKey(self, pFontKey)
 	getFontKey(self, pFontName)
@@ -357,7 +358,7 @@ class PdfDocument( object ):
 	def put( self, pMessage):
 		"""	
 		put writes out a string to the ongoing textStream. Strips leading and trailing spaces
-		does encoding to 'ascii', appends '\r\n' to the end, (per pdf specs)
+		does encoding to 'ascii' (???), appends '\r\n' to the end, (per pdf specs)
 		and updates an offset attribute with the total output length.
 		Outfacing methods such as write make use of put.
 		Seealso: putAsIs()
@@ -365,18 +366,19 @@ class PdfDocument( object ):
 		vMessage = pMessage.strip()
 		vLength = len(vMessage)+ 2
 		# writing to a file
-		self.handle.write( vMessage.encode('ascii')+'\r\n')	
-  		self.offset = self.offset + vLength 
+		self.handle.write( vMessage.encode('ascii') +  b'\r\n')
+		self.offset = self.offset + vLength 
 
-  	def putAsIs( self, pMessage):
+	def putAsIs( self, pMessage):
 		"""
 	  	put with no encoding, does not strip leading or trailing whitespace.
-  		can be used to output binary strings (such as a bytearray)
-  		Seealso: put()
-  		"""
-  		self.handle.write( pMessage )
-  		self.offset = self.offset + len( pMessage )
-  	
+		can be used to output binary strings (such as a bytearray)
+		Seealso: put()
+		python3 issues
+		"""
+		self.handle.write( pMessage )
+		self.offset = self.offset + len( pMessage )
+	
 	#! this is an internal function.   				
 	#! <pNum> is the object number
 	#! <offset> is the offset from the start of the file
@@ -432,7 +434,7 @@ class PdfDocument( object ):
 		"""
 		self.currentFontKey = pFontKey
 		self.currentFontSize = pFontSize
-  		
+		
 	def writeHeader( self ): 
 		""" write the beginning of the pdf file. Writes the current date to the header,
 		and my name as well.
@@ -445,14 +447,14 @@ class PdfDocument( object ):
 		#  -- to prevent some programs from treating this as an ascii text file,
 		#  -- and possibly converting eol characters
 		bytes = bytearray([ 37, 37,  25, (15 * 16) + 2, (15 * 16) + 3, (13 * 16) + 15, (14 * 16 ) + 3, 13, 10])
-  		#self.put('%%'+chr(25)+chr((15*16)+2)+chr((15*16)+3)+chr((13*16)+15) + chr( (14 * 16) + 3)) 
+		#self.put('%%'+chr(25)+chr((15*16)+2)+chr((15*16)+3)+chr((13*16)+15) + chr( (14 * 16) + 3)) 
 		self.putAsIs( bytes )
 		#self.put('%%')
 		#  -- Write the catalog. Pages in object 3
 		self.addxRef(1,self.offset,'Catalog')
-  		self.put('1 0 obj')
+		self.put('1 0 obj')
 		self.put('<<')
-  		self.put('/Type /Catalog')
+		self.put('/Type /Catalog')
 		self.put('/Pages 3 0 R')
 		self.put('/Outlines 2 0 R')
 		self.put('>>')
@@ -464,7 +466,7 @@ class PdfDocument( object ):
 		self.put('/Count 0')
 		self.put('>>')
 		self.put('endobj')
-  		#-- add a procset
+		#-- add a procset
 		self.addxRef(4,self.offset,'ProcSet')
 		self.put('4 0 obj')
 		self.put('  [/PDF /Text /ImageB /ImageC]')
@@ -492,17 +494,17 @@ class PdfDocument( object ):
 		#-- page. As a result each /Pages object will have a kids list that contains
 		#-- up to 6 /Page objects.  The kids list will end with a reference to another
 		#-- /Pages object if we are not at the end of the list of /Page objects.
- 		#  -- Note that the parameters after pDoc are not used.
- 		"""
+		#  -- Note that the parameters after pDoc are not used.
+		"""
 		vParent = None
 		vObject = None
 		i  = None
 		vLine = ''
 		vPageCtr  = 0 #-- number of /page objects listed in a /pages object
 		vTotalPages = len( self.pageObjList )
-	  	i = 0
+		i = 0
 		while i  < len(self.pageObjList):
-		    #-- begin the pages object
+			#-- begin the pages object
 			vObject = self.pageParentList[i]
 			self.addxRef(vObject,self.offset,'Pages')
 			self.put(str(vObject) + ' 0  obj')
@@ -560,7 +562,12 @@ class PdfDocument( object ):
 	
 
 	def addFont( self, fontName, fontKey, pFixedOrVar, pAvgSize):
-		""" add a font to the pvFontTable attribute. Primarily for internal use. """
+		""" 
+		add a font to the pvFontTable attribute. Primarily for internal use.
+		For the initial setup of available fonts.
+		See PdfFont().  self.pvFontTable is a list of PdfFont() objects.
+		
+		"""
 		font = PdfFont( fontKey, fontName, pFixedOrVar, pAvgSize )
 		self.pvFontTable.append( font  ) 
 
@@ -576,7 +583,7 @@ class PdfDocument( object ):
 			self.fileName = name
 		assert self.fileName is not None
 		# open the file
-		self.handle = open( self.fileName,'w')
+		self.handle = open( self.fileName,'wb')
 		self.writeHeader(  )
 		self.setDefaultFont('F1',10)
 
@@ -604,11 +611,11 @@ class PdfDocument( object ):
 	def newFormXObject( self, pName, pWidth = 8.5 * 72, pHeight = 11.0 * 72, pUnit = 'p'):
 		""" 
 		Generates a new XObject and appends to the pvObjectTable list.
-		An XObject may be moveable, depending upon the relationship between
-		the /BBox bounding box and the tm text Matrix.
-		Positioning in an XObject must be within the bounds of the /BBox.
-		Currently the /BBox is 0 0 :pWidth: :pHeight:
-		seealso: endFormXObject()
+		An XObject <may> be moveable, depending upon the relationship between
+		the /BBox bounding box and the tm text Matrix, and method used to display. 
+		The commonest use is simply as a page overlay.
+		
+		seealso: showForm() endFormXObject() 
 		"""
 		vPage = PdfPage()
 		vPage.name = pName
@@ -656,10 +663,10 @@ class PdfDocument( object ):
 			# switch to a new parent
 			self.currentParentNo = self.getNextObjNo()
 		self.pageParentList.append( self.currentParentNo ) 
-  		vPage.parentObjNo = self.currentParentNo
-  		# I don';t think there is a good reason for the font, and the row/col
-  		# information to be attributes of the document instead of the page
-	  	self.page = vPage;    
+		vPage.parentObjNo = self.currentParentNo
+		# I don';t think there is a good reason for the font, and the row/col
+		# information to be attributes of the document instead of the page
+		self.page = vPage;    
 		self.setFont( self.currentFontKey,self.currentFontSize)
 		self.currentRow = 0;
 		self.currentCol = 0;  
@@ -692,13 +699,13 @@ class PdfDocument( object ):
 		for s in self.page.textStream:
 			vLen = vLen + len(s) + 2
 			
-  		vLen = vLen + 8 #-- For Begintext and endtext (2/6 changed from 6)
+		vLen = vLen + 8 #-- For Begintext and endtext (2/6 changed from 6)
 		self.put('  /Length ' + str(vLen))
 		self.put('>>');
 		self.put('stream')
-  		if  len(self.page.graphicsStream) > 0:
-  			for s in self.page.graphicsStream:
-  				self.put(s)
+		if  len(self.page.graphicsStream) > 0:
+			for s in self.page.graphicsStream:
+				self.put(s)
 		self.put('BT')
 		for s in self.page.textStream:
 			self.put(s)
@@ -721,9 +728,9 @@ class PdfDocument( object ):
 		self.put('   /Parent ' + str(self.page.parentObjNo) + ' 0 R')
 		self.put('  /MediaBox [0 0 ' + str(self.pageWidth)+  ' ' + str(self.pageHeight)+']' )
 
-  		self.put('   /Contents ' +  str(self.page.streamObjNo)+' 0 R')
+		self.put('   /Contents ' +  str(self.page.streamObjNo)+' 0 R')
 		self.put('   /Resources << /ProcSet 4 0 R ')
-  		if len(self.page.xObjectList) > 0:
+		if len(self.page.xObjectList) > 0:
 			self.put('   /XObject << ' +  self.page.xObjectList +' >>')
 
 		self.put('                 /Font << ' +  self.page.fontList + ' >>')
@@ -741,20 +748,20 @@ class PdfDocument( object ):
 			for s in self.page.graphicsStream:
 				self.put(s)
 				vLen = vLen + len(s) + 2
-  		self.put('BT')
+		self.put('BT')
 		for s in self.page.textStream:
 			self.put( s)
 			vLen = vLen + len(s) + 2
 		self.put('ET');
-  		vLen = vLen + 8 # -- For BT and ET
-  		self.put('endstream')
+		vLen = vLen + 8 # -- For BT and ET
+		self.put('endstream')
 		self.put('endobj')
 		#-- Now write the length object
 		self.addxRef(self.page.sizeObjNo,self.offset,'Size ' +  str(self.page.pageNo))
 		self.put(str(self.page.sizeObjNo) + ' 0 obj')
-  		self.put('  ' + str(vLen - 2) )
-  		self.put('endobj')
-  		self.page = None
+		self.put('  ' + str(vLen - 2) )
+		self.put('endobj')
+		self.page = None
 
 
 	def setDefaultUnit( self, pUnit):
@@ -849,10 +856,10 @@ class PdfDocument( object ):
 		currentFontKey -  pFontKey
 		lineHeight - lineHeightFactor * pFontSize
 		charWidth  - 1.05 * vFont.avgSize * pFontSize  1000
- 		charWidth is an approximation, at best.
- 		Each page tracks the fonts set during it's construction. A
- 		command is added to the page's textstream to set the font and size.
- 		
+		charWidth is an approximation, at best.
+		Each page tracks the fonts set during it's construction. A
+		command is added to the page's textstream to set the font and size.
+		
 		"""
 		
 	
@@ -912,10 +919,10 @@ class PdfDocument( object ):
 		"""
 		vUnit = self.resolveUnit( pUnit, 'r')
 		vLength = self.strLength(self.currentFontKey, self.currentFontSize, pString)
-  		self.currentRow = self.convertUnits(pY,vUnit,'p')
+		self.currentRow = self.convertUnits(pY,vUnit,'p')
 		
 		vUnit = self.resolveUnit(pUnit,'c')
-  		self.currentCol = self.convertUnits(pX,vUnit,'p')
+		self.currentCol = self.convertUnits(pX,vUnit,'p')
 			
 		if pAlign == 'c':
 			self.currentCol = self.currentCol - ( vLength / 2.0)
@@ -1567,7 +1574,7 @@ class PdfDocument( object ):
 		self.waterMark('WATERMARK')
 		for i in range(0, 10):
 			self.write(10,i,'This is xObject Row ' + str(i))
-  		self.endFormXObject() 
+		self.endFormXObject() 
 
 		self.newPage()
 		self.write(10,5,'column 10 row 5','l','r')
