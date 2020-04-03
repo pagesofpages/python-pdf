@@ -163,9 +163,10 @@ class PdfDocument( object ):
 	
 
 	xObjects
-	newFormXObject( self, pName)
+	newFormXObject( self, pName , pWidth = 8.5 * 72, pHeight = 11.0 * 72, pUnit = 'p')
 	endFormXObject(self)
-	showForm(self,  pName):
+	showForm(self,  pName)
+	showFormOffset(self,  pName,  pXOffset, pYOffset, pUnit )
 	findXObject(self, pName):
 
 	Images
@@ -366,7 +367,10 @@ class PdfDocument( object ):
 		vMessage = pMessage.strip()
 		vLength = len(vMessage)+ 2
 		# writing to a file
-		self.handle.write( vMessage.encode('ascii') +  b'\r\n')
+		if isinstance( pMessage, str):
+			self.handle.write( vMessage.encode('ascii') +  b'\r\n')
+		else:
+			self.handle.write( vMessage +  b'\r\n' )
 		self.offset = self.offset + vLength 
 
 	def putAsIs( self, pMessage):
@@ -614,6 +618,11 @@ class PdfDocument( object ):
 		An XObject <may> be moveable, depending upon the relationship between
 		the /BBox bounding box and the tm text Matrix, and method used to display. 
 		The commonest use is simply as a page overlay.
+		If you provide width and/or height you must maintain positioning within that area
+		remembering that write commands base based on page size, and reverse that y axis
+		position: within the pdf coordinate system row 0 is at the bottom of the page,
+		while the write commands translate 0 to the coordinate for the top of the page, so
+		that writing from 0 to page height outputs rows from the top down.
 		
 		seealso: showForm() endFormXObject() 
 		"""
@@ -1187,7 +1196,7 @@ class PdfDocument( object ):
    
 		self.put('stream')
 		vLength = 0
-		hexStrings[-1] = hexStrings[-1] + '>'
+		hexStrings[-1] = hexStrings[-1] + b'>'
 		for s in hexStrings:
 			self.put(s)
 			vLength = vLength + len(s) + 2
@@ -1248,11 +1257,11 @@ class PdfDocument( object ):
 		if pScaleX is None:
 			vScaleX = self.pvXObjectTable[vImage].width
 		else:
-			vScaleX = pScaleX
+			vScaleX = pScaleX * self.pvXObjectTable[vImage].width
 		if pScaleY is None:
 			vScaleY = self.pvXObjectTable[vImage].height
 		else:
-			vScaleY = pScaleY
+			vScaleY = pScaleY * self.pvXObjectTable[vImage].height
 		
 			
 		# "%4.2f" % 0
@@ -1286,6 +1295,28 @@ class PdfDocument( object ):
 		# self.page.graphicsStream.append( '1   0   0   1 100 100 cm  /' + pName + ' Do  ' )		
 		if not pName in self.page.xObjectList:
 			self.page.xObjectList = self.page.xObjectList + ' /'+pName + ' ' + str( self.pvXObjectTable[vPtr].objectNo) + ' 0 R'
+
+	def showFormOffset(self,  pName,  pXOffset, pYOffset, pUnit ):
+		"""
+		This displays a form XObject, adjusting the positioning by the amounts specified in
+		pXOffset and pYOffset.  pUnit must be specified, which is unlike most methods.
+		Values may be negative.
+		"""
+		if pUnit == 'p':
+			vX = pXOffset
+			vY = pYOffset
+		else:
+			vUnit = pUnit
+			vUnit = self.resolveUnit(vUnit,'c')
+			vX = self.convertUnits( pXOffset, vUnit,'p')
+			vUnit = self.resolveUnit(vUnit,'r')
+			vY = self.convertUnits( pYOffset, vUnit,'p')
+		vPtr = self.findXObject(pName)
+		self.page.graphicsStream.append( 'q 1   0   0   1   ' +str(vX)+'   ' +str(vY) + '  cm /' + pName + ' Do  Q' )
+		if not pName in self.page.xObjectList:
+			self.page.xObjectList = self.page.xObjectList + ' /'+pName + ' ' + str( self.pvXObjectTable[vPtr].objectNo) + ' 0 R'
+
+
 
 
 	def readImage(self,  name):
