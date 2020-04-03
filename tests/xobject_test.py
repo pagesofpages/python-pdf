@@ -37,7 +37,7 @@ for page in range(1,10):
 	doc.setFont('F2',10)
 	#for i in range(0,60,10):
 	doc.write(1,5 ,'XObject Test Row 5  before XObject use','l','p')
- 	doc.showForm('cancelled')
+	doc.showForm('cancelled')
 	doc.write(1,20 ,'XObject Test Row 20 after XObject use','l','r')
 	doc.endPage()
 doc.endDoc()

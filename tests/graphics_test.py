@@ -114,5 +114,5 @@ p.endPage()
 
 p.endDoc()
 
-print "See graphics_test.pdf"
+print( "See graphics_test.pdf" )
 

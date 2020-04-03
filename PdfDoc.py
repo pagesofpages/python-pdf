@@ -145,6 +145,7 @@ class PdfDocument( object ):
 	Font Control
 	The font families are [F1: Courier] [F2: Helvetica] [F3: Times-Roman]
 	
+	
 	setDefaultFont(self, pFontKey, pFontSize)
 	findFontByKey(self, pFontKey)
 	getFontKey(self, pFontName)
@@ -561,7 +562,12 @@ class PdfDocument( object ):
 	
 
 	def addFont( self, fontName, fontKey, pFixedOrVar, pAvgSize):
-		""" add a font to the pvFontTable attribute. Primarily for internal use. """
+		""" 
+		add a font to the pvFontTable attribute. Primarily for internal use.
+		For the initial setup of available fonts.
+		See PdfFont().  self.pvFontTable is a list of PdfFont() objects.
+		
+		"""
 		font = PdfFont( fontKey, fontName, pFixedOrVar, pAvgSize )
 		self.pvFontTable.append( font  ) 
 
@@ -605,11 +611,11 @@ class PdfDocument( object ):
 	def newFormXObject( self, pName, pWidth = 8.5 * 72, pHeight = 11.0 * 72, pUnit = 'p'):
 		""" 
 		Generates a new XObject and appends to the pvObjectTable list.
-		An XObject may be moveable, depending upon the relationship between
-		the /BBox bounding box and the tm text Matrix.
-		Positioning in an XObject must be within the bounds of the /BBox.
-		Currently the /BBox is 0 0 :pWidth: :pHeight:
-		seealso: endFormXObject()
+		An XObject <may> be moveable, depending upon the relationship between
+		the /BBox bounding box and the tm text Matrix, and method used to display. 
+		The commonest use is simply as a page overlay.
+		
+		seealso: showForm() endFormXObject() 
 		"""
 		vPage = PdfPage()
 		vPage.name = pName

@@ -17,4 +17,4 @@ doc.endPage()
 doc.endDoc()
 
 
-print "Look for the file hello_world.pdf"
+print( "Look for the file hello_world.pdf" )

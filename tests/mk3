@@ -1,0 +1,14 @@
+# /bin/sh
+
+for FILE in ./*.py
+do
+	python3 $FILE
+	result="$?"
+	echo "Error Code " $result
+	if [ "$result"  -ne  "0" ]
+	then
+		echo "*** Error found for $FILE"
+		exit
+	fi
+done
+
