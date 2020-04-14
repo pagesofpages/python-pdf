@@ -1,79 +1,150 @@
 <html>
 <head>
 <title>PDF Test Scripts</title>
+<style type="text/css" media="screen">
+h3 	{ text-align: center; 
+	}
+table, th, td {	border: 1px solid black;
+	}
+table {	border-collapse: collapse;
+	}
+td 	{	padding-left: 10px; padding-right: 10px;
+	}
+td.top { text-align: center; 
+	}
+span { text-align: center;  display: block; font-weight: bold;}
+
+li { font-weight: normal; text-align: left; }
+	
+</style>
 </head>
 <body>
-
 <h3>PDF Test Programs</h3>
 
+<table>
+<tr>
+<th>Script</th>><th>Output</th><th>What it is</th>
+</tr>
 
-<h4><a href="file:///Users/garymenchen/python/python-pdf/tests/hello_world.py">hello_world.py</a></h4>
+<tr>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/hello_world.py">hello_world.py</a></td>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/hello_world.pdf">hello_world.pdf</a></td>
+<td>
+<span><Minimal PDF File</span>
+	<span>Minimal PDF File</span>
+<ul>
 
+	<li> A one page pdf document with "hello world" in the center of the page.
+	<li>features include  document initialization and finalization. Font selection.
+
+</ul>
+</td>
+</tr>
+
+<tr>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/hello_world.pdf">hello_world.pdf</a></td>
+<td> <a href="file:///Users/garymenchen/python/python-pdf/tests/pdfDoc.pdf">pdfDoc.pdf</a></td>
+<td>
+	<span>Generating a multi-page document</span>
 	<ul>
-	<li>what is it: A one page pdf document with "hello world" in the center of the page.
-	<li>features: document initialization and finalization. Font selection.
-	<li>output: <a href="file:///Users/garymenchen/python/python-pdf/tests/hello_world.pdf">hello_world.pdf</a>
-	</ul>
+		<li>what is it: reads a text file (in this case PdfDoc.py) and generates a pdf_file from it.
+		<li>features: processing lines of text. Page controls. Font controls.
+		<li>limitations: very long lines are truncated.
 	
-<h4><a href="file:///Users/garymenchen/python/python-pdf/tests/pdf_file.py">pdf_file.py</a></h4>
+	</ul>
+</td>
+</tr>
 
+
+<tr>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/font_test.py">font_test.py</a></td>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/font_test.pdf">font_test.pdf</a></td>
+<td>
+	<span> A Simple Font Usage Example</span>
 	<ul>
-	<li>what is it: reads a text file (in this case PdfDoc.py) and generates a pdf_file from it.
-	<li>features: processing lines of text. Page controls. Font controls.
-	<li>limitations: very long lines are truncated.
-	<li>output: <a href="file:///Users/garymenchen/python/python-pdf/tests/pdfDoc.pdf">pdfDoc.pdf</a>
-	</ul>
-	
-	
-<h4><a href="file:///Users/garymenchen/python/python-pdf/tests/font_test.py">font_test.py</a></h4>
-	
-		<ul>
-	<li>what is it: print fragments of text in various font faces and sizes.
-	<li>features: font control. Page controls. Positioning Text.
-	<li>limitations: positioning using rows and columns will produce different results based
-		on the current font size.
-	<li>output: <a href="file:///Users/garymenchen/python/python-pdf/tests/font_test.pdf">font_test.pdf</a>
-	</ul>
-	
-<h4><a href="file:///Users/garymenchen/python/python-pdf/tests/test_font_metrics.py">test_font_metrics.py</a></h4>
-	
-		<ul>
-	<li>shows width of individual characters in proportional font.
-	<li>features: font metics
-	<li>output: <a href="file:///Users/garymenchen/python/python-pdf/tests/test_font_metrics.pdf">test_font_metrics.pdf</a>
-	</ul>
-	
+		<li>what is it: print fragments of text in various font faces and sizes.
+		<li>features: font control. Page controls. Positioning Text.
+		<li>limitations: positioning using rows and columns will produce different results based
+			on the current font size.
 
-<h4><a href="file:///Users/garymenchen/python/python-pdf/tests/graphics_test.py">graphics_test.py</a></h4>
+	</ul>
+</td>
+</tr>
 
+
+
+<tr>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/test_font_metrics.py">test_font_metrics.py</a></td>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/test_font_metrics.pdf">test_font_metrics.pdf</a></td>
+<td>
+	<span> Proportional Fonts</span>
+	<ul>
+		<li>shows width of individual characters in proportional font.
+		<li>features: font metics
+
+	</ul>
+</td>
+</tr>
+
+
+<tr>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/graphics_test.py">graphics_test.py</a></td>
+<td> <a href="file:///Users/garymenchen/python/python-pdf/tests/graphics_test.pdf" >graphics_test.pdf</a></td>
+<td>
+	<span> Basic Graphic Operations</span>
 	<ul>
 	<li>what is it: show various primitive graphics operations
 	<li>features: lines, greyscale, arcs
-	<li>output: <a href="file:///Users/garymenchen/python/python-pdf/tests/graphics_test.pdf" >graphics_test.pdf</a>
-	</ul>
-	
-	
-<h4> <a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_test.py">xobject_test.py</a></h4>
 
+
+	</ul>
+</td>
+</tr>
+
+
+<tr>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_test.py">xobject_test.py</a></td>
+<td>> <a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_test.pdf">xobject_test.pdf</a></td>
+<td>
+	<span>Form XObject Example </span>
 	<ul>
-	<li>what is it: demonstrants a simple form xobject
-	<li>features: xobject
-	
-	<li>output: <a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_test.pdf">xobject_test.pdf</a>
-	
-	
+		<li>what is it: demonstrants a simple reusable form xobject
+		<li>features: xobject, both fixed and movable.
 	</ul>
+</td>
+</tr>
 
-<h4> <a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_image.py">xobject_image.py</a></h4>
-
+<tr>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_image.py">xobject_image.py</a></td>
+<td><a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_image.pdf">xobject_image.pdf</a></td>
+<td>
+	<span>Image XObject </span>
 	<ul>
-	<li>what is it: demonstrates a simple image xobject
-	<li>features: xobjects, methods newForm, showForm, showFormOffset
-	<li>limitations: Requires presence of a file named "image.jpg".
-	<li>output: <a href="file:///Users/garymenchen/python/python-pdf/tests/xobject_image.pdf">xobject_image.pdf</a>
-	
-	
+		<li>what is it: demonstrates a simple image xobject
+		<li>features: xobjects, methods newForm, showForm, showFormOffset
+		<li>limitations: Requires presence of a file named "image.jpg".
 	</ul>
+</td>
+</tr>
+
+
+</table>
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+
 
 </body>
 </html>

@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>PdfDoc</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Library/Python/2.7/site-packages/PdfDoc.py">/Library/Python/2.7/site-packages/PdfDoc.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/garymenchen/python/python-pdf/PdfDoc.py">/Users/garymenchen/python/python-pdf/PdfDoc.py</a></font></td></tr></table>
     <p><tt>#!&nbsp;classes&nbsp;for&nbsp;pdf&nbsp;generation</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -267,7 +267,7 @@ offset&nbsp;into&nbsp;that&nbsp;list.&nbsp;Returns&nbsp;-1&nbsp;if&nbsp;not&nbsp
 <a href="__builtin__.html#object">object</a>.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-findXObject"><strong>findXObject</strong></a>(self, pName)</dt><dd><tt>Search&nbsp;for&nbsp;an&nbsp;entry&nbsp;in&nbsp;the&nbsp;pvXObjectTable&nbsp;list,&nbsp;return&nbsp;its&nbsp;offset&nbsp;in&nbsp;the&nbsp;list.<br>
-Return&nbsp;-1&nbsp;if&nbsp;&lt;pName&gt;&nbsp;is&nbsp;not&nbsp;located</tt></dd></dl>
+Return&nbsp;-1&nbsp;if&nbsp;&lt;pName&gt;&nbsp;is&nbsp;not&nbsp;located.&nbsp;May&nbsp;be&nbsp;either&nbsp;a&nbsp;form&nbsp;or&nbsp;an&nbsp;image&nbsp;<a href="#XObject">XObject</a>.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-getBottomMargin"><strong>getBottomMargin</strong></a>(self, pUnit)</dt><dd><tt>return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;bottom&nbsp;margin</tt></dd></dl>
 
@@ -320,8 +320,6 @@ instance,&nbsp;and&nbsp;increments&nbsp;it&nbsp;after&nbsp;each&nbsp;call.</tt><
 pUnit&nbsp;is&nbsp;resolved&nbsp;to&nbsp;row,&nbsp;identified&nbsp;by&nbsp;pY,&nbsp;which&nbsp;is&nbsp;then&nbsp;shaded<br>
 to&nbsp;a&nbsp;height&nbsp;of&nbsp;lineHeight.&nbsp;Uses&nbsp;<a href="#PdfDocument-shade">shade</a>()&nbsp;to&nbsp;draw&nbsp;the&nbsp;bar.</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-helloWorld"><strong>helloWorld</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="PdfDocument-lineAcrossPage"><strong>lineAcrossPage</strong></a>(self, pY, pUnit<font color="#909090">=None</font>)</dt><dd><tt>draw&nbsp;a&nbsp;line&nbsp;across&nbsp;the&nbsp;page,&nbsp;to&nbsp;intersect&nbsp;a&nbsp;page&nbsp;border,&nbsp;if&nbsp;present<br>
 sets&nbsp;the&nbsp;current&nbsp;row&nbsp;to&nbsp;pY,&nbsp;current&nbsp;col&nbsp;to&nbsp;0</tt></dd></dl>
 
@@ -341,8 +339,6 @@ seealso:&nbsp;<a href="#PdfDocument-showForm">showForm</a>()&nbsp;<a href="#PdfD
 Tracks&nbsp;the&nbsp;page&nbsp;hierarchy,&nbsp;internally.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-pageBorder"><strong>pageBorder</strong></a>(self)</dt><dd><tt>draw&nbsp;lines&nbsp;around&nbsp;the&nbsp;page,&nbsp;offset&nbsp;by&nbsp;margins,&nbsp;and&nbsp;based&nbsp;on&nbsp;page&nbsp;size.</tt></dd></dl>
-
-<dl><dt><a name="PdfDocument-pageLayout"><strong>pageLayout</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="PdfDocument-popFont"><strong>popFont</strong></a>(self)</dt><dd><tt>restore&nbsp;the&nbsp;font&nbsp;at&nbsp;the&nbsp;top&nbsp;of&nbsp;self.<strong>fontStack</strong>,&nbsp;passing&nbsp;its&nbsp;contents&nbsp;to&nbsp;<a href="#PdfDocument-setFont">setFont</a>()</tt></dd></dl>
 
@@ -367,7 +363,8 @@ The&nbsp;results&nbsp;are&nbsp;split&nbsp;itno&nbsp;a&nbsp;list&nbsp;of&nbsp;str
 The&nbsp;functionm&nbsp;return&nbsp;that&nbsp;list.&nbsp;Used&nbsp;to&nbsp;write&nbsp;binary&nbsp;data&nbsp;to&nbsp;a&nbsp;pdf&nbsp;file.&nbsp;<br>
 seealso:&nbsp;<a href="#PdfDocument-defineImageXObject">defineImageXObject</a>()</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-rectangle"><strong>rectangle</strong></a>(self, pX, pY, pWidth, pHeight, pUnit<font color="#909090">=None</font>, pLineWidth<font color="#909090">=None</font>)</dt><dd><tt>draw&nbsp;4&nbsp;lines,&nbsp;forming&nbsp;a&nbsp;rectangle.</tt></dd></dl>
+<dl><dt><a name="PdfDocument-rectangle"><strong>rectangle</strong></a>(self, pX, pY, pWidth, pHeight, pUnit<font color="#909090">=None</font>, pLineWidth<font color="#909090">=None</font>)</dt><dd><tt>draw&nbsp;4&nbsp;lines,&nbsp;forming&nbsp;a&nbsp;rectangle.&nbsp;<br>
+pX,pY</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-registerFont"><strong>registerFont</strong></a>(self, pFontKey)</dt><dd><tt>internal&nbsp;use&nbsp;<br>
 Writes&nbsp;sufficient&nbsp;font&nbsp;information&nbsp;to&nbsp;the&nbsp;pdf&nbsp;file&nbsp;for&nbsp;the&nbsp;font&nbsp;to&nbsp;be&nbsp;usable.</tt></dd></dl>
@@ -420,7 +417,14 @@ Margins&nbsp;are&nbsp;not&nbsp;modified&nbsp;by&nbsp;this&nbsp;method.</tt></dd>
 
 <dl><dt><a name="PdfDocument-setTarget"><strong>setTarget</strong></a>(self, pTarget)</dt><dd><tt>obsolete</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-setTextState"><strong>setTextState</strong></a>(self, pCharSpace<font color="#909090">=0</font>, pWordSpace<font color="#909090">=0</font>, pScale<font color="#909090">=100</font>, pLeading<font color="#909090">=0</font>, pRender<font color="#909090">=0</font>, pRise<font color="#909090">=0</font>)</dt><dd><tt>Initializes&nbsp;the&nbsp;textStream&nbsp;environment.&nbsp;Should&nbsp;be&nbsp;reset&nbsp;for&nbsp;each&nbsp;page.</tt></dd></dl>
+<dl><dt><a name="PdfDocument-setTextState"><strong>setTextState</strong></a>(self, pCharSpace<font color="#909090">=0</font>, pWordSpace<font color="#909090">=0</font>, pScale<font color="#909090">=100</font>, pLeading<font color="#909090">=0</font>, pRender<font color="#909090">=0</font>, pRise<font color="#909090">=0</font>)</dt><dd><tt>Initializes&nbsp;the&nbsp;textStream&nbsp;environment.&nbsp;Should&nbsp;be&nbsp;reset&nbsp;for&nbsp;each&nbsp;page.&nbsp;<br>
+pCharSpace&nbsp;is&nbsp;ADDED&nbsp;to&nbsp;spacing&nbsp;between&nbsp;letters,&nbsp;in&nbsp;points.&nbsp;It&nbsp;may&nbsp;be&nbsp;negative.<br>
+pWordSpace&nbsp;is&nbsp;similar&nbsp;but&nbsp;applied&nbsp;only&nbsp;the&nbsp;to&nbsp;the&nbsp;space&nbsp;character.<br>
+pScale&nbsp;is&nbsp;a&nbsp;percentage,&nbsp;default&nbsp;100,&nbsp;for&nbsp;horizontal&nbsp;scaling.<br>
+pLeading&nbsp;is&nbsp;in&nbsp;poins&nbsp;and&nbsp;applies&nbsp;to&nbsp;the&nbsp;vertical&nbsp;distance&nbsp;between&nbsp;characters.<br>
+pRender&nbsp;is&nbsp;a&nbsp;series&nbsp;of&nbsp;essentially&nbsp;codes&nbsp;that&nbsp;specify&nbsp;how&nbsp;to&nbsp;render&nbsp;text.<br>
+0&nbsp;is&nbsp;nornal&nbsp;("fill").&nbsp;1&nbsp;is&nbsp;stroke&nbsp;(draw&nbsp;the&nbsp;outline&nbsp;of&nbsp;each&nbsp;chacter&nbsp;as&nbsp;a&nbsp;line)<br>
+2&nbsp;is&nbsp;fill&nbsp;and&nbsp;stroke.&nbsp;3&nbsp;is&nbsp;invisible.&nbsp;4&nbsp;though&nbsp;5&nbsp;include&nbsp;clipping&nbsp;options.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-setTopMargin"><strong>setTopMargin</strong></a>(self, pMargin, pUnit)</dt></dl>
 
@@ -432,10 +436,12 @@ multiple&nbsp;pages.&nbsp;This&nbsp;is&nbsp;a&nbsp;page&nbsp;overlay,&nbsp;it&nb
 
 <dl><dt><a name="PdfDocument-showFormOffset"><strong>showFormOffset</strong></a>(self, pName, pXOffset, pYOffset, pUnit)</dt><dd><tt>This&nbsp;displays&nbsp;a&nbsp;form&nbsp;<a href="#XObject">XObject</a>,&nbsp;adjusting&nbsp;the&nbsp;positioning&nbsp;by&nbsp;the&nbsp;amounts&nbsp;specified&nbsp;in<br>
 pXOffset&nbsp;and&nbsp;pYOffset.&nbsp;&nbsp;pUnit&nbsp;must&nbsp;be&nbsp;specified,&nbsp;which&nbsp;is&nbsp;unlike&nbsp;most&nbsp;methods.<br>
-Values&nbsp;may&nbsp;be&nbsp;negative.</tt></dd></dl>
+Values&nbsp;may&nbsp;be&nbsp;negative.&nbsp;The&nbsp;offset&nbsp;quantities&nbsp;are&nbsp;added&nbsp;to&nbsp;the&nbsp;existing&nbsp;x,y&nbsp;coordinate,<br>
+which&nbsp;represents&nbsp;the&nbsp;lower&nbsp;left&nbsp;corder&nbsp;of&nbsp;the&nbsp;xObject.</tt></dd></dl>
 
 <dl><dt><a name="PdfDocument-showImage"><strong>showImage</strong></a>(self, pName, pX, pY, pUnit<font color="#909090">=None</font>, pScaleX<font color="#909090">=None</font>, pScaleY<font color="#909090">=None</font>, pSkewX<font color="#909090">=0</font>, pSkewY<font color="#909090">=0</font>, pGrayScale<font color="#909090">=0</font>)</dt><dd><tt>for&nbsp;an&nbsp;image&nbsp;already&nbsp;recorded&nbsp;in&nbsp;the&nbsp;pvXObjectTable&nbsp;list&nbsp;(see&nbsp;defineImageXObject)<br>
 this&nbsp;method&nbsp;places&nbsp;it&nbsp;in&nbsp;the&nbsp;current&nbsp;page,&nbsp;and&nbsp;the&nbsp;position&nbsp;specified&nbsp;by&nbsp;&lt;pX&gt;&nbsp;and&nbsp;&lt;py&gt;<br>
+The&nbsp;pY&nbsp;offset&nbsp;is&nbsp;swapped,&nbsp;top&nbsp;for&nbsp;bottom.&nbsp;1&nbsp;inch&nbsp;is&nbsp;1&nbsp;inch&nbsp;from&nbsp;the&nbsp;top&nbsp;of&nbsp;the&nbsp;page.<br>
 Optionally,&nbsp;dimensionally&nbsp;scaled&nbsp;as&nbsp;specified&nbsp;by&nbsp;&lt;pScaleX&gt;&nbsp;and&nbsp;&lt;pScaleY&gt;<br>
 Optionally&nbsp;skewed&nbsp;as&nbsp;defined&nbsp;by&nbsp;&lt;pSkewX&gt;&nbsp;and&nbsp;pSkewY&gt;<br>
 and&nbsp;with&nbsp;optional&nbsp;grayscaling,&nbsp;&lt;pGrayScale&gt;.<br>
@@ -450,8 +456,6 @@ the&nbsp;PdfFontMetrics&nbsp;class&nbsp;for&nbsp;more&nbsp;precise&nbsp;string&n
 Returns&nbsp;a&nbsp;width,&nbsp;in&nbsp;points.<br>
 Returns&nbsp;points.</tt></dd></dl>
 
-<dl><dt><a name="PdfDocument-testJpeg"><strong>testJpeg</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="PdfDocument-verticalPageLine"><strong>verticalPageLine</strong></a>(self, pX, pUnit<font color="#909090">=None</font>)</dt><dd><tt>vertical&nbsp;line&nbsp;the&nbsp;full&nbsp;height&nbsp;of&nbsp;a&nbsp;page,&nbsp;intersecting&nbsp;a&nbsp;page&nbsp;border&nbsp;if&nbsp;present<br>
 sets&nbsp;the&nbsp;current&nbsp;column&nbsp;to&nbsp;Px</tt></dd></dl>
 
@@ -463,7 +467,8 @@ at&nbsp;the&nbsp;end.</tt></dd></dl>
 <dl><dt><a name="PdfDocument-write"><strong>write</strong></a>(self, pX, pY, pString, pAlign<font color="#909090">='l'</font>, pUnit<font color="#909090">=None</font>)</dt><dd><tt>write&nbsp;is&nbsp;the&nbsp;standard&nbsp;way&nbsp;to&nbsp;generate&nbsp;text&nbsp;at&nbsp;a&nbsp;specific&nbsp;position&nbsp;on&nbsp;a&nbsp;page.<br>
 If&nbsp;&lt;pUnit&gt;&nbsp;is&nbsp;not&nbsp;specified&nbsp;then&nbsp;the&nbsp;documents&nbsp;defaultUnit&nbsp;attribute&nbsp;will&nbsp;be&nbsp;used.<br>
 &lt;pX&gt;&nbsp;is&nbsp;the&nbsp;x-axis&nbsp;coordinate:&nbsp;the&nbsp;column<br>
-&lt;pY&gt;&nbsp;is&nbsp;the&nbsp;y-axis&nbsp;coordinate:&nbsp;the&nbsp;row<br>
+&lt;pY&gt;&nbsp;is&nbsp;the&nbsp;y-axis&nbsp;coordinate:&nbsp;the&nbsp;row.&nbsp;This&nbsp;value&nbsp;is&nbsp;treated&nbsp;as&nbsp;starting&nbsp;ast&nbsp;the<br>
+top&nbsp;of&nbsp;the&nbsp;page&nbsp;(rather&nbsp;than&nbsp;pdf's&nbsp;native&nbsp;practice&nbsp;of&nbsp;starting&nbsp;from&nbsp;the&nbsp;botto')<br>
 In&nbsp;general,&nbsp;when&nbsp;you&nbsp;must&nbsp;be&nbsp;specific&nbsp;its&nbsp;best&nbsp;to&nbsp;use&nbsp;points&nbsp;or&nbsp;inches.<br>
 Note&nbsp;that&nbsp;this&nbsp;method&nbsp;resets&nbsp;the&nbsp;internal&nbsp;positioning&nbsp;(of&nbsp;the&nbsp;pdf&nbsp;engine,&nbsp;not&nbsp;of<br>
 this&nbsp;instance)&nbsp;to&nbsp;the&nbsp;origin&nbsp;of&nbsp;0,0.</tt></dd></dl>

@@ -368,7 +368,8 @@ class PdfDocument( object ):
 		vLength = len(vMessage)+ 2
 		# writing to a file
 		if isinstance( pMessage, str):
-			self.handle.write( vMessage.encode('ascii') +  b'\r\n')
+			# trying utf8 instead of ascii
+			self.handle.write( vMessage.encode('utf-8') +  b'\r\n')
 		else:
 			self.handle.write( vMessage +  b'\r\n' )
 		self.offset = self.offset + vLength 
@@ -921,7 +922,8 @@ class PdfDocument( object ):
 		write is the standard way to generate text at a specific position on a page.
 		If <pUnit> is not specified then the documents defaultUnit attribute will be used.
 		<pX> is the x-axis coordinate: the column
-		<pY> is the y-axis coordinate: the row
+		<pY> is the y-axis coordinate: the row. This value is treated as starting ast the
+		top of the page (rather than pdf's native practice of starting from the botto')
 		In general, when you must be specific its best to use points or inches.
 		Note that this method resets the internal positioning (of the pdf engine, not of
 		this instance) to the origin of 0,0.
@@ -1111,7 +1113,16 @@ class PdfDocument( object ):
 		return self.convertUnits(self.bottomMargin,'p',vUnit)
 
 	def setTextState(self, pCharSpace = 0, pWordSpace = 0, pScale = 100, pLeading = 0, pRender = 0, pRise = 0):
-		""" Initializes the textStream environment. Should be reset for each page. """
+		""" 
+		Initializes the textStream environment. Should be reset for each page. 
+		pCharSpace is ADDED to spacing between letters, in points. It may be negative.
+		pWordSpace is similar but applied only the to the space character.
+		pScale is a percentage, default 100, for horizontal scaling.
+		pLeading is in poins and applies to the vertical distance between characters.
+		pRender is a series of essentially codes that specify how to render text.
+		0 is nornal ("fill"). 1 is stroke (draw the outline of each chacter as a line)
+		2 is fill and stroke. 3 is invisible. 4 through 8 include clipping options.
+		"""
 		t = str(pCharSpace) + ' Tc ' + str(pWordSpace) + ' Tw '
 		t = t + str(pScale) + ' Tz ' + str(pLeading) + ' TL '
 		t = t + str(pRender) + ' Tr ' + str(pRise) + ' Ts '
@@ -1130,7 +1141,6 @@ class PdfDocument( object ):
 		the PdfFontMetrics class for more precise string lengths.
 		Returns a width, in points.
 		Returns points.
-		
 		"""
 		vPtr = self.findFontByKey(pFontKey)
 		avgSize = self.pvFontTable[vPtr].avgSize
@@ -1225,7 +1235,7 @@ class PdfDocument( object ):
 	def findXObject(self, pName):
 		"""
 		Search for an entry in the pvXObjectTable list, return its offset in the list.
-		Return -1 if <pName> is not located
+		Return -1 if <pName> is not located. May be either a form or an image XObject.
 		"""
 		vReturn = None
 		for i in range( 0, len(self.pvXObjectTable)):
@@ -1243,6 +1253,7 @@ class PdfDocument( object ):
 		"""
 		for an image already recorded in the pvXObjectTable list (see defineImageXObject)
 		this method places it in the current page, and the position specified by <pX> and <py>
+		The pY offset is swapped, top for bottom. 1 inch is 1 inch from the top of the page.
 		Optionally, dimensionally scaled as specified by <pScaleX> and <pScaleY>
 		Optionally skewed as defined by <pSkewX> and pSkewY>
 		and with optional grayscaling, <pGrayScale>.
@@ -1300,7 +1311,8 @@ class PdfDocument( object ):
 		"""
 		This displays a form XObject, adjusting the positioning by the amounts specified in
 		pXOffset and pYOffset.  pUnit must be specified, which is unlike most methods.
-		Values may be negative.
+		Values may be negative. The offset quantities are added to the existing x,y coordinate,
+		which represents the lower left corder of the xObject.
 		"""
 		if pUnit == 'p':
 			vX = pXOffset
@@ -1398,7 +1410,9 @@ class PdfDocument( object ):
 		self.page.graphicsStream.append( str(vX1) + ' '+str(vY1)+' m '+str(vX2)+' '+str(vY2)+' l s') 
 
 	def rectangle( self, pX, pY, pWidth, pHeight, pUnit = None, pLineWidth = None):
-		""" draw 4 lines, forming a rectangle. """
+		""" draw 4 lines, forming a rectangle. 
+		pX,pY 
+		"""
 		self.drawLine(pX,pY,pX + pWidth, pY,pUnit,pLineWidth )  # top line
 		self.drawLine(pX,pY + pHeight,pX + pWidth, pY + pHeight,pUnit,pLineWidth) # bottom line
 		self.drawLine(pX,pY,pX, pY + pHeight,pUnit,pLineWidth) # left side
@@ -1540,99 +1554,8 @@ class PdfDocument( object ):
 			self.addGraphic(t)
 		self.addGraphic('S Q')
 		            
-	def helloWorld(self):
 	
-		self.beginDoc('hello_world.pdf')
-		self.newPage()
-		self.setTextState()
-		self.writeCol(20,'this is writeCol at 20')
-		self.writeNext(20,'this is writeNext at 20')
-		self.writeCenteredInLine(15,'writeCenteredInLine at row 15')
-		self.write( 10,10,'write','l','r')
-		self.setFont('F3',8)
-		self.write(20,30,'This is a different font')
-		for row in range(30,50):
-			self.write(20,row,'This is row '+str(row),'l','r' )
-		self.waterMark('WaterMark!')
-		
-		self.endPage()
-		
-		for i in range(0, 50):
-			self.newPage()
-			self.setTextState()
-			self.setFont('F3',16)
-			self.write( 20, 40,'This is page number '+ str(self.currentPageNo) )
-			self.write( 30, 50,'This is page number '+ str(self.page.pageNo) )
-			self.waterMark(str(i))
-			self.endPage()
-		self.endDoc()
-	
-	def pageLayout(self):
-		self.beginDoc('pagelayout.pdf')
-		self.setDefaultUnit('r')
-		
-		for font in [ 'F1','F2','F3']:
-			for size in [ 8, 10, 12, 14, 16, 18 ]:
-				self.newPage()
-				self.setTextState()
-				self.setFont( font, size)
-				self.writeCenteredInLine( 1, 'Font '+ font + ' Size ' + str(size))
-				self.write(10,2,'0123456789012345678901234567890')
-				self.write(50,2,'abcdefghijklmnopqrstuvwxyz')
-				for i in range(10,40):
-					self.write(i,3,str(i%10),'l')
-				alpha = 'abcdefghijklmnopqrstuvwxyz'
-				for i in range(0,26):
-					self.write(50 + i, 3, alpha[i],'l')
-				
-				for row in [10,20,30,40,50,60,70,80]:
-					for col in [ 10, 20, 30, 40, 50, 60, 70, 80]:
-						self.write(col, row, 'x@r'+str(row)+':c'+str(col))
-				self.write( 10, self.getBottomRow(),'This is the bottome row: '+str(self.getBottomRow()),'l')
-				self.endPage()
-		self.endDoc()		
-
-	def testJpeg( self ):
-		hexStrings = self.readImage('image.jpg')
-
-		self.beginDoc('image_test.pdf')
-		self.setDefaultUnit( 'r' )
-		# 	def defineImageObject( self, hexStrings, pName, pWidth, pHeight, pBitsPerComponent, pColorSpace = None, pImageMask = None, pImageLib = None, pFilter = None):
-		self.defineImageXObject( hexStrings,'Sh1', 274,283,8,'DeviceRGB',None,'ImageB','DCTDecode')
-		# pdfDoc.defineimagexobject(vDoc,vJpg,'Sh1',74,83,8,'DeviceGray',null,'ImageB','DCTDecode');
-
-		self.newFormXObject('W1') 
-		self.waterMark('WATERMARK')
-		for i in range(0, 10):
-			self.write(10,i,'This is xObject Row ' + str(i))
-		self.endFormXObject() 
-
-		self.newPage()
-		self.write(10,5,'column 10 row 5','l','r')
-		self.showImage('Sh1',10,10,'r',80,80)
-		self.showImage('Sh1',10,20,'r',90,90)
-		self.showImage('Sh1',10,40,'r',100,100)
-		self.showImage('Sh1',10,80,'r',120,120)
-		self.write(10,25,'column 10 row25','l','r')
-		self.showForm('W1')
-		self.endPage()
-		self.endDoc()
 
 
 
-'''
-from PdfDoc import PdfDocument
-p = PdfDocument()
-p.helloWorld()
 
-
-from PdfDoc import PdfDocument
-p = PdfDocument()
-p.testJpeg()
-
-from PdfDoc import PdfDocument
-p = PdfDocument()
-p.pageLayout()
-
-
-'''

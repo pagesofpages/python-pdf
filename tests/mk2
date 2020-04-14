@@ -1,8 +1,8 @@
 # /bin/sh
-# Execute test scripts with python 3
+# execute test scripts with python 2
 for FILE in ./*.py
 do
-	python3 $FILE
+	python $FILE
 	result="$?"
 	echo "Error Code " $result
 	if [ "$result"  -ne  "0" ]
