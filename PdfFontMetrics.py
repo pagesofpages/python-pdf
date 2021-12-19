@@ -115,10 +115,11 @@ class PdfFontMetrics( object):
 		else:
 			vReturn = 0
 			for s in pString:
-				if ord(s) <= len(font['chars']) and font['chars'][ord(s)] is not None:
+				if ord(s) <= len(font['chars']) and isinstance( font['chars'][ord(s)], dict ) and font['chars'][ord(s)] is not None:
 					vReturn = vReturn +font['chars'][ord(s)]['width']
 				else:
 					vReturn = vReturn + self.defaultCharWidth
+				
 		return vReturn * pFontSize / 1000.0
 
 

@@ -1,0 +1,348 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module PdfString</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>PdfString</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/garymenchen/python/python-pdf/PdfString.py">/Users/garymenchen/python/python-pdf/PdfString.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;<a href="#PdfString">PdfString</a>.py</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="PdfString.html#PdfString">PdfString</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="PdfString.html#FixedPdfString">FixedPdfString</a>
+</font></dt><dt><font face="helvetica, arial"><a href="PdfString.html#PdfStringFN">PdfStringFN</a>
+</font></dt><dt><font face="helvetica, arial"><a href="PdfString.html#PdfStringSpacer">PdfStringSpacer</a>
+</font></dt></dl>
+</dd>
+</dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FixedPdfString">class <strong>FixedPdfString</strong></a>(<a href="PdfString.html#PdfString">PdfString</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;<a href="#FixedPdfString">FixedPdfString</a>&nbsp;is&nbsp;one&nbsp;with&nbsp;preset&nbsp;row&nbsp;and&nbsp;column&nbsp;values.&nbsp;It&nbsp;is&nbsp;inserted&nbsp;into&nbsp;FixedParagraphs<br>
+and&nbsp;is&nbsp;not&nbsp;subject&nbsp;to&nbsp;justification.&nbsp;&nbsp;Each&nbsp;string&nbsp;as&nbsp;a&nbsp;preset&nbsp;row&nbsp;and&nbsp;column&nbsp;value<br>
+(in&nbsp;points).&nbsp;The&nbsp;row&nbsp;values&nbsp;are&nbsp;relative&nbsp;to&nbsp;the&nbsp;top&nbsp;(after&nbsp;lead)&nbsp;and&nbsp;left&nbsp;margins<br>
+of&nbsp;the&nbsp;FixedPdfParagraph<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="PdfString.html#FixedPdfString">FixedPdfString</a></dd>
+<dd><a href="PdfString.html#PdfString">PdfString</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FixedPdfString-__init__"><strong>__init__</strong></a>(self, prow, pocol, pfont, pstring)</dt><dd><tt>Initializer&nbsp;for&nbsp;a&nbsp;<a href="#FixedPdfString">FixedPdfString</a>.&nbsp;the&nbsp;row&nbsp;and&nbsp;column&nbsp;value&nbsp;are&nbsp;in&nbsp;points.&nbsp;The<br>
+row&nbsp;is&nbsp;relative&nbsp;to&nbsp;the&nbsp;paragraph&nbsp;row,&nbsp;and&nbsp;the&nbsp;column&nbsp;relative&nbsp;to&nbsp;the&nbsp;paragraph<br>
+left&nbsp;margin.&nbsp;They&nbsp;are&nbsp;held&nbsp;in&nbsp;FixedPdfParagraphs&nbsp;only,</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-splitIntoWords"><strong>splitIntoWords</strong></a>(self)</dt><dd><tt>Override&nbsp;parent&nbsp;method<br>
+Return&nbsp;a&nbsp;clone&nbsp;of&nbsp;self&nbsp;in&nbsp;a&nbsp;list&nbsp;with&nbsp;just&nbsp;1&nbsp;element</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><a name="FixedPdfString-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Override&nbsp;the&nbsp;string&nbsp;method.&nbsp;<br>
+{&nbsp;F3,&nbsp;8}&nbsp;L=nnn&nbsp;::string::</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-depth"><strong>depth</strong></a>(self)</dt><dd><tt>the&nbsp;depth&nbsp;of&nbsp;a&nbsp;string&nbsp;-&nbsp;not&nbsp;very&nbsp;useful&nbsp;-&nbsp;is&nbsp;simply&nbsp;the&nbsp;fontize</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-getFont"><strong>getFont</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FixedPdfString-ltrim"><strong>ltrim</strong></a>(self)</dt><dd><tt>Remove&nbsp;leading&nbsp;spaces</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-setLength"><strong>setLength</strong></a>(self)</dt><dd><tt>set&nbsp;the&nbsp;length&nbsp;property&nbsp;based&nbsp;on&nbsp;metrics.strLenth</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-setString"><strong>setString</strong></a>(self, t)</dt><dd><tt>reset&nbsp;the&nbsp;string&nbsp;property&nbsp;with&nbsp;&lt;t&gt;&nbsp;and&nbsp;invoke&nbsp;self.<a href="#FixedPdfString-setLength">setLength</a>()</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-split2"><strong>split2</strong></a>(self, strLen)</dt><dd><tt>Splits&nbsp;a&nbsp;string.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;<a href="#PdfString">PdfString</a>&nbsp;that&nbsp;has&nbsp;a&nbsp;string&nbsp;&lt;=&nbsp;strLen<br>
+Modifes&nbsp;self,&nbsp;removing&nbsp;that&nbsp;portion&nbsp;of&nbsp;the&nbsp;string.&nbsp;&nbsp;<br>
+1.&nbsp;if&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;string&nbsp;is&nbsp;0&nbsp;then&nbsp;it&nbsp;returns&nbsp;None<br>
+2.&nbsp;If&nbsp;the&nbsp;length&nbsp;is&nbsp;&lt;&nbsp;&lt;strLen&gt;&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;clone&nbsp;of&nbsp;itself,<br>
+&nbsp;&nbsp;&nbsp;and&nbsp;sets&nbsp;itself&nbsp;to&nbsp;an&nbsp;empty&nbsp;string&nbsp;of&nbsp;length&nbsp;0<br>
+3.&nbsp;If&nbsp;there&nbsp;is&nbsp;no&nbsp;space&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;then&nbsp;the&nbsp;same&nbsp;as&nbsp;#2&nbsp;above<br>
+4.&nbsp;If&nbsp;the&nbsp;very&nbsp;first&nbsp;word&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;is&nbsp;longer&nbsp;than&nbsp;strLen&nbsp;then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it&nbsp;returns&nbsp;a&nbsp;<a href="#PdfString">PdfString</a>&nbsp;with&nbsp;that&nbsp;first&nbsp;word.&nbsp;So&nbsp;if&nbsp;self.<strong>string</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;not&nbsp;empty&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;string&nbsp;of&nbsp;some&nbsp;length&nbsp;that&nbsp;may<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;greater&nbsp;than&nbsp;strLen<br>
+This&nbsp;is&nbsp;useful&nbsp;when&nbsp;building&nbsp;lines&nbsp;with&nbsp;a&nbsp;fixed&nbsp;maximum&nbsp;length&nbsp;from&nbsp;one<br>
+or&nbsp;more&nbsp;strings.</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-stretch"><strong>stretch</strong></a>(self, amt)</dt><dd><tt>loop&nbsp;though&nbsp;self.<strong>string</strong>&nbsp;once,&nbsp;adding&nbsp;spaces&nbsp;to&nbsp;existing&nbsp;spaces,&nbsp;until<br>
+the&nbsp;string&nbsp;has&nbsp;been&nbsp;traversed&nbsp;or&nbsp;each&nbsp;space&nbsp;has&nbsp;been&nbsp;padded&nbsp;once.&nbsp;So<br>
+will&nbsp;not&nbsp;necessarily&nbsp;stretch&nbsp;the&nbsp;string&nbsp;to&nbsp;the&nbsp;full&nbsp;amount.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;&lt;amt&gt;<br>
+to&nbsp;be&nbsp;added&nbsp;may&nbsp;be&nbsp;spread&nbsp;among&nbsp;multiple&nbsp;strings,&nbsp;so&nbsp;it&nbsp;only&nbsp;traverses&nbsp;once.</tt></dd></dl>
+
+<dl><dt><a name="FixedPdfString-trim"><strong>trim</strong></a>(self)</dt><dd><tt>remove&nbsp;trailing&nbsp;whitespace&nbsp;from&nbsp;string.<br>
+Reset&nbsp;length</tt></dd></dl>
+
+<hr>
+Class methods inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><a name="FixedPdfString-repeater"><strong>repeater</strong></a>(cls, pFont, pString, slen)<font color="#909090"><font face="helvetica, arial"> from <a href="__builtin__.html#type">__builtin__.type</a></font></font></dt><dd><tt>Return&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>,&nbsp;with&nbsp;&lt;pString&gt;&nbsp;repeated&nbsp;as&nbsp;many<br>
+times&nbsp;as&nbsp;necessary&nbsp;to&nbsp;be&nbsp;the&nbsp;maximum&nbsp;length&nbsp;that&nbsp;is&nbsp;less&nbsp;than<br>
+or&nbsp;equal&nbsp;to&nbsp;&lt;slen&gt;.&nbsp;But&nbsp;at&nbsp;least&nbsp;one&nbsp;iteration</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PdfString">class <strong>PdfString</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>PDFString&nbsp;is&nbsp;a&nbsp;continuous&nbsp;bit&nbsp;of&nbsp;text&nbsp;in&nbsp;a&nbsp;common&nbsp;font.&nbsp;It&nbsp;may&nbsp;contain<br>
+with&nbsp;a&nbsp;footnote&nbsp;identified&nbsp;as&nbsp;^<br>
+Attributes:<br>
+self.<strong>fontkey</strong><br>
+self.<strong>fontsize</strong><br>
+self.<strong>string</strong><br>
+self.<strong>length</strong><br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PdfString-__init__"><strong>__init__</strong></a>(self, pfont, pstring)</dt><dd><tt>Initialize&nbsp;a&nbsp;new&nbsp;string,&nbsp;invoke&nbsp;<a href="#PdfString-setLength">setLength</a>()</tt></dd></dl>
+
+<dl><dt><a name="PdfString-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Override&nbsp;the&nbsp;string&nbsp;method.&nbsp;<br>
+{&nbsp;F3,&nbsp;8}&nbsp;L=nnn&nbsp;::string::</tt></dd></dl>
+
+<dl><dt><a name="PdfString-depth"><strong>depth</strong></a>(self)</dt><dd><tt>the&nbsp;depth&nbsp;of&nbsp;a&nbsp;string&nbsp;-&nbsp;not&nbsp;very&nbsp;useful&nbsp;-&nbsp;is&nbsp;simply&nbsp;the&nbsp;fontize</tt></dd></dl>
+
+<dl><dt><a name="PdfString-getFont"><strong>getFont</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PdfString-ltrim"><strong>ltrim</strong></a>(self)</dt><dd><tt>Remove&nbsp;leading&nbsp;spaces</tt></dd></dl>
+
+<dl><dt><a name="PdfString-setLength"><strong>setLength</strong></a>(self)</dt><dd><tt>set&nbsp;the&nbsp;length&nbsp;property&nbsp;based&nbsp;on&nbsp;metrics.strLenth</tt></dd></dl>
+
+<dl><dt><a name="PdfString-setString"><strong>setString</strong></a>(self, t)</dt><dd><tt>reset&nbsp;the&nbsp;string&nbsp;property&nbsp;with&nbsp;&lt;t&gt;&nbsp;and&nbsp;invoke&nbsp;self.<a href="#PdfString-setLength">setLength</a>()</tt></dd></dl>
+
+<dl><dt><a name="PdfString-split2"><strong>split2</strong></a>(self, strLen)</dt><dd><tt>Splits&nbsp;a&nbsp;string.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;<a href="#PdfString">PdfString</a>&nbsp;that&nbsp;has&nbsp;a&nbsp;string&nbsp;&lt;=&nbsp;strLen<br>
+Modifes&nbsp;self,&nbsp;removing&nbsp;that&nbsp;portion&nbsp;of&nbsp;the&nbsp;string.&nbsp;&nbsp;<br>
+1.&nbsp;if&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;string&nbsp;is&nbsp;0&nbsp;then&nbsp;it&nbsp;returns&nbsp;None<br>
+2.&nbsp;If&nbsp;the&nbsp;length&nbsp;is&nbsp;&lt;&nbsp;&lt;strLen&gt;&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;clone&nbsp;of&nbsp;itself,<br>
+&nbsp;&nbsp;&nbsp;and&nbsp;sets&nbsp;itself&nbsp;to&nbsp;an&nbsp;empty&nbsp;string&nbsp;of&nbsp;length&nbsp;0<br>
+3.&nbsp;If&nbsp;there&nbsp;is&nbsp;no&nbsp;space&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;then&nbsp;the&nbsp;same&nbsp;as&nbsp;#2&nbsp;above<br>
+4.&nbsp;If&nbsp;the&nbsp;very&nbsp;first&nbsp;word&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;is&nbsp;longer&nbsp;than&nbsp;strLen&nbsp;then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it&nbsp;returns&nbsp;a&nbsp;<a href="#PdfString">PdfString</a>&nbsp;with&nbsp;that&nbsp;first&nbsp;word.&nbsp;So&nbsp;if&nbsp;self.<strong>string</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;not&nbsp;empty&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;string&nbsp;of&nbsp;some&nbsp;length&nbsp;that&nbsp;may<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;greater&nbsp;than&nbsp;strLen<br>
+This&nbsp;is&nbsp;useful&nbsp;when&nbsp;building&nbsp;lines&nbsp;with&nbsp;a&nbsp;fixed&nbsp;maximum&nbsp;length&nbsp;from&nbsp;one<br>
+or&nbsp;more&nbsp;strings.</tt></dd></dl>
+
+<dl><dt><a name="PdfString-splitIntoWords"><strong>splitIntoWords</strong></a>(self)</dt><dd><tt>Divide&nbsp;the&nbsp;string&nbsp;into&nbsp;multiple&nbsp;strings,&nbsp;with&nbsp;each&nbsp;string&nbsp;containing&nbsp;a&nbsp;single&nbsp;word,<br>
+and,&nbsp;often,&nbsp;associated&nbsp;spaces.<br>
+1.&nbsp;If&nbsp;a&nbsp;string&nbsp;begins&nbsp;with&nbsp;one&nbsp;or&nbsp;more&nbsp;spaces,&nbsp;those&nbsp;spaces&nbsp;are&nbsp;placed&nbsp;into&nbsp;a&nbsp;single&nbsp;new<br>
+string.<br>
+2.&nbsp;If&nbsp;a&nbsp;group&nbsp;of&nbsp;non-space&nbsp;characters&nbsp;is&nbsp;followed&nbsp;by&nbsp;a&nbsp;space&nbsp;it&nbsp;is&nbsp;included&nbsp;with&nbsp;the&nbsp;word.<br>
+3.&nbsp;If&nbsp;non-space&nbsp;characters&nbsp;are&nbsp;followed&nbsp;by&nbsp;more&nbsp;than&nbsp;one&nbsp;space,&nbsp;those&nbsp;other&nbsp;space&nbsp;characters<br>
+will&nbsp;be&nbsp;treated&nbsp;by&nbsp;rule&nbsp;1.<br>
+Return&nbsp;value&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>.&nbsp;For&nbsp;descendents&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>&nbsp;it&nbsp;just&nbsp;returns&nbsp;the&nbsp;original<br>
+string&nbsp;in&nbsp;a&nbsp;list&nbsp;with&nbsp;1&nbsp;element.</tt></dd></dl>
+
+<dl><dt><a name="PdfString-stretch"><strong>stretch</strong></a>(self, amt)</dt><dd><tt>loop&nbsp;though&nbsp;self.<strong>string</strong>&nbsp;once,&nbsp;adding&nbsp;spaces&nbsp;to&nbsp;existing&nbsp;spaces,&nbsp;until<br>
+the&nbsp;string&nbsp;has&nbsp;been&nbsp;traversed&nbsp;or&nbsp;each&nbsp;space&nbsp;has&nbsp;been&nbsp;padded&nbsp;once.&nbsp;So<br>
+will&nbsp;not&nbsp;necessarily&nbsp;stretch&nbsp;the&nbsp;string&nbsp;to&nbsp;the&nbsp;full&nbsp;amount.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;&lt;amt&gt;<br>
+to&nbsp;be&nbsp;added&nbsp;may&nbsp;be&nbsp;spread&nbsp;among&nbsp;multiple&nbsp;strings,&nbsp;so&nbsp;it&nbsp;only&nbsp;traverses&nbsp;once.</tt></dd></dl>
+
+<dl><dt><a name="PdfString-trim"><strong>trim</strong></a>(self)</dt><dd><tt>remove&nbsp;trailing&nbsp;whitespace&nbsp;from&nbsp;string.<br>
+Reset&nbsp;length</tt></dd></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="PdfString-repeater"><strong>repeater</strong></a>(cls, pFont, pString, slen)<font color="#909090"><font face="helvetica, arial"> from <a href="__builtin__.html#type">__builtin__.type</a></font></font></dt><dd><tt>Return&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>,&nbsp;with&nbsp;&lt;pString&gt;&nbsp;repeated&nbsp;as&nbsp;many<br>
+times&nbsp;as&nbsp;necessary&nbsp;to&nbsp;be&nbsp;the&nbsp;maximum&nbsp;length&nbsp;that&nbsp;is&nbsp;less&nbsp;than<br>
+or&nbsp;equal&nbsp;to&nbsp;&lt;slen&gt;.&nbsp;But&nbsp;at&nbsp;least&nbsp;one&nbsp;iteration</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PdfStringFN">class <strong>PdfStringFN</strong></a>(<a href="PdfString.html#PdfString">PdfString</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;serves&nbsp;to&nbsp;identify&nbsp;a&nbsp;string&nbsp;as&nbsp;containing&nbsp;a&nbsp;footnote&nbsp;indicator,&nbsp;i.e.&nbsp;an&nbsp;integer&nbsp;value<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="PdfString.html#PdfStringFN">PdfStringFN</a></dd>
+<dd><a href="PdfString.html#PdfString">PdfString</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PdfStringFN-__init__"><strong>__init__</strong></a>(self, pfont, pstring)</dt><dd><tt>just&nbsp;call&nbsp;the&nbsp;parent&nbsp;initiator</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-splitIntoWords"><strong>splitIntoWords</strong></a>(self)</dt><dd><tt>Override&nbsp;parent&nbsp;method.<br>
+Return&nbsp;a&nbsp;clone&nbsp;of&nbsp;self&nbsp;in&nbsp;a&nbsp;list&nbsp;with&nbsp;just&nbsp;1&nbsp;element</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><a name="PdfStringFN-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Override&nbsp;the&nbsp;string&nbsp;method.&nbsp;<br>
+{&nbsp;F3,&nbsp;8}&nbsp;L=nnn&nbsp;::string::</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-depth"><strong>depth</strong></a>(self)</dt><dd><tt>the&nbsp;depth&nbsp;of&nbsp;a&nbsp;string&nbsp;-&nbsp;not&nbsp;very&nbsp;useful&nbsp;-&nbsp;is&nbsp;simply&nbsp;the&nbsp;fontize</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-getFont"><strong>getFont</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PdfStringFN-ltrim"><strong>ltrim</strong></a>(self)</dt><dd><tt>Remove&nbsp;leading&nbsp;spaces</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-setLength"><strong>setLength</strong></a>(self)</dt><dd><tt>set&nbsp;the&nbsp;length&nbsp;property&nbsp;based&nbsp;on&nbsp;metrics.strLenth</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-setString"><strong>setString</strong></a>(self, t)</dt><dd><tt>reset&nbsp;the&nbsp;string&nbsp;property&nbsp;with&nbsp;&lt;t&gt;&nbsp;and&nbsp;invoke&nbsp;self.<a href="#PdfStringFN-setLength">setLength</a>()</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-split2"><strong>split2</strong></a>(self, strLen)</dt><dd><tt>Splits&nbsp;a&nbsp;string.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;<a href="#PdfString">PdfString</a>&nbsp;that&nbsp;has&nbsp;a&nbsp;string&nbsp;&lt;=&nbsp;strLen<br>
+Modifes&nbsp;self,&nbsp;removing&nbsp;that&nbsp;portion&nbsp;of&nbsp;the&nbsp;string.&nbsp;&nbsp;<br>
+1.&nbsp;if&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;string&nbsp;is&nbsp;0&nbsp;then&nbsp;it&nbsp;returns&nbsp;None<br>
+2.&nbsp;If&nbsp;the&nbsp;length&nbsp;is&nbsp;&lt;&nbsp;&lt;strLen&gt;&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;clone&nbsp;of&nbsp;itself,<br>
+&nbsp;&nbsp;&nbsp;and&nbsp;sets&nbsp;itself&nbsp;to&nbsp;an&nbsp;empty&nbsp;string&nbsp;of&nbsp;length&nbsp;0<br>
+3.&nbsp;If&nbsp;there&nbsp;is&nbsp;no&nbsp;space&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;then&nbsp;the&nbsp;same&nbsp;as&nbsp;#2&nbsp;above<br>
+4.&nbsp;If&nbsp;the&nbsp;very&nbsp;first&nbsp;word&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;is&nbsp;longer&nbsp;than&nbsp;strLen&nbsp;then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it&nbsp;returns&nbsp;a&nbsp;<a href="#PdfString">PdfString</a>&nbsp;with&nbsp;that&nbsp;first&nbsp;word.&nbsp;So&nbsp;if&nbsp;self.<strong>string</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;not&nbsp;empty&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;string&nbsp;of&nbsp;some&nbsp;length&nbsp;that&nbsp;may<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;greater&nbsp;than&nbsp;strLen<br>
+This&nbsp;is&nbsp;useful&nbsp;when&nbsp;building&nbsp;lines&nbsp;with&nbsp;a&nbsp;fixed&nbsp;maximum&nbsp;length&nbsp;from&nbsp;one<br>
+or&nbsp;more&nbsp;strings.</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-stretch"><strong>stretch</strong></a>(self, amt)</dt><dd><tt>loop&nbsp;though&nbsp;self.<strong>string</strong>&nbsp;once,&nbsp;adding&nbsp;spaces&nbsp;to&nbsp;existing&nbsp;spaces,&nbsp;until<br>
+the&nbsp;string&nbsp;has&nbsp;been&nbsp;traversed&nbsp;or&nbsp;each&nbsp;space&nbsp;has&nbsp;been&nbsp;padded&nbsp;once.&nbsp;So<br>
+will&nbsp;not&nbsp;necessarily&nbsp;stretch&nbsp;the&nbsp;string&nbsp;to&nbsp;the&nbsp;full&nbsp;amount.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;&lt;amt&gt;<br>
+to&nbsp;be&nbsp;added&nbsp;may&nbsp;be&nbsp;spread&nbsp;among&nbsp;multiple&nbsp;strings,&nbsp;so&nbsp;it&nbsp;only&nbsp;traverses&nbsp;once.</tt></dd></dl>
+
+<dl><dt><a name="PdfStringFN-trim"><strong>trim</strong></a>(self)</dt><dd><tt>remove&nbsp;trailing&nbsp;whitespace&nbsp;from&nbsp;string.<br>
+Reset&nbsp;length</tt></dd></dl>
+
+<hr>
+Class methods inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><a name="PdfStringFN-repeater"><strong>repeater</strong></a>(cls, pFont, pString, slen)<font color="#909090"><font face="helvetica, arial"> from <a href="__builtin__.html#type">__builtin__.type</a></font></font></dt><dd><tt>Return&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>,&nbsp;with&nbsp;&lt;pString&gt;&nbsp;repeated&nbsp;as&nbsp;many<br>
+times&nbsp;as&nbsp;necessary&nbsp;to&nbsp;be&nbsp;the&nbsp;maximum&nbsp;length&nbsp;that&nbsp;is&nbsp;less&nbsp;than<br>
+or&nbsp;equal&nbsp;to&nbsp;&lt;slen&gt;.&nbsp;But&nbsp;at&nbsp;least&nbsp;one&nbsp;iteration</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PdfStringSpacer">class <strong>PdfStringSpacer</strong></a>(<a href="PdfString.html#PdfString">PdfString</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>a&nbsp;descendent&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>&nbsp;that&nbsp;serves&nbsp;as&nbsp;a&nbsp;spacer.&nbsp;Only&nbsp;real&nbsp;attribute&nbsp;is&nbsp;length.&nbsp;<br>
+It&nbsp;does&nbsp;require&nbsp;a&nbsp;font&nbsp;as&nbsp;a&nbsp;parameter&nbsp;to&nbsp;the&nbsp;initiator.&nbsp;It&nbsp;sets&nbsp;.string&nbsp;to<br>
+a&nbsp;number&nbsp;of&nbsp;spaces&nbsp;equal&nbsp;to&nbsp;the&nbsp;desired&nbsp;lengt<br>
+space&nbsp;=&nbsp;<a href="#PdfStringSpacer">PdfStringSpacer</a>(&nbsp;mainFont,&nbsp;72&nbsp;*&nbsp;3)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="PdfString.html#PdfStringSpacer">PdfStringSpacer</a></dd>
+<dd><a href="PdfString.html#PdfString">PdfString</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PdfStringSpacer-__init__"><strong>__init__</strong></a>(self, pfont, plength)</dt></dl>
+
+<dl><dt><a name="PdfStringSpacer-ltrim"><strong>ltrim</strong></a>(self)</dt><dd><tt>pass</tt></dd></dl>
+
+<dl><dt><a name="PdfStringSpacer-setLength"><strong>setLength</strong></a>()</dt><dd><tt>Overridden&nbsp;in&nbsp;<a href="#PdfStringSpacer">PdfStringSpacer</a>&nbsp;to&nbsp;be&nbsp;a&nbsp;nop;&nbsp;the&nbsp;length&nbsp;is&nbsp;specified&nbsp;in&nbsp;the<br>
+initiator.</tt></dd></dl>
+
+<dl><dt><a name="PdfStringSpacer-setString"><strong>setString</strong></a>(self, t)</dt><dd><tt>reset&nbsp;the&nbsp;string&nbsp;property&nbsp;with&nbsp;&lt;t&gt;&nbsp;and&nbsp;invoke&nbsp;self.<a href="#PdfStringSpacer-setLength">setLength</a>()</tt></dd></dl>
+
+<dl><dt><a name="PdfStringSpacer-trim"><strong>trim</strong></a>(self)</dt><dd><tt>pass</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><a name="PdfStringSpacer-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Override&nbsp;the&nbsp;string&nbsp;method.&nbsp;<br>
+{&nbsp;F3,&nbsp;8}&nbsp;L=nnn&nbsp;::string::</tt></dd></dl>
+
+<dl><dt><a name="PdfStringSpacer-depth"><strong>depth</strong></a>(self)</dt><dd><tt>the&nbsp;depth&nbsp;of&nbsp;a&nbsp;string&nbsp;-&nbsp;not&nbsp;very&nbsp;useful&nbsp;-&nbsp;is&nbsp;simply&nbsp;the&nbsp;fontize</tt></dd></dl>
+
+<dl><dt><a name="PdfStringSpacer-getFont"><strong>getFont</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PdfStringSpacer-split2"><strong>split2</strong></a>(self, strLen)</dt><dd><tt>Splits&nbsp;a&nbsp;string.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;<a href="#PdfString">PdfString</a>&nbsp;that&nbsp;has&nbsp;a&nbsp;string&nbsp;&lt;=&nbsp;strLen<br>
+Modifes&nbsp;self,&nbsp;removing&nbsp;that&nbsp;portion&nbsp;of&nbsp;the&nbsp;string.&nbsp;&nbsp;<br>
+1.&nbsp;if&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;string&nbsp;is&nbsp;0&nbsp;then&nbsp;it&nbsp;returns&nbsp;None<br>
+2.&nbsp;If&nbsp;the&nbsp;length&nbsp;is&nbsp;&lt;&nbsp;&lt;strLen&gt;&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;clone&nbsp;of&nbsp;itself,<br>
+&nbsp;&nbsp;&nbsp;and&nbsp;sets&nbsp;itself&nbsp;to&nbsp;an&nbsp;empty&nbsp;string&nbsp;of&nbsp;length&nbsp;0<br>
+3.&nbsp;If&nbsp;there&nbsp;is&nbsp;no&nbsp;space&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;then&nbsp;the&nbsp;same&nbsp;as&nbsp;#2&nbsp;above<br>
+4.&nbsp;If&nbsp;the&nbsp;very&nbsp;first&nbsp;word&nbsp;in&nbsp;self.<strong>string</strong>&nbsp;is&nbsp;longer&nbsp;than&nbsp;strLen&nbsp;then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it&nbsp;returns&nbsp;a&nbsp;<a href="#PdfString">PdfString</a>&nbsp;with&nbsp;that&nbsp;first&nbsp;word.&nbsp;So&nbsp;if&nbsp;self.<strong>string</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;not&nbsp;empty&nbsp;then&nbsp;it&nbsp;returns&nbsp;a&nbsp;string&nbsp;of&nbsp;some&nbsp;length&nbsp;that&nbsp;may<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;greater&nbsp;than&nbsp;strLen<br>
+This&nbsp;is&nbsp;useful&nbsp;when&nbsp;building&nbsp;lines&nbsp;with&nbsp;a&nbsp;fixed&nbsp;maximum&nbsp;length&nbsp;from&nbsp;one<br>
+or&nbsp;more&nbsp;strings.</tt></dd></dl>
+
+<dl><dt><a name="PdfStringSpacer-splitIntoWords"><strong>splitIntoWords</strong></a>(self)</dt><dd><tt>Divide&nbsp;the&nbsp;string&nbsp;into&nbsp;multiple&nbsp;strings,&nbsp;with&nbsp;each&nbsp;string&nbsp;containing&nbsp;a&nbsp;single&nbsp;word,<br>
+and,&nbsp;often,&nbsp;associated&nbsp;spaces.<br>
+1.&nbsp;If&nbsp;a&nbsp;string&nbsp;begins&nbsp;with&nbsp;one&nbsp;or&nbsp;more&nbsp;spaces,&nbsp;those&nbsp;spaces&nbsp;are&nbsp;placed&nbsp;into&nbsp;a&nbsp;single&nbsp;new<br>
+string.<br>
+2.&nbsp;If&nbsp;a&nbsp;group&nbsp;of&nbsp;non-space&nbsp;characters&nbsp;is&nbsp;followed&nbsp;by&nbsp;a&nbsp;space&nbsp;it&nbsp;is&nbsp;included&nbsp;with&nbsp;the&nbsp;word.<br>
+3.&nbsp;If&nbsp;non-space&nbsp;characters&nbsp;are&nbsp;followed&nbsp;by&nbsp;more&nbsp;than&nbsp;one&nbsp;space,&nbsp;those&nbsp;other&nbsp;space&nbsp;characters<br>
+will&nbsp;be&nbsp;treated&nbsp;by&nbsp;rule&nbsp;1.<br>
+Return&nbsp;value&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>.&nbsp;For&nbsp;descendents&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>&nbsp;it&nbsp;just&nbsp;returns&nbsp;the&nbsp;original<br>
+string&nbsp;in&nbsp;a&nbsp;list&nbsp;with&nbsp;1&nbsp;element.</tt></dd></dl>
+
+<dl><dt><a name="PdfStringSpacer-stretch"><strong>stretch</strong></a>(self, amt)</dt><dd><tt>loop&nbsp;though&nbsp;self.<strong>string</strong>&nbsp;once,&nbsp;adding&nbsp;spaces&nbsp;to&nbsp;existing&nbsp;spaces,&nbsp;until<br>
+the&nbsp;string&nbsp;has&nbsp;been&nbsp;traversed&nbsp;or&nbsp;each&nbsp;space&nbsp;has&nbsp;been&nbsp;padded&nbsp;once.&nbsp;So<br>
+will&nbsp;not&nbsp;necessarily&nbsp;stretch&nbsp;the&nbsp;string&nbsp;to&nbsp;the&nbsp;full&nbsp;amount.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;&lt;amt&gt;<br>
+to&nbsp;be&nbsp;added&nbsp;may&nbsp;be&nbsp;spread&nbsp;among&nbsp;multiple&nbsp;strings,&nbsp;so&nbsp;it&nbsp;only&nbsp;traverses&nbsp;once.</tt></dd></dl>
+
+<hr>
+Class methods inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><a name="PdfStringSpacer-repeater"><strong>repeater</strong></a>(cls, pFont, pString, slen)<font color="#909090"><font face="helvetica, arial"> from <a href="__builtin__.html#type">__builtin__.type</a></font></font></dt><dd><tt>Return&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;<a href="#PdfString">PdfString</a>,&nbsp;with&nbsp;&lt;pString&gt;&nbsp;repeated&nbsp;as&nbsp;many<br>
+times&nbsp;as&nbsp;necessary&nbsp;to&nbsp;be&nbsp;the&nbsp;maximum&nbsp;length&nbsp;that&nbsp;is&nbsp;less&nbsp;than<br>
+or&nbsp;equal&nbsp;to&nbsp;&lt;slen&gt;.&nbsp;But&nbsp;at&nbsp;least&nbsp;one&nbsp;iteration</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="PdfString.html#PdfString">PdfString</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>metrics</strong> = &lt;PdfFontMetrics.PdfFontMetrics object&gt;</td></tr></table>
+</body></html>

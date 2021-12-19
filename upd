@@ -1,9 +1,35 @@
 # /bin/sh
 
-sudo cp -p PdfDoc.py /Library/Python/2.7/site-packages/.
-sudo cp -p PdfFontMetrics.py /Library/Python/2.7/site-packages/.
-sudo cp -p pdfFontMetrics.json /Library/Python/2.7/site-packages/.
+PYFILES="PdfDoc PdfFontMetrics PdfChapter PdfParagraph PdfString PdfLine PdfPage PdfTextFont"
+OTHFILES="pdfFontMetrics.json"
 
-sudo cp -p PdfDoc.py /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/
-sudo cp -p PdfFontMetrics.py /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/.
-sudo cp -p PdfFontMetrics.json  /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/.
+echo "Generating pydoc files"
+for F in $( echo $PYFILES) 
+do
+   echo $F
+   pydoc -w $F
+   mv -v $F.html doc
+done
+
+
+echo "copying files to python libraries"
+
+for F in $( echo $PYFILES)
+do
+  sudo cp -p -v $F.py /Library/Python/2.7/site-packages/
+  sudo cp -p -v $F.py /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/
+done
+
+for F in  $( echo $OTHFILES )
+do
+  sudo cp -p -v $F /Library/Python/2.7/site-packages/
+  sudo cp -p -v $F /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/
+done
+ 
+#sudo cp -p PdfDoc.py /Library/Python/2.7/site-packages/.
+#sudo cp -p PdfFontMetrics.py /Library/Python/2.7/site-packages/.
+#sudo cp -p pdfFontMetrics.json /Library/Python/2.7/site-packages/.
+
+#sudo cp -p PdfDoc.py /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/
+#sudo cp -p PdfFontMetrics.py /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/.
+#sudo cp -p PdfFontMetrics.json  /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/.

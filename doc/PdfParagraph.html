@@ -1,0 +1,365 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module PdfParagraph</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>PdfParagraph</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/garymenchen/python/python-pdf/PdfParagraph.py">/Users/garymenchen/python/python-pdf/PdfParagraph.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;<a href="#PdfParagraph">PdfParagraph</a>.py</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="PdfParagraph.html#FixededPdfParagraph">FixededPdfParagraph</a>
+</font></dt><dt><font face="helvetica, arial"><a href="PdfParagraph.html#ImageParagraph">ImageParagraph</a>
+</font></dt><dt><font face="helvetica, arial"><a href="PdfParagraph.html#PdfFootnoteParagraph">PdfFootnoteParagraph</a>
+</font></dt></dl>
+</dd>
+</dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FixededPdfParagraph">class <strong>FixededPdfParagraph</strong></a>(<a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;subclass&nbsp;of&nbsp;<a href="#PdfParagraph">PdfParagraph</a>&nbsp;holds&nbsp;FixedPdfStrings.&nbsp;As&nbsp;such&nbsp;it&nbsp;is&nbsp;not<br>
+subject&nbsp;to&nbsp;justification.&nbsp;It&nbsp;has&nbsp;the&nbsp;rule&nbsp;it&nbsp;must&nbsp;fit&nbsp;on&nbsp;a&nbsp;single&nbsp;PdfPage<br>
+from&nbsp;its&nbsp;starting&nbsp;point.&nbsp;<br>
+Its&nbsp;<a href="#FixededPdfParagraph-addString">addString</a>()&nbsp;method&nbsp;accepts&nbsp;only&nbsp;FixedPdfString&nbsp;which&nbsp;already&nbsp;have&nbsp;their<br>
+row&nbsp;and&nbsp;column&nbsp;set.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="PdfParagraph.html#FixededPdfParagraph">FixededPdfParagraph</a></dd>
+<dd><a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FixededPdfParagraph-__init__"><strong>__init__</strong></a>(self, chapter)</dt><dd><tt>The&nbsp;initiator&nbsp;receives&nbsp;only&nbsp;the&nbsp;PdfChapter&nbsp;parameter.&nbsp;Lead&nbsp;and&nbsp;Tail&nbsp;must&nbsp;be<br>
+set&nbsp;by&nbsp;methods&nbsp;<a href="#FixededPdfParagraph-setLead">setLead</a>()&nbsp;and&nbsp;<a href="#FixededPdfParagraph-setTail">setTail</a>()</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-addString"><strong>addString</strong></a>(self, pstring)</dt><dd><tt>FixedPdfParagraph&nbsp;accepts&nbsp;ony&nbsp;FixedPdfString&nbsp;vales</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-depth"><strong>depth</strong></a>(self)</dt><dd><tt>The&nbsp;depth&nbsp;of&nbsp;a&nbsp;FixedPdfParagraph&nbsp;is&nbsp;the&nbsp;sum&nbsp;of&nbsp;the&nbsp;lead,&nbsp;the&nbsp;tail,&nbsp;and<br>
+the&nbsp;maximum&nbsp;row&nbsp;value&nbsp;found&nbsp;among&nbsp;its&nbsp;strings.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>:<br>
+<dl><dt><a name="FixededPdfParagraph-align"><strong>align</strong></a>(self)</dt><dd><tt>align&nbsp;or&nbsp;justify&nbsp;the&nbsp;lines.</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-buildLines"><strong>buildLines</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;takes&nbsp;all&nbsp;of&nbsp;the&nbsp;strings&nbsp;and&nbsp;breaks&nbsp;them&nbsp;up&nbsp;fit&nbsp;within&nbsp;individual&nbsp;lines.&nbsp;<br>
+The&nbsp;end&nbsp;result&nbsp;is&nbsp;an&nbsp;array&nbsp;of&nbsp;PdfLine()&nbsp;lines&nbsp;that&nbsp;each&nbsp;fit&nbsp;on&nbsp;a&nbsp;single&nbsp;line&nbsp;regardless&nbsp;of&nbsp;font<br>
+changes&nbsp;(within&nbsp;reason).&nbsp;It&nbsp;does&nbsp;this&nbsp;by&nbsp;splitting&nbsp;PdfStrings&nbsp;that&nbsp;overflow&nbsp;a&nbsp;line<br>
+into&nbsp;multiple&nbsp;shorter&nbsp;PdfStrings.&nbsp;And&nbsp;combing&nbsp;short&nbsp;strings.<br>
+Each&nbsp;PdfLine&nbsp;contains&nbsp;one&nbsp;or&nbsp;more&nbsp;PdfStrings,&nbsp;so&nbsp;be&nbsp;printed&nbsp;on&nbsp;the<br>
+same&nbsp;line.&nbsp;<br>
+&nbsp;<br>
+The&nbsp;lines[]&nbsp;attribute&nbsp;contains&nbsp;a&nbsp;list&nbsp;of&nbsp;PdfLines.<br>
+These&nbsp;will&nbsp;have&nbsp;the&nbsp;col&nbsp;value&nbsp;set,&nbsp;the&nbsp;row&nbsp;will&nbsp;&nbsp;be&nbsp;None&nbsp;while&nbsp;owned&nbsp;by&nbsp;a&nbsp;<a href="#PdfParagraph">PdfParagraph</a>.<br>
+&nbsp;<br>
+Within&nbsp;a&nbsp;paragraph&nbsp;the&nbsp;first&nbsp;line&nbsp;may&nbsp;have&nbsp;an&nbsp;indent,&nbsp;and&nbsp;therefore&nbsp;e&nbsp;shorter<br>
+If&nbsp;the&nbsp;next&nbsp;string&nbsp;is&nbsp;a&nbsp;PdfStringFN&nbsp;then&nbsp;it&nbsp;is&nbsp;added&nbsp;no&nbsp;matter&nbsp;what.</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-centerAlign"><strong>centerAlign</strong></a>(self)</dt><dd><tt>center&nbsp;the&nbsp;line</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-documentLines"><strong>documentLines</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;the&nbsp;complete&nbsp;lines&nbsp;with&nbsp;total&nbsp;length&nbsp;for&nbsp;each</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-documentStrings"><strong>documentStrings</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;all&nbsp;strings,&nbsp;1&nbsp;to&nbsp;a&nbsp;row</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-getLineHeightFactor"><strong>getLineHeightFactor</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;lineHeightFactor,&nbsp;which&nbsp;is&nbsp;the&nbsp;chapter's&nbsp;unless&nbsp;overridden&nbsp;at&nbsp;the&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-getLineWidth"><strong>getLineWidth</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;line&nbsp;width,&nbsp;which&nbsp;will&nbsp;be&nbsp;the&nbsp;chapter's&nbsp;linewidth&nbsp;unless&nbsp;the&nbsp;left&nbsp;and<br>
+right&nbsp;margins&nbsp;have&nbsp;been&nbsp;overridden&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-justify"><strong>justify</strong></a>(self)</dt><dd><tt>Justify&nbsp;the&nbsp;text.&nbsp;Each&nbsp;line&nbsp;begins&nbsp;on&nbsp;the&nbsp;left&nbsp;margin&nbsp;(plus&nbsp;indent&nbsp;for&nbsp;first&nbsp;line)<br>
+Each&nbsp;line&nbsp;end&nbsp;on&nbsp;the&nbsp;right&nbsp;margin,&nbsp;i.e.&nbsp;ln.col&nbsp;is&nbsp;indent&nbsp;+&nbsp;left&nbsp;margin,&nbsp;or&nbsp;left&nbsp;margin,<br>
+Does&nbsp;not&nbsp;modify&nbsp;the&nbsp;last&nbsp;line.</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-rightAlign"><strong>rightAlign</strong></a>(self)</dt><dd><tt>Right-align&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;paragraph.&nbsp;<br>
+set&nbsp;line.col&nbsp;to&nbsp;the&nbsp;target&nbsp;length&nbsp;-&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;lime</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-setAlignment"><strong>setAlignment</strong></a>(self, pAlignment)</dt></dl>
+
+<dl><dt><a name="FixededPdfParagraph-setIndent"><strong>setIndent</strong></a>(self, pIndent)</dt></dl>
+
+<dl><dt><a name="FixededPdfParagraph-setLead"><strong>setLead</strong></a>(self, pLead)</dt><dd><tt>set&nbsp;the&nbsp;lead&nbsp;property&nbsp;-&nbsp;i.e.&nbsp;space&nbsp;in&nbsp;points&nbsp;before&nbsp;the&nbsp;paragraph&nbsp;starts.</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-setLineHeightFactor"><strong>setLineHeightFactor</strong></a>(self, pLineHeightFactor)</dt><dd><tt>To&nbsp;override&nbsp;the&nbsp;chapter.lineHeightFactor&nbsp;value,&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-setMargins"><strong>setMargins</strong></a>(self, pleftMargin, prightMargin)</dt><dd><tt>To&nbsp;Override&nbsp;the&nbsp;left&nbsp;and&nbsp;right&nbsp;margins&nbsp;of&nbsp;the&nbsp;chapter,&nbsp;for&nbsp;this&nbsp;paragraph&nbsp;only</tt></dd></dl>
+
+<dl><dt><a name="FixededPdfParagraph-setTail"><strong>setTail</strong></a>(self, pTail)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ImageParagraph">class <strong>ImageParagraph</strong></a>(<a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;type&nbsp;of&nbsp;paragraph&nbsp;without&nbsp;lines&nbsp;-&nbsp;they&nbsp;only&nbsp;have&nbsp;images&nbsp;-&nbsp;1&nbsp;or&nbsp;a&nbsp;row&nbsp;-&nbsp;with&nbsp;<br>
+optional&nbsp;captions.&nbsp;BuildLines&nbsp;is&nbsp;a&nbsp;noop.<br>
+&nbsp;<br>
+Paragraph&nbsp;must&nbsp;fit&nbsp;on&nbsp;the&nbsp;page.&nbsp;see&nbsp;<a href="#ImageParagraph-depth">depth</a>()<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="PdfParagraph.html#ImageParagraph">ImageParagraph</a></dd>
+<dd><a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ImageParagraph-__init__"><strong>__init__</strong></a>(self, chapter, alignment<font color="#909090">='l'</font>, indent<font color="#909090">=0</font>, tail<font color="#909090">=10</font>)</dt><dd><tt>initializer.&nbsp;Calls&nbsp;parents.&nbsp;&nbsp;alignment&nbsp;will&nbsp;be&nbsp;ignored.&nbsp;Position&nbsp;of&nbsp;images&nbsp;is<br>
+absolute&nbsp;relative&nbsp;to&nbsp;its&nbsp;top.</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-addImage"><strong>addImage</strong></a>(self, imageName, width, height, caption, xPos)</dt></dl>
+
+<dl><dt><a name="ImageParagraph-buildLines"><strong>buildLines</strong></a>()</dt></dl>
+
+<dl><dt><a name="ImageParagraph-depth"><strong>depth</strong></a>()</dt></dl>
+
+<hr>
+Methods inherited from <a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>:<br>
+<dl><dt><a name="ImageParagraph-addString"><strong>addString</strong></a>(self, pfont, pstring)</dt><dd><tt>Construct&nbsp;a&nbsp;PdfString&nbsp;from&nbsp;the&nbsp;parameters&nbsp;and&nbsp;add&nbsp;to&nbsp;the&nbsp;strings&nbsp;list<br>
+A&nbsp;'^'&nbsp;character&nbsp;marks&nbsp;a&nbsp;footnote&nbsp;indicator.<br>
+Uses&nbsp;chapter.nxtFootnoteNbr().<br>
+The&nbsp;footnote&nbsp;text&nbsp;needs&nbsp;to&nbsp;be&nbsp;added&nbsp;later,&nbsp;as&nbsp;a&nbsp;footnote&nbsp;paragraph.</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-align"><strong>align</strong></a>(self)</dt><dd><tt>align&nbsp;or&nbsp;justify&nbsp;the&nbsp;lines.</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-centerAlign"><strong>centerAlign</strong></a>(self)</dt><dd><tt>center&nbsp;the&nbsp;line</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-documentLines"><strong>documentLines</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;the&nbsp;complete&nbsp;lines&nbsp;with&nbsp;total&nbsp;length&nbsp;for&nbsp;each</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-documentStrings"><strong>documentStrings</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;all&nbsp;strings,&nbsp;1&nbsp;to&nbsp;a&nbsp;row</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-getLineHeightFactor"><strong>getLineHeightFactor</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;lineHeightFactor,&nbsp;which&nbsp;is&nbsp;the&nbsp;chapter's&nbsp;unless&nbsp;overridden&nbsp;at&nbsp;the&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-getLineWidth"><strong>getLineWidth</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;line&nbsp;width,&nbsp;which&nbsp;will&nbsp;be&nbsp;the&nbsp;chapter's&nbsp;linewidth&nbsp;unless&nbsp;the&nbsp;left&nbsp;and<br>
+right&nbsp;margins&nbsp;have&nbsp;been&nbsp;overridden&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-justify"><strong>justify</strong></a>(self)</dt><dd><tt>Justify&nbsp;the&nbsp;text.&nbsp;Each&nbsp;line&nbsp;begins&nbsp;on&nbsp;the&nbsp;left&nbsp;margin&nbsp;(plus&nbsp;indent&nbsp;for&nbsp;first&nbsp;line)<br>
+Each&nbsp;line&nbsp;end&nbsp;on&nbsp;the&nbsp;right&nbsp;margin,&nbsp;i.e.&nbsp;ln.col&nbsp;is&nbsp;indent&nbsp;+&nbsp;left&nbsp;margin,&nbsp;or&nbsp;left&nbsp;margin,<br>
+Does&nbsp;not&nbsp;modify&nbsp;the&nbsp;last&nbsp;line.</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-rightAlign"><strong>rightAlign</strong></a>(self)</dt><dd><tt>Right-align&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;paragraph.&nbsp;<br>
+set&nbsp;line.col&nbsp;to&nbsp;the&nbsp;target&nbsp;length&nbsp;-&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;lime</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-setAlignment"><strong>setAlignment</strong></a>(self, pAlignment)</dt></dl>
+
+<dl><dt><a name="ImageParagraph-setIndent"><strong>setIndent</strong></a>(self, pIndent)</dt></dl>
+
+<dl><dt><a name="ImageParagraph-setLead"><strong>setLead</strong></a>(self, pLead)</dt><dd><tt>set&nbsp;the&nbsp;lead&nbsp;property&nbsp;-&nbsp;i.e.&nbsp;space&nbsp;in&nbsp;points&nbsp;before&nbsp;the&nbsp;paragraph&nbsp;starts.</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-setLineHeightFactor"><strong>setLineHeightFactor</strong></a>(self, pLineHeightFactor)</dt><dd><tt>To&nbsp;override&nbsp;the&nbsp;chapter.lineHeightFactor&nbsp;value,&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-setMargins"><strong>setMargins</strong></a>(self, pleftMargin, prightMargin)</dt><dd><tt>To&nbsp;Override&nbsp;the&nbsp;left&nbsp;and&nbsp;right&nbsp;margins&nbsp;of&nbsp;the&nbsp;chapter,&nbsp;for&nbsp;this&nbsp;paragraph&nbsp;only</tt></dd></dl>
+
+<dl><dt><a name="ImageParagraph-setTail"><strong>setTail</strong></a>(self, pTail)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PdfFootnoteParagraph">class <strong>PdfFootnoteParagraph</strong></a>(<a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;subclass&nbsp;of&nbsp;<a href="#PdfParagraph">PdfParagraph</a>.&nbsp;Differs&nbsp;in&nbsp;that&nbsp;the<br>
+indent,&nbsp;lead&nbsp;and&nbsp;tail&nbsp;are&nbsp;all&nbsp;set&nbsp;to&nbsp;0.&nbsp;Does&nbsp;not&nbsp;call&nbsp;super&nbsp;__init__<br>
+It&nbsp;has&nbsp;a&nbsp;new&nbsp;attribute:&nbsp;num&nbsp;the&nbsp;footnote&nbsp;number&nbsp;set&nbsp;when&nbsp;the&nbsp;<br>
+footnote&nbsp;is&nbsp;added&nbsp;to&nbsp;the&nbsp;chapter.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="PdfParagraph.html#PdfFootnoteParagraph">PdfFootnoteParagraph</a></dd>
+<dd><a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PdfFootnoteParagraph-__init__"><strong>__init__</strong></a>(self, chapter)</dt></dl>
+
+<hr>
+Methods inherited from <a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>:<br>
+<dl><dt><a name="PdfFootnoteParagraph-addString"><strong>addString</strong></a>(self, pfont, pstring)</dt><dd><tt>Construct&nbsp;a&nbsp;PdfString&nbsp;from&nbsp;the&nbsp;parameters&nbsp;and&nbsp;add&nbsp;to&nbsp;the&nbsp;strings&nbsp;list<br>
+A&nbsp;'^'&nbsp;character&nbsp;marks&nbsp;a&nbsp;footnote&nbsp;indicator.<br>
+Uses&nbsp;chapter.nxtFootnoteNbr().<br>
+The&nbsp;footnote&nbsp;text&nbsp;needs&nbsp;to&nbsp;be&nbsp;added&nbsp;later,&nbsp;as&nbsp;a&nbsp;footnote&nbsp;paragraph.</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-align"><strong>align</strong></a>(self)</dt><dd><tt>align&nbsp;or&nbsp;justify&nbsp;the&nbsp;lines.</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-buildLines"><strong>buildLines</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;takes&nbsp;all&nbsp;of&nbsp;the&nbsp;strings&nbsp;and&nbsp;breaks&nbsp;them&nbsp;up&nbsp;fit&nbsp;within&nbsp;individual&nbsp;lines.&nbsp;<br>
+The&nbsp;end&nbsp;result&nbsp;is&nbsp;an&nbsp;array&nbsp;of&nbsp;PdfLine()&nbsp;lines&nbsp;that&nbsp;each&nbsp;fit&nbsp;on&nbsp;a&nbsp;single&nbsp;line&nbsp;regardless&nbsp;of&nbsp;font<br>
+changes&nbsp;(within&nbsp;reason).&nbsp;It&nbsp;does&nbsp;this&nbsp;by&nbsp;splitting&nbsp;PdfStrings&nbsp;that&nbsp;overflow&nbsp;a&nbsp;line<br>
+into&nbsp;multiple&nbsp;shorter&nbsp;PdfStrings.&nbsp;And&nbsp;combing&nbsp;short&nbsp;strings.<br>
+Each&nbsp;PdfLine&nbsp;contains&nbsp;one&nbsp;or&nbsp;more&nbsp;PdfStrings,&nbsp;so&nbsp;be&nbsp;printed&nbsp;on&nbsp;the<br>
+same&nbsp;line.&nbsp;<br>
+&nbsp;<br>
+The&nbsp;lines[]&nbsp;attribute&nbsp;contains&nbsp;a&nbsp;list&nbsp;of&nbsp;PdfLines.<br>
+These&nbsp;will&nbsp;have&nbsp;the&nbsp;col&nbsp;value&nbsp;set,&nbsp;the&nbsp;row&nbsp;will&nbsp;&nbsp;be&nbsp;None&nbsp;while&nbsp;owned&nbsp;by&nbsp;a&nbsp;<a href="#PdfParagraph">PdfParagraph</a>.<br>
+&nbsp;<br>
+Within&nbsp;a&nbsp;paragraph&nbsp;the&nbsp;first&nbsp;line&nbsp;may&nbsp;have&nbsp;an&nbsp;indent,&nbsp;and&nbsp;therefore&nbsp;e&nbsp;shorter<br>
+If&nbsp;the&nbsp;next&nbsp;string&nbsp;is&nbsp;a&nbsp;PdfStringFN&nbsp;then&nbsp;it&nbsp;is&nbsp;added&nbsp;no&nbsp;matter&nbsp;what.</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-centerAlign"><strong>centerAlign</strong></a>(self)</dt><dd><tt>center&nbsp;the&nbsp;line</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-depth"><strong>depth</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-documentLines"><strong>documentLines</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;the&nbsp;complete&nbsp;lines&nbsp;with&nbsp;total&nbsp;length&nbsp;for&nbsp;each</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-documentStrings"><strong>documentStrings</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;all&nbsp;strings,&nbsp;1&nbsp;to&nbsp;a&nbsp;row</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-getLineHeightFactor"><strong>getLineHeightFactor</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;lineHeightFactor,&nbsp;which&nbsp;is&nbsp;the&nbsp;chapter's&nbsp;unless&nbsp;overridden&nbsp;at&nbsp;the&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-getLineWidth"><strong>getLineWidth</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;line&nbsp;width,&nbsp;which&nbsp;will&nbsp;be&nbsp;the&nbsp;chapter's&nbsp;linewidth&nbsp;unless&nbsp;the&nbsp;left&nbsp;and<br>
+right&nbsp;margins&nbsp;have&nbsp;been&nbsp;overridden&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-justify"><strong>justify</strong></a>(self)</dt><dd><tt>Justify&nbsp;the&nbsp;text.&nbsp;Each&nbsp;line&nbsp;begins&nbsp;on&nbsp;the&nbsp;left&nbsp;margin&nbsp;(plus&nbsp;indent&nbsp;for&nbsp;first&nbsp;line)<br>
+Each&nbsp;line&nbsp;end&nbsp;on&nbsp;the&nbsp;right&nbsp;margin,&nbsp;i.e.&nbsp;ln.col&nbsp;is&nbsp;indent&nbsp;+&nbsp;left&nbsp;margin,&nbsp;or&nbsp;left&nbsp;margin,<br>
+Does&nbsp;not&nbsp;modify&nbsp;the&nbsp;last&nbsp;line.</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-rightAlign"><strong>rightAlign</strong></a>(self)</dt><dd><tt>Right-align&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;paragraph.&nbsp;<br>
+set&nbsp;line.col&nbsp;to&nbsp;the&nbsp;target&nbsp;length&nbsp;-&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;lime</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-setAlignment"><strong>setAlignment</strong></a>(self, pAlignment)</dt></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-setIndent"><strong>setIndent</strong></a>(self, pIndent)</dt></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-setLead"><strong>setLead</strong></a>(self, pLead)</dt><dd><tt>set&nbsp;the&nbsp;lead&nbsp;property&nbsp;-&nbsp;i.e.&nbsp;space&nbsp;in&nbsp;points&nbsp;before&nbsp;the&nbsp;paragraph&nbsp;starts.</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-setLineHeightFactor"><strong>setLineHeightFactor</strong></a>(self, pLineHeightFactor)</dt><dd><tt>To&nbsp;override&nbsp;the&nbsp;chapter.lineHeightFactor&nbsp;value,&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-setMargins"><strong>setMargins</strong></a>(self, pleftMargin, prightMargin)</dt><dd><tt>To&nbsp;Override&nbsp;the&nbsp;left&nbsp;and&nbsp;right&nbsp;margins&nbsp;of&nbsp;the&nbsp;chapter,&nbsp;for&nbsp;this&nbsp;paragraph&nbsp;only</tt></dd></dl>
+
+<dl><dt><a name="PdfFootnoteParagraph-setTail"><strong>setTail</strong></a>(self, pTail)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="PdfParagraph.html#PdfParagraph">PdfParagraph</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PdfParagraph">class <strong>PdfParagraph</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#PdfParagraph">PdfParagraph</a>&nbsp;represents&nbsp;a&nbsp;body&nbsp;of&nbsp;text.&nbsp;It&nbsp;may&nbsp;be&nbsp;one-line,&nbsp;such&nbsp;as&nbsp;a&nbsp;chapter&nbsp;(or&nbsp;section)<br>
+header,&nbsp;it&nbsp;may&nbsp;be&nbsp;a&nbsp;long&nbsp;paragraph.&nbsp;&nbsp;It&nbsp;contains&nbsp;&nbsp;of&nbsp;a&nbsp;list&nbsp;of&nbsp;PdfString&nbsp;objects-&nbsp;it&nbsp;may&nbsp;contain&nbsp;one&nbsp;string,&nbsp;it<br>
+may&nbsp;contain&nbsp;many.&nbsp;&nbsp;For&nbsp;all&nbsp;of&nbsp;its&nbsp;components,&nbsp;they&nbsp;are&nbsp;produced&nbsp;sequentially&nbsp;and&nbsp;share&nbsp;the<br>
+same&nbsp;justification:&nbsp;left,&nbsp;center,&nbsp;right,&nbsp;full&nbsp;l&nbsp;c&nbsp;r&nbsp;f<br>
+A&nbsp;chapter&nbsp;heading&nbsp;would&nbsp;often&nbsp;be&nbsp;one&nbsp;short&nbsp;line&nbsp;of&nbsp;text,&nbsp;in&nbsp;a&nbsp;larger&nbsp;or&nbsp;more&nbsp;distinct&nbsp;font,<br>
+and&nbsp;centered.<br>
+Properties:<br>
+alignment&nbsp;&nbsp;[&nbsp;'l','c','r','j']<br>
+indent&nbsp;&nbsp;points<br>
+tail&nbsp;&nbsp;&nbsp;&nbsp;points<br>
+lead&nbsp;&nbsp;&nbsp;&nbsp;points<br>
+strings&nbsp;=&nbsp;[]<br>
+lines&nbsp;=&nbsp;None&nbsp;or&nbsp;[]<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PdfParagraph-__init__"><strong>__init__</strong></a>(self, chapter, alignment<font color="#909090">='l'</font>, indent<font color="#909090">=0</font>, tail<font color="#909090">=10</font>)</dt><dd><tt>all&nbsp;elements&nbsp;in&nbsp;a&nbsp;<a href="#PdfParagraph">PdfParagraph</a>&nbsp;share&nbsp;the&nbsp;same&nbsp;justification.<br>
+&lt;indent&gt;&nbsp;is&nbsp;used&nbsp;for&nbsp;the&nbsp;first&nbsp;line&nbsp;of&nbsp;text.&nbsp;It&nbsp;is&nbsp;in&nbsp;points.&nbsp;See&nbsp;<a href="#PdfParagraph-setIndent">setIndent</a>()<br>
+&lt;tail&gt;&nbsp;moves&nbsp;the&nbsp;chapter&nbsp;row&nbsp;counter&nbsp;down&nbsp;tail&nbsp;points<br>
+&lt;lead&gt;&nbsp;is&nbsp;space&nbsp;above&nbsp;the&nbsp;paragraph;&nbsp;assumed&nbsp;less&nbsp;common,&nbsp;and&nbsp;defaulted&nbsp;to&nbsp;0.&nbsp;See&nbsp;<a href="#PdfParagraph-setLead">setLead</a>()</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-addString"><strong>addString</strong></a>(self, pfont, pstring)</dt><dd><tt>Construct&nbsp;a&nbsp;PdfString&nbsp;from&nbsp;the&nbsp;parameters&nbsp;and&nbsp;add&nbsp;to&nbsp;the&nbsp;strings&nbsp;list<br>
+A&nbsp;'^'&nbsp;character&nbsp;marks&nbsp;a&nbsp;footnote&nbsp;indicator.<br>
+Uses&nbsp;chapter.nxtFootnoteNbr().<br>
+The&nbsp;footnote&nbsp;text&nbsp;needs&nbsp;to&nbsp;be&nbsp;added&nbsp;later,&nbsp;as&nbsp;a&nbsp;footnote&nbsp;paragraph.</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-align"><strong>align</strong></a>(self)</dt><dd><tt>align&nbsp;or&nbsp;justify&nbsp;the&nbsp;lines.</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-buildLines"><strong>buildLines</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;takes&nbsp;all&nbsp;of&nbsp;the&nbsp;strings&nbsp;and&nbsp;breaks&nbsp;them&nbsp;up&nbsp;fit&nbsp;within&nbsp;individual&nbsp;lines.&nbsp;<br>
+The&nbsp;end&nbsp;result&nbsp;is&nbsp;an&nbsp;array&nbsp;of&nbsp;PdfLine()&nbsp;lines&nbsp;that&nbsp;each&nbsp;fit&nbsp;on&nbsp;a&nbsp;single&nbsp;line&nbsp;regardless&nbsp;of&nbsp;font<br>
+changes&nbsp;(within&nbsp;reason).&nbsp;It&nbsp;does&nbsp;this&nbsp;by&nbsp;splitting&nbsp;PdfStrings&nbsp;that&nbsp;overflow&nbsp;a&nbsp;line<br>
+into&nbsp;multiple&nbsp;shorter&nbsp;PdfStrings.&nbsp;And&nbsp;combing&nbsp;short&nbsp;strings.<br>
+Each&nbsp;PdfLine&nbsp;contains&nbsp;one&nbsp;or&nbsp;more&nbsp;PdfStrings,&nbsp;so&nbsp;be&nbsp;printed&nbsp;on&nbsp;the<br>
+same&nbsp;line.&nbsp;<br>
+&nbsp;<br>
+The&nbsp;lines[]&nbsp;attribute&nbsp;contains&nbsp;a&nbsp;list&nbsp;of&nbsp;PdfLines.<br>
+These&nbsp;will&nbsp;have&nbsp;the&nbsp;col&nbsp;value&nbsp;set,&nbsp;the&nbsp;row&nbsp;will&nbsp;&nbsp;be&nbsp;None&nbsp;while&nbsp;owned&nbsp;by&nbsp;a&nbsp;<a href="#PdfParagraph">PdfParagraph</a>.<br>
+&nbsp;<br>
+Within&nbsp;a&nbsp;paragraph&nbsp;the&nbsp;first&nbsp;line&nbsp;may&nbsp;have&nbsp;an&nbsp;indent,&nbsp;and&nbsp;therefore&nbsp;e&nbsp;shorter<br>
+If&nbsp;the&nbsp;next&nbsp;string&nbsp;is&nbsp;a&nbsp;PdfStringFN&nbsp;then&nbsp;it&nbsp;is&nbsp;added&nbsp;no&nbsp;matter&nbsp;what.</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-centerAlign"><strong>centerAlign</strong></a>(self)</dt><dd><tt>center&nbsp;the&nbsp;line</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-depth"><strong>depth</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PdfParagraph-documentLines"><strong>documentLines</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;the&nbsp;complete&nbsp;lines&nbsp;with&nbsp;total&nbsp;length&nbsp;for&nbsp;each</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-documentStrings"><strong>documentStrings</strong></a>(self)</dt><dd><tt>print&nbsp;out&nbsp;all&nbsp;strings,&nbsp;1&nbsp;to&nbsp;a&nbsp;row</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-getLineHeightFactor"><strong>getLineHeightFactor</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;lineHeightFactor,&nbsp;which&nbsp;is&nbsp;the&nbsp;chapter's&nbsp;unless&nbsp;overridden&nbsp;at&nbsp;the&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-getLineWidth"><strong>getLineWidth</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;line&nbsp;width,&nbsp;which&nbsp;will&nbsp;be&nbsp;the&nbsp;chapter's&nbsp;linewidth&nbsp;unless&nbsp;the&nbsp;left&nbsp;and<br>
+right&nbsp;margins&nbsp;have&nbsp;been&nbsp;overridden&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-justify"><strong>justify</strong></a>(self)</dt><dd><tt>Justify&nbsp;the&nbsp;text.&nbsp;Each&nbsp;line&nbsp;begins&nbsp;on&nbsp;the&nbsp;left&nbsp;margin&nbsp;(plus&nbsp;indent&nbsp;for&nbsp;first&nbsp;line)<br>
+Each&nbsp;line&nbsp;end&nbsp;on&nbsp;the&nbsp;right&nbsp;margin,&nbsp;i.e.&nbsp;ln.col&nbsp;is&nbsp;indent&nbsp;+&nbsp;left&nbsp;margin,&nbsp;or&nbsp;left&nbsp;margin,<br>
+Does&nbsp;not&nbsp;modify&nbsp;the&nbsp;last&nbsp;line.</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-rightAlign"><strong>rightAlign</strong></a>(self)</dt><dd><tt>Right-align&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;paragraph.&nbsp;<br>
+set&nbsp;line.col&nbsp;to&nbsp;the&nbsp;target&nbsp;length&nbsp;-&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;lime</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-setAlignment"><strong>setAlignment</strong></a>(self, pAlignment)</dt></dl>
+
+<dl><dt><a name="PdfParagraph-setIndent"><strong>setIndent</strong></a>(self, pIndent)</dt></dl>
+
+<dl><dt><a name="PdfParagraph-setLead"><strong>setLead</strong></a>(self, pLead)</dt><dd><tt>set&nbsp;the&nbsp;lead&nbsp;property&nbsp;-&nbsp;i.e.&nbsp;space&nbsp;in&nbsp;points&nbsp;before&nbsp;the&nbsp;paragraph&nbsp;starts.</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-setLineHeightFactor"><strong>setLineHeightFactor</strong></a>(self, pLineHeightFactor)</dt><dd><tt>To&nbsp;override&nbsp;the&nbsp;chapter.lineHeightFactor&nbsp;value,&nbsp;for&nbsp;this&nbsp;paragraph</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-setMargins"><strong>setMargins</strong></a>(self, pleftMargin, prightMargin)</dt><dd><tt>To&nbsp;Override&nbsp;the&nbsp;left&nbsp;and&nbsp;right&nbsp;margins&nbsp;of&nbsp;the&nbsp;chapter,&nbsp;for&nbsp;this&nbsp;paragraph&nbsp;only</tt></dd></dl>
+
+<dl><dt><a name="PdfParagraph-setTail"><strong>setTail</strong></a>(self, pTail)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

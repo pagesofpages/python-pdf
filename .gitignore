@@ -3,5 +3,9 @@
 *.jpg
 externaldocs
 *.pdf
+upd
+test*.py
+test*.pdf
+__pycache__
 
 

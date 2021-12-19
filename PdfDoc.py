@@ -2,6 +2,19 @@
 #! classes for pdf generation
 import datetime
 import binascii
+"""
+	PdfDoc module
+	Contains
+		PdfFont() PdfPage() XObject() and PdfDocument()
+	12/19/2021
+		Adding the ability to have mirrored margins, i.e. the inside or gutter be
+		different from the outer margin.  When pageNumber is odd then left margin is
+		gutter, when even then right margin is gutter. Implemented by copying page margins
+		into each Page() object, and setting the margins from the PdfDocument() margins.
+		The left and right margins at the document level are taken as the odd-numbered
+		page settings.
+		
+"""
 
 #! point class for internal use only
 class _point( object ):
@@ -48,6 +61,11 @@ class PdfPage( object ):
 		graphicsStream = []
 		name = ''
 		textStream = []
+		# adding margin attributes to page, so allow for mirroring
+		leftMargin = 0
+		rightMargin = 0
+		topMargin = = 0
+		bottomMargin = 0
 	"""
 	def __init__(self):
 		self.pageObjNo = 0
@@ -60,6 +78,11 @@ class PdfPage( object ):
 		self.graphicsStream = []
 		self.name = ''
 		self.textStream = []
+		self.topMargin = 0
+		self.bottomMargin = 0
+		self.leftMargin = 0
+		self.rightMargin = 0
+		
 
 class XObject( object):
 	""" data structure for an XObject - which is a lot like a page, but
@@ -110,6 +133,8 @@ class PdfDocument( object ):
 	endDoc(self)
 	getFileName(self)
 	setFileName(self, pName)
+	setMirroringOn(self)
+	setMirroringOff(self)
 
 	
 	Page Control
@@ -173,6 +198,8 @@ class PdfDocument( object ):
 	defineImageXObject( self, hexStrings, pName, pWidth, pHeight, pBitsPerComponent, pColorSpace = None, pImageMask = None, pImageLib = None, pFilter = None):
 	showImage(self, pName, pX, pY, pUnit = None, pScaleX = None, pScaleY = None, pSkewX = 0, pSkewY = 0, pGrayScale = 0):
 	readImage(self,  name):
+	getImageWidth(self, pname)
+	getImageHeight(self, pname)
 	
 
 	Graphics
@@ -276,6 +303,7 @@ class PdfDocument( object ):
 		self.leftMargin  = 0.4 * 72  # Columns are relative to this point.
 		self.rightMargin  = 0.4 * 72   # typical non-printable area
 		self.bottomMargin  = 0.4 * 72
+		self.mirrored = 0 # default off
 		self.handle = None	#file handle
 		self.target = None              # email address, etc
 		self.pageObjList = []    # Table of Number ObjectNumberTable,
@@ -595,6 +623,18 @@ class PdfDocument( object ):
 		""" after all pages are ended. Finish the document, close the file """
 		self.writexRef()
 		self.handle.close()	
+	def setMirroringOn(self):
+		"""
+		turn mirroring on for the document. Does not effect pages already generated.
+		"""
+		self.mirrored = 1
+		
+	def setMirroringOff(self):
+		"""
+		turn mirroring off for the document. Does not effect pages already generated
+		"""
+		self.mirrored = 0
+
 		
 	def getFileName(self):
 		""" Return the name of the file. appends .pdf if no extension has been specified."""
@@ -657,6 +697,7 @@ class PdfDocument( object ):
 		"""
 		Initialize a new page - required for each page of output.
 		Tracks the page hierarchy, internally.
+		
 		"""
 		vPage = PdfPage()
 		vPage.pageObjNo = self.getNextObjNo()
@@ -664,7 +705,8 @@ class PdfDocument( object ):
 		vPage.sizeObjNo = self.getNextObjNo()
 		self.currentPageNo = self.currentPageNo + 1
 		vPage.pageNo = self.currentPageNo
-		
+		# here we could now, knowing the page number, implement mirroring
+		# by moving the margins from document to page
 		self.pageObjList.append( vPage.pageObjNo  )
 
 		vPtr = len(self.pageObjList)
@@ -673,10 +715,25 @@ class PdfDocument( object ):
 			self.currentParentNo = self.getNextObjNo()
 		self.pageParentList.append( self.currentParentNo ) 
 		vPage.parentObjNo = self.currentParentNo
+		# bring the margins down from document to page, to allow for mirroring
+		# If mirroring is turned on at the document level then
+		# the gutter uses the document leftMargin
+		# if mirroring and page is even then the left and right margins are swapped.
+		if self.mirrored and vPage.pageNo % 2 == 0:
+			vPage.leftMargin = self.rightMargin
+			vPage.rightMargin = self.leftMargin
+		else:
+			vPage.leftMargin = self.leftMargin
+			vPage.rightMargin = self.rightMargin
+		
+		vPage.topMargin = self.topMargin
+		vPage.bottomMargin = self.bottomMargin
+		
 		# I don';t think there is a good reason for the font, and the row/col
 		# information to be attributes of the document instead of the page
 		self.page = vPage;    
 		self.setFont( self.currentFontKey,self.currentFontSize)
+		
 		self.currentRow = 0;
 		self.currentCol = 0;  
 
@@ -945,7 +1002,9 @@ class PdfDocument( object ):
 				nString = nString + '\\' + c
 			else:
 				nString = nString + c
-		t = str(self.leftMargin + self.currentCol) + ' '+ str((self.pageHeight - self.topMargin) - self.currentRow) + ' Td'
+		# margins moved down to page, to allow for mirroring, then here the margin reference
+		# is changed to self.page.leftMargin rather than self.leftMargin
+		t = str(self.page.leftMargin + self.currentCol) + ' '+ str((self.pageHeight - self.page.topMargin) - self.currentRow) + ' Td'
 		self.page.textStream.append( t )
 		self.page.textStream.append('(' + nString + ') Tj')
 		self.page.textStream.append( '1 0 0 1 0 0 Tm' )
@@ -1236,7 +1295,22 @@ class PdfDocument( object ):
 		return vReturn
 		
 
-
+	def getImageWidth(self, pName):
+		""" 
+		Get the width of an image defined in the XObjects table
+		Uses self.findXObject()
+		"""
+		pos = self.findXObject( pName)
+		return self.pbXObjectTable[pos].width
+		
+	def getImageHeight(self, pName):
+		"""
+		get the height if an image defined in the pvXobjectTable
+		uses self.findXObject
+		"""
+		pos = self.findXObject( pName)
+		return self.pvXObjectTable[pos].height
+		
 
 
 	def showImage(self, pName, pX, pY, pUnit = None, pScaleX = None, pScaleY = None, pSkewX = 0, pSkewY = 0, pGrayScale = 0):

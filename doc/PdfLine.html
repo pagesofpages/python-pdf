@@ -1,0 +1,94 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module PdfLine</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>PdfLine</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/garymenchen/python/python-pdf/PdfLine.py">/Users/garymenchen/python/python-pdf/PdfLine.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;<a href="#PdfLine">PdfLine</a>.py</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="PdfLine.html#PdfLine">PdfLine</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PdfLine">class <strong>PdfLine</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>#&nbsp;a&nbsp;<a href="#PdfLine">PdfLine</a>&nbsp;is&nbsp;a&nbsp;collection&nbsp;of&nbsp;strings&nbsp;that&nbsp;are&nbsp;to&nbsp;be&nbsp;output&nbsp;on&nbsp;the&nbsp;same&nbsp;row.<br>
+Properties<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strings&nbsp;[]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PdfLine-__init__"><strong>__init__</strong></a>(self, prow<font color="#909090">=None</font>, pcol<font color="#909090">=None</font>)</dt><dd><tt>properties<br>
+self.<strong>row</strong><br>
+self.<strong>col</strong>&nbsp;the&nbsp;left&nbsp;most&nbsp;position&nbsp;of&nbsp;the&nbsp;line.<br>
+self.<strong>strings</strong>&nbsp;=&nbsp;[]&nbsp;A&nbsp;collection&nbsp;of&nbsp;strings.<br>
+self.<strong>length</strong>&nbsp;=&nbsp;0&nbsp;&nbsp;calculated&nbsp;after&nbsp;each&nbsp;change</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-addString"><strong>addString</strong></a>(self, pString)</dt><dd><tt>add&nbsp;a&nbsp;PdfString&nbsp;to&nbsp;self.<strong>strings</strong>,&nbsp;and&nbsp;reset&nbsp;self.<strong>length</strong>.&nbsp;If&nbsp;this&nbsp;is&nbsp;the&nbsp;first&nbsp;string<br>
+then&nbsp;remove&nbsp;leading&nbsp;spaces.</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-depth"><strong>depth</strong></a>(self)</dt><dd><tt>depth&nbsp;is&nbsp;the&nbsp;maximum&nbsp;height&nbsp;found&nbsp;in&nbsp;strings<br>
+Without&nbsp;adjustment&nbsp;for&nbsp;space&nbsp;between&nbsp;lines&nbsp;(lineheightFactor).&nbsp;So&nbsp;it&nbsp;is&nbsp;the<br>
+largest&nbsp;size&nbsp;of&nbsp;any&nbsp;fonts&nbsp;in&nbsp;the&nbsp;line&nbsp;strings&nbsp;[]</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-dump"><strong>dump</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PdfLine-dumpline"><strong>dumpline</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;concatenated&nbsp;strings</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-footnoteList"><strong>footnoteList</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;int&nbsp;values&nbsp;of&nbsp;the&nbsp;footnote&nbsp;indicators&nbsp;in&nbsp;the&nbsp;current&nbsp;line.<br>
+A&nbsp;footnote&nbsp;will&nbsp;be&nbsp;of&nbsp;type&nbsp;PdfStringFN,&nbsp;and&nbsp;its&nbsp;content&nbsp;will&nbsp;be&nbsp;digits&nbsp;that&nbsp;can<br>
+convert&nbsp;to&nbsp;int.</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-printPdf"><strong>printPdf</strong></a>(self, doc)</dt><dd><tt>print&nbsp;the&nbsp;line&nbsp;of&nbsp;text&nbsp;using&nbsp;the&nbsp;&lt;doc&gt;&nbsp;PdfDocument&nbsp;methods<br>
+The&nbsp;row&nbsp;and&nbsp;column&nbsp;are&nbsp;calculated&nbsp;here.<br>
+Column&nbsp;is&nbsp;the&nbsp;current&nbsp;column&nbsp;set&nbsp;in&nbsp;the&nbsp;line&nbsp;initiator&nbsp;or&nbsp;by&nbsp;line.setPos<br>
+Row&nbsp;is&nbsp;the&nbsp;same,&nbsp;except&nbsp;an&nbsp;offset&nbsp;of&nbsp;-3&nbsp;is&nbsp;set&nbsp;if&nbsp;it&nbsp;is&nbsp;a&nbsp;footnote.&nbsp;(why?)<br>
+Column&nbsp;represents&nbsp;the&nbsp;left-most&nbsp;position&nbsp;of&nbsp;the&nbsp;line.&nbsp;So&nbsp;this&nbsp;might&nbsp;be<br>
+fudged&nbsp;for&nbsp;mirroring&nbsp;margins&nbsp;(i.e.&nbsp;larger&nbsp;gutter,&nbsp;shorter&nbsp;outer&nbsp;margin)<br>
+self.<strong>doc</strong>&nbsp;is&nbsp;a&nbsp;PdfDoc.&nbsp;doc.getPageNumber()&nbsp;returns&nbsp;the&nbsp;current&nbsp;page&nbsp;number.<br>
+If&nbsp;page&nbsp;is&nbsp;odd&nbsp;then&nbsp;gutter&nbsp;is&nbsp;left&nbsp;margin;&nbsp;even&nbsp;then&nbsp;gutter&nbsp;is&nbsp;right&nbsp;margin.</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-setLength"><strong>setLength</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PdfLine-setPos"><strong>setPos</strong></a>(self, r, c)</dt><dd><tt>Set&nbsp;self.<strong>row</strong>&nbsp;and&nbsp;self.<strong>col</strong></tt></dd></dl>
+
+<dl><dt><a name="PdfLine-splitStrings"><strong>splitStrings</strong></a>(self, cnt)</dt><dd><tt>This&nbsp;&nbsp;splits&nbsp;a&nbsp;line&nbsp;into&nbsp;at&nbsp;least&nbsp;cnt&nbsp;strings&nbsp;if&nbsp;it&nbsp;can.</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-stretch"><strong>stretch</strong></a>(self, targetLength)</dt><dd><tt>Stetch&nbsp;the&nbsp;line&nbsp;until&nbsp;length&nbsp;is&nbsp;target&nbsp;length.&nbsp;Used&nbsp;for&nbsp;justification.</tt></dd></dl>
+
+<dl><dt><a name="PdfLine-wordCount"><strong>wordCount</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;number&nbsp;of&nbsp;"words"&nbsp;-&nbsp;contiguous&nbsp;non-space&nbsp;characters&nbsp;bounded&nbsp;by<br>
+either&nbsp;a&nbsp;beginning,&nbsp;an&nbsp;end&nbsp;or&nbsp;a&nbsp;space&nbsp;-&nbsp;in&nbsp;a&nbsp;line</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

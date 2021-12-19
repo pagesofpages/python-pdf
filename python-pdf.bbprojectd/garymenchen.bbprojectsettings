@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EmbeddedEditorHidden:garymenchen</key>
+	<false/>
+	<key>ExpandedEditorWidth:garymenchen:displays([(0, 0), (1440, 900)])</key>
+	<integer>637</integer>
+	<key>ExpandedItems:garymenchen</key>
+	<array/>
+	<key>FileFilterMode:garymenchen</key>
+	<integer>0</integer>
+	<key>OpenDocuments:garymenchen</key>
+	<array/>
+	<key>OpenDocumentsExpanded</key>
+	<true/>
+	<key>OpenDocumentsSplitterProportion</key>
+	<real>0.75031367628607271</real>
+	<key>ProjectItemsExpanded</key>
+	<true/>
+	<key>ProjectViewVisible</key>
+	<true/>
+	<key>RecentItems:garymenchen</key>
+	<array/>
+	<key>ScratchpadItemsExpanded</key>
+	<true/>
+	<key>ScratchpadItemsVisible</key>
+	<true/>
+	<key>ShowSCMData:garymenchen</key>
+	<false/>
+	<key>ToolbarVisible:garymenchen</key>
+	<false/>
+	<key>ViewSplitterPosition:garymenchen</key>
+	<real>0.24970553815364838</real>
+	<key>WindowFrame:garymenchen:displays([(0, 0), (1440, 900)])</key>
+	<string>rect(45,0,842,849)</string>
+</dict>
+</plist>
