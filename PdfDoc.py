@@ -2,6 +2,19 @@
 #! classes for pdf generation
 import datetime
 import binascii
+"""
+	PdfDoc module
+	Contains
+		PdfFont() PdfPage() XObject() and PdfDocument()
+	12/19/2021
+		Adding the ability to have mirrored margins, i.e. the inside or gutter be
+		different from the outer margin.  When pageNumber is odd then left margin is
+		gutter, when even then right margin is gutter. Implemented by copying page margins
+		into each Page() object, and setting the margins from the PdfDocument() margins.
+		The left and right margins at the document level are taken as the odd-numbered
+		page settings.
+		
+"""
 
 #! point class for internal use only
 class _point( object ):
@@ -48,6 +61,11 @@ class PdfPage( object ):
 		graphicsStream = []
 		name = ''
 		textStream = []
+		# adding margin attributes to page, so allow for mirroring
+		leftMargin = 0
+		rightMargin = 0
+		topMargin = = 0
+		bottomMargin = 0
 	"""
 	def __init__(self):
 		self.pageObjNo = 0
@@ -60,6 +78,11 @@ class PdfPage( object ):
 		self.graphicsStream = []
 		self.name = ''
 		self.textStream = []
+		self.topMargin = 0
+		self.bottomMargin = 0
+		self.leftMargin = 0
+		self.rightMargin = 0
+		
 
 class XObject( object):
 	""" data structure for an XObject - which is a lot like a page, but
@@ -110,6 +133,8 @@ class PdfDocument( object ):
 	endDoc(self)
 	getFileName(self)
 	setFileName(self, pName)
+	setMirroringOn(self)
+	setMirroringOff(self)
 
 	
 	Page Control
@@ -173,6 +198,8 @@ class PdfDocument( object ):
 	defineImageXObject( self, hexStrings, pName, pWidth, pHeight, pBitsPerComponent, pColorSpace = None, pImageMask = None, pImageLib = None, pFilter = None):
 	showImage(self, pName, pX, pY, pUnit = None, pScaleX = None, pScaleY = None, pSkewX = 0, pSkewY = 0, pGrayScale = 0):
 	readImage(self,  name):
+	getImageWidth(self, pname)
+	getImageHeight(self, pname)
 	
 
 	Graphics
@@ -276,6 +303,7 @@ class PdfDocument( object ):
 		self.leftMargin  = 0.4 * 72  # Columns are relative to this point.
 		self.rightMargin  = 0.4 * 72   # typical non-printable area
 		self.bottomMargin  = 0.4 * 72
+		self.mirrored = 0 # default off
 		self.handle = None	#file handle
 		self.target = None              # email address, etc
 		self.pageObjList = []    # Table of Number ObjectNumberTable,
@@ -368,8 +396,7 @@ class PdfDocument( object ):
 		vLength = len(vMessage)+ 2
 		# writing to a file
 		if isinstance( pMessage, str):
-			# trying utf8 instead of ascii
-			self.handle.write( vMessage.encode('utf-8') +  b'\r\n')
+			self.handle.write( vMessage.encode('ascii') +  b'\r\n')
 		else:
 			self.handle.write( vMessage +  b'\r\n' )
 		self.offset = self.offset + vLength 
@@ -596,6 +623,18 @@ class PdfDocument( object ):
 		""" after all pages are ended. Finish the document, close the file """
 		self.writexRef()
 		self.handle.close()	
+	def setMirroringOn(self):
+		"""
+		turn mirroring on for the document. Does not effect pages already generated.
+		"""
+		self.mirrored = 1
+		
+	def setMirroringOff(self):
+		"""
+		turn mirroring off for the document. Does not effect pages already generated
+		"""
+		self.mirrored = 0
+
 		
 	def getFileName(self):
 		""" Return the name of the file. appends .pdf if no extension has been specified."""
@@ -658,6 +697,7 @@ class PdfDocument( object ):
 		"""
 		Initialize a new page - required for each page of output.
 		Tracks the page hierarchy, internally.
+		
 		"""
 		vPage = PdfPage()
 		vPage.pageObjNo = self.getNextObjNo()
@@ -665,7 +705,8 @@ class PdfDocument( object ):
 		vPage.sizeObjNo = self.getNextObjNo()
 		self.currentPageNo = self.currentPageNo + 1
 		vPage.pageNo = self.currentPageNo
-		
+		# here we could now, knowing the page number, implement mirroring
+		# by moving the margins from document to page
 		self.pageObjList.append( vPage.pageObjNo  )
 
 		vPtr = len(self.pageObjList)
@@ -674,10 +715,25 @@ class PdfDocument( object ):
 			self.currentParentNo = self.getNextObjNo()
 		self.pageParentList.append( self.currentParentNo ) 
 		vPage.parentObjNo = self.currentParentNo
+		# bring the margins down from document to page, to allow for mirroring
+		# If mirroring is turned on at the document level then
+		# the gutter uses the document leftMargin
+		# if mirroring and page is even then the left and right margins are swapped.
+		if self.mirrored and vPage.pageNo % 2 == 0:
+			vPage.leftMargin = self.rightMargin
+			vPage.rightMargin = self.leftMargin
+		else:
+			vPage.leftMargin = self.leftMargin
+			vPage.rightMargin = self.rightMargin
+		
+		vPage.topMargin = self.topMargin
+		vPage.bottomMargin = self.bottomMargin
+		
 		# I don';t think there is a good reason for the font, and the row/col
 		# information to be attributes of the document instead of the page
 		self.page = vPage;    
 		self.setFont( self.currentFontKey,self.currentFontSize)
+		
 		self.currentRow = 0;
 		self.currentCol = 0;  
 
@@ -922,8 +978,7 @@ class PdfDocument( object ):
 		write is the standard way to generate text at a specific position on a page.
 		If <pUnit> is not specified then the documents defaultUnit attribute will be used.
 		<pX> is the x-axis coordinate: the column
-		<pY> is the y-axis coordinate: the row. This value is treated as starting ast the
-		top of the page (rather than pdf's native practice of starting from the botto')
+		<pY> is the y-axis coordinate: the row
 		In general, when you must be specific its best to use points or inches.
 		Note that this method resets the internal positioning (of the pdf engine, not of
 		this instance) to the origin of 0,0.
@@ -947,7 +1002,9 @@ class PdfDocument( object ):
 				nString = nString + '\\' + c
 			else:
 				nString = nString + c
-		t = str(self.leftMargin + self.currentCol) + ' '+ str((self.pageHeight - self.topMargin) - self.currentRow) + ' Td'
+		# margins moved down to page, to allow for mirroring, then here the margin reference
+		# is changed to self.page.leftMargin rather than self.leftMargin
+		t = str(self.page.leftMargin + self.currentCol) + ' '+ str((self.pageHeight - self.page.topMargin) - self.currentRow) + ' Td'
 		self.page.textStream.append( t )
 		self.page.textStream.append('(' + nString + ') Tj')
 		self.page.textStream.append( '1 0 0 1 0 0 Tm' )
@@ -1113,16 +1170,7 @@ class PdfDocument( object ):
 		return self.convertUnits(self.bottomMargin,'p',vUnit)
 
 	def setTextState(self, pCharSpace = 0, pWordSpace = 0, pScale = 100, pLeading = 0, pRender = 0, pRise = 0):
-		""" 
-		Initializes the textStream environment. Should be reset for each page. 
-		pCharSpace is ADDED to spacing between letters, in points. It may be negative.
-		pWordSpace is similar but applied only the to the space character.
-		pScale is a percentage, default 100, for horizontal scaling.
-		pLeading is in poins and applies to the vertical distance between characters.
-		pRender is a series of essentially codes that specify how to render text.
-		0 is nornal ("fill"). 1 is stroke (draw the outline of each chacter as a line)
-		2 is fill and stroke. 3 is invisible. 4 through 8 include clipping options.
-		"""
+		""" Initializes the textStream environment. Should be reset for each page. """
 		t = str(pCharSpace) + ' Tc ' + str(pWordSpace) + ' Tw '
 		t = t + str(pScale) + ' Tz ' + str(pLeading) + ' TL '
 		t = t + str(pRender) + ' Tr ' + str(pRise) + ' Ts '
@@ -1141,6 +1189,7 @@ class PdfDocument( object ):
 		the PdfFontMetrics class for more precise string lengths.
 		Returns a width, in points.
 		Returns points.
+		
 		"""
 		vPtr = self.findFontByKey(pFontKey)
 		avgSize = self.pvFontTable[vPtr].avgSize
@@ -1235,7 +1284,7 @@ class PdfDocument( object ):
 	def findXObject(self, pName):
 		"""
 		Search for an entry in the pvXObjectTable list, return its offset in the list.
-		Return -1 if <pName> is not located. May be either a form or an image XObject.
+		Return -1 if <pName> is not located
 		"""
 		vReturn = None
 		for i in range( 0, len(self.pvXObjectTable)):
@@ -1246,14 +1295,28 @@ class PdfDocument( object ):
 		return vReturn
 		
 
-
+	def getImageWidth(self, pName):
+		""" 
+		Get the width of an image defined in the XObjects table
+		Uses self.findXObject()
+		"""
+		pos = self.findXObject( pName)
+		return self.pbXObjectTable[pos].width
+		
+	def getImageHeight(self, pName):
+		"""
+		get the height if an image defined in the pvXobjectTable
+		uses self.findXObject
+		"""
+		pos = self.findXObject( pName)
+		return self.pvXObjectTable[pos].height
+		
 
 
 	def showImage(self, pName, pX, pY, pUnit = None, pScaleX = None, pScaleY = None, pSkewX = 0, pSkewY = 0, pGrayScale = 0):
 		"""
 		for an image already recorded in the pvXObjectTable list (see defineImageXObject)
 		this method places it in the current page, and the position specified by <pX> and <py>
-		The pY offset is swapped, top for bottom. 1 inch is 1 inch from the top of the page.
 		Optionally, dimensionally scaled as specified by <pScaleX> and <pScaleY>
 		Optionally skewed as defined by <pSkewX> and pSkewY>
 		and with optional grayscaling, <pGrayScale>.
@@ -1311,8 +1374,7 @@ class PdfDocument( object ):
 		"""
 		This displays a form XObject, adjusting the positioning by the amounts specified in
 		pXOffset and pYOffset.  pUnit must be specified, which is unlike most methods.
-		Values may be negative. The offset quantities are added to the existing x,y coordinate,
-		which represents the lower left corder of the xObject.
+		Values may be negative.
 		"""
 		if pUnit == 'p':
 			vX = pXOffset
@@ -1410,9 +1472,7 @@ class PdfDocument( object ):
 		self.page.graphicsStream.append( str(vX1) + ' '+str(vY1)+' m '+str(vX2)+' '+str(vY2)+' l s') 
 
 	def rectangle( self, pX, pY, pWidth, pHeight, pUnit = None, pLineWidth = None):
-		""" draw 4 lines, forming a rectangle. 
-		pX,pY 
-		"""
+		""" draw 4 lines, forming a rectangle. """
 		self.drawLine(pX,pY,pX + pWidth, pY,pUnit,pLineWidth )  # top line
 		self.drawLine(pX,pY + pHeight,pX + pWidth, pY + pHeight,pUnit,pLineWidth) # bottom line
 		self.drawLine(pX,pY,pX, pY + pHeight,pUnit,pLineWidth) # left side
@@ -1554,8 +1614,99 @@ class PdfDocument( object ):
 			self.addGraphic(t)
 		self.addGraphic('S Q')
 		            
+	def helloWorld(self):
 	
+		self.beginDoc('hello_world.pdf')
+		self.newPage()
+		self.setTextState()
+		self.writeCol(20,'this is writeCol at 20')
+		self.writeNext(20,'this is writeNext at 20')
+		self.writeCenteredInLine(15,'writeCenteredInLine at row 15')
+		self.write( 10,10,'write','l','r')
+		self.setFont('F3',8)
+		self.write(20,30,'This is a different font')
+		for row in range(30,50):
+			self.write(20,row,'This is row '+str(row),'l','r' )
+		self.waterMark('WaterMark!')
+		
+		self.endPage()
+		
+		for i in range(0, 50):
+			self.newPage()
+			self.setTextState()
+			self.setFont('F3',16)
+			self.write( 20, 40,'This is page number '+ str(self.currentPageNo) )
+			self.write( 30, 50,'This is page number '+ str(self.page.pageNo) )
+			self.waterMark(str(i))
+			self.endPage()
+		self.endDoc()
+	
+	def pageLayout(self):
+		self.beginDoc('pagelayout.pdf')
+		self.setDefaultUnit('r')
+		
+		for font in [ 'F1','F2','F3']:
+			for size in [ 8, 10, 12, 14, 16, 18 ]:
+				self.newPage()
+				self.setTextState()
+				self.setFont( font, size)
+				self.writeCenteredInLine( 1, 'Font '+ font + ' Size ' + str(size))
+				self.write(10,2,'0123456789012345678901234567890')
+				self.write(50,2,'abcdefghijklmnopqrstuvwxyz')
+				for i in range(10,40):
+					self.write(i,3,str(i%10),'l')
+				alpha = 'abcdefghijklmnopqrstuvwxyz'
+				for i in range(0,26):
+					self.write(50 + i, 3, alpha[i],'l')
+				
+				for row in [10,20,30,40,50,60,70,80]:
+					for col in [ 10, 20, 30, 40, 50, 60, 70, 80]:
+						self.write(col, row, 'x@r'+str(row)+':c'+str(col))
+				self.write( 10, self.getBottomRow(),'This is the bottome row: '+str(self.getBottomRow()),'l')
+				self.endPage()
+		self.endDoc()		
+
+	def testJpeg( self ):
+		hexStrings = self.readImage('image.jpg')
+
+		self.beginDoc('image_test.pdf')
+		self.setDefaultUnit( 'r' )
+		# 	def defineImageObject( self, hexStrings, pName, pWidth, pHeight, pBitsPerComponent, pColorSpace = None, pImageMask = None, pImageLib = None, pFilter = None):
+		self.defineImageXObject( hexStrings,'Sh1', 274,283,8,'DeviceRGB',None,'ImageB','DCTDecode')
+		# pdfDoc.defineimagexobject(vDoc,vJpg,'Sh1',74,83,8,'DeviceGray',null,'ImageB','DCTDecode');
+
+		self.newFormXObject('W1') 
+		self.waterMark('WATERMARK')
+		for i in range(0, 10):
+			self.write(10,i,'This is xObject Row ' + str(i))
+		self.endFormXObject() 
+
+		self.newPage()
+		self.write(10,5,'column 10 row 5','l','r')
+		self.showImage('Sh1',10,10,'r',80,80)
+		self.showImage('Sh1',10,20,'r',90,90)
+		self.showImage('Sh1',10,40,'r',100,100)
+		self.showImage('Sh1',10,80,'r',120,120)
+		self.write(10,25,'column 10 row25','l','r')
+		self.showForm('W1')
+		self.endPage()
+		self.endDoc()
 
 
 
+'''
+from PdfDoc import PdfDocument
+p = PdfDocument()
+p.helloWorld()
 
+
+from PdfDoc import PdfDocument
+p = PdfDocument()
+p.testJpeg()
+
+from PdfDoc import PdfDocument
+p = PdfDocument()
+p.pageLayout()
+
+
+'''
